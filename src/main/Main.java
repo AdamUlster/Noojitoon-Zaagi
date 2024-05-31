@@ -17,5 +17,14 @@ public class Main {
         window.setVisible(true);//displays window now that it's created
 
         gamePanel.startGameThread();
+        System.out.println("Hello world");
+        System.out.println("Hello my friends");
+        System.out.println("Hello my friends");System.out.println("Hello my friends");
+        System.out.println("Hello my friends");
+        System.out.println("Hello my friends");
+        System.out.println("Hello my friends");
+        System.out.println("Hello my friends");
+        System.out.println("Hello my friends");
+        System.out.println("Hello my friends");
     }
 }
