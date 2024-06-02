@@ -14,8 +14,7 @@ public class Main {
         window.pack();//cause the window to be size to fit the dimensions
 
         window.setLocationRelativeTo(null);//sets the window so that it has no specific location
-        window.setVisible(true);//displays window now that it's created
-
+        window.setVisible(true);//displays window now that it's generated
         gamePanel.startGameThread();
 
     }
