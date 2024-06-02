@@ -1,6 +1,7 @@
 package main;
 
-import main.entity.Player;
+import entity.Player;
+import object.SuperObject;
 
 import java.awt.*;
 import javax.swing.JPanel;
@@ -29,7 +30,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     KeyHandler keyH = new KeyHandler();//call on the keyhandle class to create the keylistener
     Thread gameThread;//repeats a process again and again
-    Player player = new Player(this, keyH);
+    public AssetSetter aSetter = new AssetSetter(this); // passes the game panel as a parameter
+    public Player player = new Player(this, keyH);
+    public SuperObject obj[] = new SuperObject[10]; // to display up to 10 objects at the same time
 
     //set player default position
     //changeable values
@@ -47,6 +50,10 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);//changes the focus of the gamepanel to the key inputs
     }
 
+    public void setupGame() {
+        aSetter.setObject();
+    }
+
     public void startGameThread() {//starts core logic when the program starts
         gameThread = new Thread(this);//create the thread that will run
         gameThread.start();
@@ -61,7 +68,6 @@ public class GamePanel extends JPanel implements Runnable {
         long currentTime;
 
         while (gameThread != null) {//will repeat the game logic forever
-
 
             //ensures game operates at 60 fps
             currentTime = System.nanoTime();//get current time in nanosecondd
@@ -90,6 +96,14 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;//better graphics class that makes things easier
 
+        // Draws the object
+        for (int i = 0; i < obj.length; i++) { // draws every object
+            if (obj[i] != null) {
+                obj[i].draw(g2, this);
+            }
+        }
+
+        // Draws the player
         player.draw(g2);
 
         g2.dispose();//saves processing power
