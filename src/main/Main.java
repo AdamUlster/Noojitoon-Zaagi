@@ -15,6 +15,8 @@ public class Main {
 
         window.setLocationRelativeTo(null);//sets the window so that it has no specific location
         window.setVisible(true);//displays window now that it's generated
+
+        gamePanel.setupGame();
         gamePanel.startGameThread();
 
     }
