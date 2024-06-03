@@ -1,7 +1,7 @@
 package main;
 
 import entity.Player;
-import object.SuperObject;
+import tile.TileManager;
 
 import java.awt.*;
 import javax.swing.JPanel;
@@ -18,28 +18,27 @@ public class GamePanel extends JPanel implements Runnable {
 
     //determine the size of the screen in terms of ties
     //changeable values
-    final int maxScreenCol = 16;//16 tiles across
-    final int maxScreenRow = 12;//12 tiles vertically
+    public final int maxScreenCol = 16;//16 tiles across
+    public final int maxScreenRow = 12;//12 tiles vertically
 
     //how big in pixels will the screen be as represented by the size of the tile and the number of tiles
-    final int screenWidth = tileSize * maxScreenCol;//768 pixels horizontally
-    final int screenHeight = tileSize * maxScreenRow;//576 pixels vertically
+    public final int screenWidth = tileSize * maxScreenCol;//768 pixels horizontally
+    public final int screenHeight = tileSize * maxScreenRow;//576 pixels vertically
 
+
+    //world map settings
+    //change these values to change the map size
+    public final int maxWorldCol = 50;//sets the borders of the world in terms of tiles
+    public final int maxWorldRow = 50;//sets the border of the world in terms of tiles
+
+    public final int worldWidth = tileSize * maxWorldCol;//sets the border of the world in pixels
+    public final int worldHeight = tileSize * maxWorldRow;
     //FPS
     int FPS = 60;
-
+    TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler();//call on the keyhandle class to create the keylistener
     Thread gameThread;//repeats a process again and again
-    public AssetSetter aSetter = new AssetSetter(this); // passes the game panel as a parameter
     public Player player = new Player(this, keyH);
-    public SuperObject obj[] = new SuperObject[10]; // to display up to 10 objects at the same time
-
-    //set player default position
-    //changeable values
-    //starting posiiton
-    int playerX = 100;//player x position on the screen
-    int playerY = 100;//player y posiiton on the screen
-    int playerSpeed = 4;//player speed, can be increased if an ability does so
 
     public GamePanel() {//set default values for the gamepanel
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));//set screen dimensions
@@ -48,10 +47,6 @@ public class GamePanel extends JPanel implements Runnable {
         //improves rendering performance
         this.addKeyListener(keyH);//adds the key listener to the gamepanel
         this.setFocusable(true);//changes the focus of the gamepanel to the key inputs
-    }
-
-    public void setupGame() {
-        aSetter.setObject();
     }
 
     public void startGameThread() {//starts core logic when the program starts
@@ -68,6 +63,7 @@ public class GamePanel extends JPanel implements Runnable {
         long currentTime;
 
         while (gameThread != null) {//will repeat the game logic forever
+
 
             //ensures game operates at 60 fps
             currentTime = System.nanoTime();//get current time in nanosecondd
@@ -95,15 +91,7 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;//better graphics class that makes things easier
-
-        // Draws the object
-        for (int i = 0; i < obj.length; i++) { // draws every object
-            if (obj[i] != null) {
-                obj[i].draw(g2, this);
-            }
-        }
-
-        // Draws the player
+        tileM.draw(g2);//tiles are drawn before the player so to prevent layering issues
         player.draw(g2);
 
         g2.dispose();//saves processing power
