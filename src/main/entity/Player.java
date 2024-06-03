@@ -1,4 +1,4 @@
-package entity;
+package main.entity;
 
 import main.GamePanel;
 import main.KeyHandler;
@@ -17,9 +17,6 @@ public class Player extends Entity {
     public Player(GamePanel gp, KeyHandler keyH) {//creat default class
         this.gp = gp;
         this.keyH = keyH;
-
-        solidAreaDefaultX = solidArea.x;
-        solidAreaDefaultY = solidArea.y;
 
         setDefaultValues();//sets default values for the player
         getPlayerImage();
