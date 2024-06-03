@@ -11,12 +11,21 @@ import java.io.IOException;
 public class Player extends Entity {
     GamePanel gp;//call on the gamepanel class
     KeyHandler keyH;//call on keyhandler class
+
     public boolean[] activeSpirit = new boolean[3];//boolean values that determine which spirit is currently being used
     public int previousSpirit;//sets the default spirit to spirit #1, spirit bear
 
-    public Player(GamePanel gp, KeyHandler keyH) {//creat default class
+    public final int screenX;
+    public final int screenY;
+
+    public Player(GamePanel gp, KeyHandler keyH) { //create default attributes (constructor)
         this.gp = gp;
         this.keyH = keyH;
+
+        screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
+        screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
+
+        solidArea = new Rectangle(8, 16, 32, 32); // instantiates the rectangle
 
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
@@ -26,8 +35,8 @@ public class Player extends Entity {
     }
 
     public void setDefaultValues() {//create default values to spawn the player
-        x = 100;//sets default x coordinate to 100
-        y = 100;//sets defualt y coordinate to 100
+        worldX = gp.tileSize * 23; // sets the default tile position x-coordinate
+        worldY = gp.tileSize * 21; //sets the default tile position y-coordinate
         speed = 4;//sets speed to 4
         direction = "right";//can input any direction
         activeSpirit[0] = true;//starts the player with the bear spirit
@@ -80,18 +89,37 @@ public class Player extends Entity {
                 keyH.leftPressed == true || keyH.rightPressed == true) {//walking animations only occur if the key is being pressed
             if (keyH.upPressed == true) {//move up
                 direction = "up";
-                y -= speed;
             } else if (keyH.downPressed == true) {//move down
                 direction = "down";
-                y += speed;
             } else if (keyH.leftPressed == true) {//move left
-                //remove the else portion to make x and y movements independant
+                //remove the else portion to make x and y movements independent
                 direction = "left";
-                x -= speed;
             } else if (keyH.rightPressed == true) {//move right
                 direction = "right";
-                x += speed;
             }
+
+            // check tile collision
+            collisionOn = false;
+            gp.cChecker.checkTile(this);
+
+            // player can only move if collision is false
+            if (!collisionOn) {
+                switch (direction) {
+                    case "up":
+                        worldY -= speed;
+                        break;
+                    case "down":
+                        worldY += speed;
+                        break;
+                    case "left":
+                        worldX -= speed;
+                        break;
+                    case "right":
+                        worldX += speed;
+                        break;
+                }
+            }
+
             spriteCounter++;
             if (spriteCounter > 12) {//player image changes once every 12 frames, can adjust by increasing or decreasing
                 if (spriteNum == 1) {//changes the player to first walking sprite to second sprite
@@ -158,7 +186,7 @@ public class Player extends Entity {
                 }
                 break;
         }
-        g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);//draws the image, null means we cannot type
+        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);//draws the image, null means we cannot type
 
 
     }
