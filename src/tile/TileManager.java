@@ -1,7 +1,6 @@
 package tile;
 
 import main.GamePanel;
-import tile.Tile;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -11,8 +10,8 @@ import java.util.Scanner;
 
 public class TileManager {
     GamePanel gp;
-    Tile[] tile;
-    int mapTileNum[][];//create a 2d array for each tile element in the map
+    public Tile[] tile;
+    public int mapTileNum[][];//create a 2d array for each tile element in the map
 
     public TileManager(GamePanel gp) {//set default
 
@@ -21,7 +20,7 @@ public class TileManager {
         tile = new Tile[10]; //kinds of tile types, for now there are 10 types of tiles, we can add more
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
         getTileImage();//call on method to extract the tile pngs
-        loadMap("/maps/map_1.txt");//load the formation of the tiles after inputing the file path of the map file
+        loadMap("/maps/map_1");//load the formation of the tiles after inputing the file path of the map file
     }
 
     public void getTileImage() {//retrieves the tile png's from the resource files
@@ -31,12 +30,15 @@ public class TileManager {
 
             tile[1] = new Tile();
             tile[1].image = ImageIO.read(getClass().getResourceAsStream("/tiles/brick_1.png"));
+            tile[1].collision = true;
 
             tile[2] = new Tile();
             tile[2].image = ImageIO.read(getClass().getResourceAsStream("/tiles/tree_1.png"));
+            tile[2].collision = true;
 
             tile[3] = new Tile();
             tile[3].image = ImageIO.read(getClass().getResourceAsStream("/tiles/water_1.png"));
+            tile[3].collision = true;
 
 //            tile[0] = new Tile();
 //            tile[0].image = ImageIO.read(getClass().getResourceAsStream("/tiles/brick_1.png"));
@@ -56,7 +58,7 @@ public class TileManager {
 
             int row = 0;
             int col = 0;
-            Scanner mr = new Scanner(is);//create a scanner that wills can through the file
+            Scanner mr = new Scanner(is);//create a scanner that goes through the file
             while (mr.hasNextLine()) {//iterate through each line in the file
                 String fileLine = mr.nextLine();//read line in file
                 String[] elements = fileLine.split(" ");//splits the file line into an array of strings
