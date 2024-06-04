@@ -7,7 +7,7 @@ public class OBJ_Totem extends SuperObject {
     public OBJ_Totem() { // constructor
         name = "Totem";
         try {
-            image = ImageIO.read(getClass().getResourceAsStream("/objects/totem.png"));
+            image = ImageIO.read(getClass().getResourceAsStream("/objects/totem"));
         }
         catch (IOException e) {
             e.printStackTrace();
