@@ -187,7 +187,5 @@ public class Player extends Entity {
                 break;
         }
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);//draws the image, null means we cannot type
-
-
     }
 }

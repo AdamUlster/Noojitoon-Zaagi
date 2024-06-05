@@ -100,7 +100,6 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;//better graphics class that makes things easier
         tileM.draw(g2);//tiles are drawn before the player so to prevent layering issues
-        player.draw(g2);
 
         // Draws the object
         for (int i = 0; i < obj.length; i++) { // draws every object

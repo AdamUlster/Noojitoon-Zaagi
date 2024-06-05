@@ -63,5 +63,5 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_2) {
             twoPressed = false;
         }
-    }//implements a class that listens to keyboadd inputs
+    }//implements a class that listens to keyboard inputs
 }

@@ -20,7 +20,7 @@ public class TileManager {
         tile = new Tile[10]; //kinds of tile types, for now there are 10 types of tiles, we can add more
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
         getTileImage();//call on method to extract the tile pngs
-        loadMap("/maps/map_1");//load the formation of the tiles after inputing the file path of the map file
+        loadMap("/maps/map_1.txt");//load the formation of the tiles after inputing the file path of the map file
     }
 
     public void getTileImage() {//retrieves the tile png's from the resource files
