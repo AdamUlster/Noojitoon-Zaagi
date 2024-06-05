@@ -35,8 +35,8 @@ public class Player extends Entity {
     }
 
     public void setDefaultValues() {//create default values to spawn the player
-        worldX = gp.tileSize * 23; // sets the default tile position x-coordinate
-        worldY = gp.tileSize * 21; //sets the default tile position y-coordinate
+        worldX = gp.tileSize * 6; // sets the default tile position x-coordinate
+        worldY = gp.tileSize * 4; //sets the default tile position y-coordinate
         speed = 4;//sets speed to 4
         direction = "right";//can input any direction
         activeSpirit[0] = true;//starts the player with the bear spirit
