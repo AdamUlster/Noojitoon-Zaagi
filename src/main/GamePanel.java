@@ -48,7 +48,7 @@ public class GamePanel extends JPanel implements Runnable {
     public GamePanel() {//set default values for the gamepanel
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));//set screen dimensions
         this.setBackground(Color.black);//changeable colour via rgb values
-        this.setDoubleBuffered(true);//all graphics are now done buffered, ie the screebn gets rendered before being displayed
+        this.setDoubleBuffered(true);//all graphics are now done buffered, ie the screen gets rendered before being displayed
         //improves rendering performance
         this.addKeyListener(keyH);//adds the key listener to the gamepanel
         this.setFocusable(true);//changes the focus of the gamepanel to the key inputs
@@ -106,11 +106,11 @@ public class GamePanel extends JPanel implements Runnable {
             if (obj[i] != null) {
                 obj[i].draw(g2, this);
             }
+
+            // Draws the player
+            player.draw(g2);
+
+            g2.dispose();//saves processing power
         }
-
-        // Draws the player
-        player.draw(g2);
-
-        g2.dispose();//saves processing power
     }
 }
