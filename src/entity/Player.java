@@ -41,6 +41,10 @@ public class Player extends Entity {
         speed = 4;//sets speed to 4
         direction = "right";//can input any direction
         activeSpirit[0] = true;//starts the player with the bear spirit
+
+        // Player health
+        maxHealth = 6; // sets the maximum number of lives
+        health = maxHealth; // sets the current number of lives
     }
 
     public void getPlayerImage() {

@@ -111,14 +111,14 @@ public class GamePanel extends JPanel implements Runnable {
             if (obj[i] != null) {
                 obj[i].draw(g2, this);
             }
-
-            // Draws the player
-            player.draw(g2);
-
-            // Draws the UI
-            ui.draw(g2);
-
-            g2.dispose();//saves processing power
         }
+
+        // Draws the player
+        player.draw(g2);
+
+        // Draws the UI
+        ui.draw(g2);
+
+        g2.dispose();//saves processing power
     }
 }
