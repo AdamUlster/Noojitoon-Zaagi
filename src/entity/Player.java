@@ -17,6 +17,7 @@ public class Player extends Entity {
 
     public final int screenX;
     public final int screenY;
+
     public int numTotems = 0; // keeps track of the number of totems the player has collected
 
     public Player(GamePanel gp, KeyHandler keyH) { //create default attributes (constructor)
@@ -102,10 +103,6 @@ public class Player extends Entity {
             // check tile collision
             collisionOn = false;
             gp.cChecker.checkTile(this);
-
-            //check object collision
-            int objIndex = gp.cChecker.checkObject(this, true);
-            pickUpObject(objIndex);
 
             // player can only move if collision is false
             if (!collisionOn) {
