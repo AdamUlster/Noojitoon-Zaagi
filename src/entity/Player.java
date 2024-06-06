@@ -17,7 +17,6 @@ public class Player extends Entity {
 
     public final int screenX;
     public final int screenY;
-    int numTotems = 0; // keeps track of the number of totems the player has collected
 
     public Player(GamePanel gp, KeyHandler keyH) { //create default attributes (constructor)
         this.gp = gp;
@@ -103,10 +102,6 @@ public class Player extends Entity {
             collisionOn = false;
             gp.cChecker.checkTile(this);
 
-            //check object collision
-            int objIndex = gp.cChecker.checkObject(this, true);
-            pickUpObject(objIndex);
-
             // player can only move if collision is false
             if (!collisionOn) {
                 switch (direction) {
@@ -150,19 +145,6 @@ public class Player extends Entity {
         }
     }
 
-    public void pickUpObject(int index) {
-        if (index != 999) { // if index is 999, no index was touched
-            String objectName = gp.obj[index].name;
-
-            switch (objectName) {
-                case "Totem":
-                    numTotems ++; // increases the number of totems the user has collected
-                    gp.obj[index] = null; // removes the object
-                    System.out.println("Number of totems: " + numTotems);
-                    break;
-            }
-        }
-    }
 
     public void draw(Graphics2D g2) {
         //g2.setColor(Color.white);//set colour of the painter to white
