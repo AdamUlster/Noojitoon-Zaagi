@@ -18,6 +18,8 @@ public class Player extends Entity {
     public final int screenX;
     public final int screenY;
 
+    public int numTotems = 0; // keeps track of the number of totems the player has collected
+
     public Player(GamePanel gp, KeyHandler keyH) { //create default attributes (constructor)
         this.gp = gp;
         this.keyH = keyH;
@@ -145,6 +147,19 @@ public class Player extends Entity {
         }
     }
 
+    public void pickUpObject(int index) {
+        if (index != 999) { // if index is 999, no index was touched
+            String objectName = gp.obj[index].name;
+
+            switch (objectName) {
+                case "Totem":
+                    numTotems ++; // increases the number of totems the user has collected
+                    gp.obj[index] = null; // removes the object
+                    gp.ui.showMessage("You picked up a totem!");
+                    break;
+            }
+        }
+    }
 
     public void draw(Graphics2D g2) {
         //g2.setColor(Color.white);//set colour of the painter to white
