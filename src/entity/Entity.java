@@ -15,4 +15,8 @@ public class Entity {
     public Rectangle solidArea; // the collision box of the character
     public boolean collisionOn = false;
     public int solidAreaDefaultX, solidAreaDefaultY;
+
+    // Player health
+    public int maxHealth; // maximum number of lives the player has
+    public int health; // current number of lives the player has
 }
