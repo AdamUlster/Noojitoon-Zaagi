@@ -17,7 +17,7 @@ public class Player extends Entity {
 
     public final int screenX;
     public final int screenY;
-    int numTotems = 0; // keeps track of the number of totems the player has collected
+    public int numTotems = 0; // keeps track of the number of totems the player has collected
 
     public Player(GamePanel gp, KeyHandler keyH) { //create default attributes (constructor)
         this.gp = gp;
@@ -158,7 +158,7 @@ public class Player extends Entity {
                 case "Totem":
                     numTotems ++; // increases the number of totems the user has collected
                     gp.obj[index] = null; // removes the object
-                    System.out.println("Number of totems: " + numTotems);
+                    gp.ui.showMessage("You picked up a totem!");
                     break;
             }
         }

@@ -37,11 +37,16 @@ public class GamePanel extends JPanel implements Runnable {
     //FPS
     int FPS = 60;
 
-    TileManager tileM = new TileManager(this);
+    // System
+    TileManager tileM = new TileManager(this); // passes the game panel
     KeyHandler keyH = new KeyHandler();//call on the keyhandle class to create the keylistener
-    Thread gameThread;//repeats a process again and again
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this); // passes the game panel as a parameter
+    public UI ui = new UI(this);
+
+    Thread gameThread;//repeats a process again and again
+
+    // Entities and objects
     public Player player = new Player(this, keyH);
     public SuperObject obj[] = new SuperObject[10]; // to display up to 10 objects at the same time
 
@@ -109,6 +114,9 @@ public class GamePanel extends JPanel implements Runnable {
 
             // Draws the player
             player.draw(g2);
+
+            // Draws the UI
+            ui.draw(g2);
 
             g2.dispose();//saves processing power
         }
