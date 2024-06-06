@@ -107,8 +107,7 @@ public class TileManager {
                 // using its position relative to the screen
 
             }
-            g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);//draw the tile using
-            // map data
+
             worldCol++;
 
             if (worldCol == gp.maxWorldCol) {//checks when draw method has reached the bottom of the column
