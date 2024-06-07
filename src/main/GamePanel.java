@@ -1,5 +1,6 @@
 package main;
 
+import entity.Entity;
 import entity.Player;
 import object.SuperObject;
 import tile.TileManager;
@@ -49,6 +50,7 @@ public class GamePanel extends JPanel implements Runnable {
     // Entities and objects
     public Player player = new Player(this, keyH);
     public SuperObject obj[] = new SuperObject[10]; // to display up to 10 objects at the same time
+    public Entity npc[] = new Entity[10];
 
     public GamePanel() {//set default values for the gamepanel
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));//set screen dimensions
@@ -61,6 +63,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setupGame() {
         aSetter.setObject();
+        aSetter.setNPC();
     }
 
     public void startGameThread() {//starts core logic when the program starts
@@ -95,7 +98,15 @@ public class GamePanel extends JPanel implements Runnable {
 
     //update information
     public void update() {
+        //UPDATE PLAYER
         player.update();
+
+        //UPDATE NPC
+        for (int i = 0; i < npc.length; i++) {
+            if (npc[i] != null) {
+                npc[i].update();
+            }
+        }
     }
 
     //draw screen with updated information
@@ -104,6 +115,13 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;//better graphics class that makes things easier
+
+        //DEBUG STUFF
+        long drawStart = 0;
+        if (keyH.checkDrawTime == true) {
+            drawStart = System.nanoTime();
+        }
+
         tileM.draw(g2);//tiles are drawn before the player so to prevent layering issues
 
         // Draws the object
@@ -113,11 +131,28 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
 
+        for (int i = 0; i < npc.length;i++) {
+            if(npc[i] != null) {
+                npc[i].draw(g2);
+            }
+        }
+
         // Draws the player
         player.draw(g2);
 
         // Draws the UI
         ui.draw(g2);
+
+        //DEBUG STUFF
+        if (keyH.checkDrawTime == true) {
+
+
+            long drawEnd = System.nanoTime();
+            long passed = drawEnd - drawStart;
+            g2.setColor(Color.white);
+            g2.drawString("Draw Time: " + passed, 10, 400);
+            System.out.println("Draw TIme: " + passed);
+        }
 
         g2.dispose();//saves processing power
     }

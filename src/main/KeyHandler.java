@@ -9,6 +9,9 @@ public class KeyHandler implements KeyListener {
     public boolean upPressed, downPressed, leftPressed, rightPressed;//boolean values that determine which keys are
     // pressed and which are not
     public boolean onePressed, twoPressed;//boolean values that determine which number keys have been pressed for sprite switching
+    //DEBUG STUFF
+    boolean checkDrawTime = false;
+
     @Override
     public void keyTyped(KeyEvent e) {
 
@@ -35,6 +38,14 @@ public class KeyHandler implements KeyListener {
         }
         if (code == KeyEvent.VK_2) {//if key 2 has been pressed
             twoPressed = true;
+        }
+        //DEBUG STUFF
+        if (code == KeyEvent.VK_T) {
+            if (checkDrawTime == false) {
+                checkDrawTime = true;
+            } else if (checkDrawTime == true) {
+                checkDrawTime = false;
+            }
         }
         //continue this chain for when more moves are added
     }
