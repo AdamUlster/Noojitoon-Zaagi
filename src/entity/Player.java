@@ -2,6 +2,7 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import main.UtilityTool;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -9,7 +10,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class Player extends Entity {
-    GamePanel gp;//call on the gamepanel class
     KeyHandler keyH;//call on keyhandler class
 
     public boolean[] activeSpirit = new boolean[3];//boolean values that determine which spirit is currently being used
@@ -21,13 +21,14 @@ public class Player extends Entity {
     public int numTotems = 0; // keeps track of the number of totems the player has collected
 
     public Player(GamePanel gp, KeyHandler keyH) { //create default attributes (constructor)
-        this.gp = gp;
+
+        super(gp);//call on GamePanel class
         this.keyH = keyH;
 
         screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
 
-        solidArea = new Rectangle(8, 16, 32, 32); // instantiates the rectangle
+        solidArea = new Rectangle(8, 16, 32, 32); // initiates the rectangle
 
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
@@ -39,7 +40,7 @@ public class Player extends Entity {
     public void setDefaultValues() {//create default values to spawn the player
         worldX = gp.tileSize * 3; // sets the default tile position x-coordinate
         worldY = gp.tileSize * 3; //sets the default tile position y-coordinate
-        speed = 4;//sets speed to 4
+        speed = 8;//sets speed to 4
         direction = "right";//can input any direction
         activeSpirit[0] = true;//starts the player with the bear spirit
 
@@ -49,45 +50,30 @@ public class Player extends Entity {
     }
 
     public void getPlayerImage() {
-        System.out.println("image loading started");
-        try {
-            if (activeSpirit[0]) {//walking animation for only the bear pngs
-                //read through the res file and find the images
-                up1 = ImageIO.read(getClass().getResourceAsStream("/bear/bear_up.png"));
-                up2 = ImageIO.read(getClass().getResourceAsStream("/bear/bear_up_2.png"));
-                down1 = ImageIO.read(getClass().getResourceAsStream("/bear/bear_down.png"));
-                down2 = ImageIO.read(getClass().getResourceAsStream("/bear/bear_down_2.png"));
-                left1 = ImageIO.read(getClass().getResourceAsStream("/bear/bear_left.png"));
-                left2 = ImageIO.read(getClass().getResourceAsStream("/bear/bear_left_2.png"));
-                right1 = ImageIO.read(getClass().getResourceAsStream("/bear/bear_right.png"));
-                right2 = ImageIO.read(getClass().getResourceAsStream("/bear/bear_right_2.png"));
-            }
-            if (activeSpirit[1]) {//walking animation for only the eagle pngs
-                up1 = ImageIO.read(getClass().getResourceAsStream("/eagle/eagle_up.png"));
-                up2 = ImageIO.read(getClass().getResourceAsStream("/eagle/eagle_up_2.png"));
-                down1 = ImageIO.read(getClass().getResourceAsStream("/eagle/eagle_down.png"));
-                down2 = ImageIO.read(getClass().getResourceAsStream("/eagle/eagle_down_2.png"));
-                left1 = ImageIO.read(getClass().getResourceAsStream("/eagle/eagle_left.png"));
-                left2 = ImageIO.read(getClass().getResourceAsStream("/eagle/eagle_left_2.png"));
-                right1 = ImageIO.read(getClass().getResourceAsStream("/eagle/eagle_right.png"));
-                right2 = ImageIO.read(getClass().getResourceAsStream("/eagle/eagle_right_2.png"));
-            }
-//            up1 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("G:\\My Drive\\ICS and other things\\my2dGame\\res\\player\\bear_up.png"));
-//            up2 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("G:\\My Drive\\ICS and other things\\my2dGame\\res\\player\\bear_up_2.png"));
-//            down1 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("G:\\My Drive\\ICS and other things\\my2dGame\\res\\player\\bear_down.png"));
-//            down2 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("G:\\My Drive\\ICS and other things\\my2dGame\\res\\player\\bear_down_2.png"));
-//            left1 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("G:\\My Drive\\ICS and other things\\my2dGame\\res\\player\\bear_left.png"));
-//            left2 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("G:\\My Drive\\ICS and other things\\my2dGame\\res\\player\\bear_left_2.png"));
-//            right1 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("G:\\My Drive\\ICS and other things\\my2dGame\\res\\player\\bear_right.png"));
-//            right2 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("G:\\My Drive\\ICS and other " +
-//
-//                                                                                         "things\\my2dGame\\res\\player\\bear_right_2.png"));
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (activeSpirit[0]) {//walking animation for only the bear pngs
+            //call on setup method to find image files
+            up1 = setup("bear/bear_up");
+            up2 = setup("bear/bear_up_2");
+            down1 = setup("bear/bear_down");
+            down2 = setup("bear/bear_down_2");
+            left1 = setup("bear/bear_left");
+            left2 = setup("bear/bear_left_2");
+            right1 = setup("bear/bear_right");
+            right2 = setup("bear/bear_right_2");
         }
-        System.out.println("Image loading complete");
+        if (activeSpirit[1]) {//walking animation for only the eagle pngs
+            up1 = setup("eagle/eagle_up");
+            up2 = setup("eagle/eagle_up_2");
+            down1 = setup("eagle/eagle_down");
+            down2 = setup("eagle/eagle_down_2");
+            left1 = setup("eagle/eagle_left");
+            left2 = setup("eagle/eagle_left_2");
+            right1 = setup("eagle/eagle_right");
+            right2 = setup("eagle/eagle_right_2");
+        }
+        System.out.println("new sprite loaded");
     }
+
 
     public void update() {
 
@@ -111,6 +97,10 @@ public class Player extends Entity {
             //check object collision
             int objIndex = gp.cChecker.checkObject(this, true);
             pickUpObject(objIndex);
+
+            //check npc /monster? collision
+            int npcIndex = gp.cChecker.checkEntity(this,gp.npc);
+            interactNPC(npcIndex);
 
             // player can only move if collision is false
             if (!collisionOn) {
@@ -161,11 +151,18 @@ public class Player extends Entity {
 
             switch (objectName) {
                 case "Totem":
-                    numTotems ++; // increases the number of totems the user has collected
+                    numTotems++; // increases the number of totems the user has collected
                     gp.obj[index] = null; // removes the object
                     gp.ui.showMessage("You picked up a totem!");
                     break;
             }
+        }
+    }
+
+    public void interactNPC(int i) {
+        if (i != 999) {
+//            gp.ui.showMessage("You insensitive schmuck! You are hitting an NPC!");
+            System.out.println("you are hitting an npc");
         }
     }
 
@@ -209,6 +206,6 @@ public class Player extends Entity {
                 }
                 break;
         }
-        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);//draws the image, null means we cannot type
+        g2.drawImage(image, screenX, screenY, null);//draws the image, null means we cannot type
     }
 }

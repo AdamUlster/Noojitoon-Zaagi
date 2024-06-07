@@ -18,7 +18,7 @@ public class UI {
     public UI (GamePanel gp) { // constructor
         this.gp = gp;
         arial_40 = new Font("Arial", Font.PLAIN, 40);
-        OBJ_Totem totem = new OBJ_Totem();
+        OBJ_Totem totem = new OBJ_Totem(gp);
         totemImage = totem.image1;
 
         // Display hearts on screen

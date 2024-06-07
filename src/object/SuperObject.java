@@ -1,6 +1,7 @@
 package object;
 
 import main.GamePanel;
+import main.UtilityTool;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -13,6 +14,7 @@ public class SuperObject {
     public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
     public int solidAreaDefaultX = 0;
     public int solidAreaDefaultY = 0;
+    UtilityTool uTool = new UtilityTool();
 
     public void draw(Graphics2D g2, GamePanel gp) {
         int screenX = worldX - gp.player.worldX + gp.player.screenX;
@@ -24,13 +26,5 @@ public class SuperObject {
                 worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
             g2.drawImage(image1, screenX, screenY, gp.tileSize, gp.tileSize, null);
         }
-    }
-
-    public BufferedImage scaleImage(BufferedImage originalImage, int width, int height) { // method that scales a given image to a new size
-        Image scaledInstance = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-        BufferedImage scaledImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        scaledImage.getGraphics().drawImage(scaledInstance, 0, 0, null);
-
-        return scaledImage;
     }
 }
