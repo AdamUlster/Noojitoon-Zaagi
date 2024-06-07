@@ -150,25 +150,28 @@ public class CollisionChecker {
                     case "up":
                         entity.solidArea.y -= entity.speed; // predicts the movement of the entity
                         if (entity.solidArea.intersects(target[i].solidArea)) { // automatically checks if the two rectangles are colliding
+                            entity.collisionOn = true;
                             index = i;
                         }
                         break;
                     case "down":
                         entity.solidArea.y += entity.speed;
                         if (entity.solidArea.intersects(target[i].solidArea)) { // automatically checks if the two rectangles are colliding
+                            entity.collisionOn = true;
                             index = i;
                         }
                         break;
                     case "left":
                         entity.solidArea.x -= entity.speed;
                         if (entity.solidArea.intersects(target[i].solidArea)) { // automatically checks if the two rectangles are colliding
+                            entity.collisionOn = true;
                             index = i;
-
                         }
                         break;
                     case "right":
                         entity.solidArea.x += entity.speed;
                         if (entity.solidArea.intersects(target[i].solidArea)) { // automatically checks if the two rectangles are colliding
+                            entity.collisionOn = true;
                             index = i;
                         }
                         break;

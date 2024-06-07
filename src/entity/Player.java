@@ -11,8 +11,6 @@ import java.io.IOException;
 
 public class Player extends Entity {
     KeyHandler keyH;//call on keyhandler class
-    GamePanel gp; // call on the GamePanel class
-    KeyHandler keyH; // call on KeyHandler class
 
     public boolean[] activeSpirit = new boolean[3];// boolean values that determine which spirit is currently being used
     public int previousSpirit;// sets the default spirit to spirit #1, spirit bear
@@ -40,9 +38,6 @@ public class Player extends Entity {
     }
 
     public void setDefaultValues() {//create default values to spawn the player
-        worldX = gp.tileSize * 3; // sets the default tile position x-coordinate
-        worldY = gp.tileSize * 3; //sets the default tile position y-coordinate
-        speed = 8;//sets speed to 4
       
         worldX = gp.tileSize * 50; // sets the default position x-coordinate
         worldY = gp.tileSize * 50; //sets the default position y-coordinate
@@ -110,7 +105,7 @@ public class Player extends Entity {
             pickUpObject(objIndex);
 
             //check npc /monster? collision
-            int npcIndex = gp.cChecker.checkEntity(this,gp.npc);
+            int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
             interactNPC(npcIndex);
 
             // player can only move if collision is false

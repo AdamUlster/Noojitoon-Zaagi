@@ -17,7 +17,7 @@ public class AssetSetter {
     public void setNPC() {
         //create 1 npc
         gp.npc[0] = new NPC(gp);
-        gp.npc[0].worldX = gp.tileSize*8;
-        gp.npc[0].worldY = gp.tileSize*8;
+        gp.npc[0].worldX = gp.tileSize*51;
+        gp.npc[0].worldY = gp.tileSize*51;
     }
 }
