@@ -58,25 +58,24 @@ public class UI {
     }
 
     public void drawPlayerHealth(Graphics g2) {
-        gp.player.health = 5;
 
         // sets the coordinates of first heart in terms of the tile size
-        int x = gp.tileSize + 50;
+        int x = gp.tileSize;
         int y = gp.tileSize;
 
         // draws the blank hearts
-        for (int i = 0; i < gp.player.maxHealth / 2; i++) { // since 2 lives means 1 heart
+        for (int i = 0; i < gp.player.maxHealth[gp.player.previousSpirit] / 2; i++) { // since 2 lives means 1 heart
             g2.drawImage(heart_blank, x, y, null);
             x += gp.tileSize; // moves over to the right to draw the next heart
         }
 
         // resets the coordinates
-        x = gp.tileSize + 50;
+        x = gp.tileSize;
         y = gp.tileSize;
-        for (int i = 0; i < gp.player.health; i++) {
+        for (int i = 0; i < gp.player.health[gp.player.previousSpirit]; i++) {
             g2.drawImage(heart_half, x, y, null); // draws a half heart
             i++;
-            if (i < gp.player.health) { // if the player's health still is not full, make the heart full
+            if (i < gp.player.health[gp.player.previousSpirit]) { // if the player's health still is not full, make the heart full
                 g2.drawImage(heart_full, x, y, null); // draws the full heart
             }
             x += gp.tileSize; // moves over to the right to draw the next heart

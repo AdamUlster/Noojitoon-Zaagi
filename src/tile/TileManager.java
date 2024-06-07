@@ -26,19 +26,32 @@ public class TileManager {
     public void getTileImage() {//retrieves the tile png's from the resource files
         try {
             tile[0] = new Tile();
-            tile[0].image = ImageIO.read(getClass().getResourceAsStream("/tiles/grass_1.png"));
+            tile[0].image = ImageIO.read(getClass().getResourceAsStream("/tiles/tree.png"));
+            tile[0].collision = true;
 
             tile[1] = new Tile();
-            tile[1].image = ImageIO.read(getClass().getResourceAsStream("/tiles/brick_1.png"));
+            tile[1].image = ImageIO.read(getClass().getResourceAsStream("/tiles/brick.png"));
             tile[1].collision = true;
 
             tile[2] = new Tile();
-            tile[2].image = ImageIO.read(getClass().getResourceAsStream("/tiles/tree_1.png"));
-            tile[2].collision = true;
+            tile[2].image = ImageIO.read(getClass().getResourceAsStream("/tiles/grass.png"));
+            tile[2].collision = false;
 
             tile[3] = new Tile();
-            tile[3].image = ImageIO.read(getClass().getResourceAsStream("/tiles/water_1.png"));
+            tile[3].image = ImageIO.read(getClass().getResourceAsStream("/tiles/water.png"));
             tile[3].collision = true;
+
+            tile[4] = new Tile();
+            tile[4].image = ImageIO.read(getClass().getResourceAsStream("/tiles/dirt.png"));
+            tile[4].collision = false;
+
+            tile[5] = new Tile();
+            tile[5].image = ImageIO.read(getClass().getResourceAsStream("/tiles/snow.png"));
+            tile[5].collision = false;
+
+            tile[6] = new Tile();
+            tile[6].image = ImageIO.read(getClass().getResourceAsStream("/tiles/lilypad.png"));
+            tile[6].collision = true;
 
 //            tile[0] = new Tile();
 //            tile[0].image = ImageIO.read(getClass().getResourceAsStream("/tiles/brick_1.png"));

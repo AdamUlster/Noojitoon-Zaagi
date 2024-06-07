@@ -28,8 +28,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     //world map settings
     //change these values to change the map size
-    public final int maxWorldCol = 50;//sets the borders of the world in terms of tiles
-    public final int maxWorldRow = 50;//sets the border of the world in terms of tiles
+    public final int maxWorldCol = 100;//sets the borders of the world in terms of tiles
+    public final int maxWorldRow = 100;//sets the border of the world in terms of tiles
 
     public final int worldWidth = tileSize * maxWorldCol;//sets the border of the world in pixels
     public final int worldHeight = tileSize * maxWorldRow;
