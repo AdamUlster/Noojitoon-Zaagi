@@ -12,16 +12,18 @@ public class Entity {
     GamePanel gp;
     public int worldX, worldY;
     public int speed;
-
     public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
-    public String direction;
+    public String direction = "down";
     public int spriteCounter = 0;
     public int spriteNum = 1;
     public Rectangle solidArea = new Rectangle(0, 0, 48, 48); // the collision box of the character
     public boolean collisionOn = false;
     public int actionLockCounter = 0;//sets a pause for random movements in the npcs and other things
     public int solidAreaDefaultX, solidAreaDefaultY;
-  
+    public BufferedImage image1, image2, image3;
+    public String name;
+    public boolean collision = false;
+
     // Player health
     public int[] maxHealth = new int[3]; // maximum number of lives the player has
     public int[] health = new int[3]; // current number of lives the player has
@@ -40,7 +42,7 @@ public class Entity {
         gp.cChecker.checkObject(this,false);
         gp.cChecker.checkPlayer(this);
 
-// entity can only move if collision is false
+        // entity can only move if collision is false
         if (!collisionOn) {
             switch (direction) {
                 case "up":

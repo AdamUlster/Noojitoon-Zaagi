@@ -1,8 +1,8 @@
 package main;
 
+import entity.Entity;
 import object.OBJ_Heart;
 import object.OBJ_Totem;
-import object.SuperObject;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -22,7 +22,7 @@ public class UI {
         totemImage = totem.image1;
 
         // Display hearts on screen
-        SuperObject heart = new OBJ_Heart(); // creates a heart object
+        Entity heart = new OBJ_Heart(gp); // creates a heart object
 
         // sets the heart states to their respective images
         heart_full = heart.image1;

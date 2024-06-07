@@ -10,14 +10,14 @@ public class AssetSetter {
     }
     public void setObject() {
         gp.obj[0] = new OBJ_Totem(gp);
-        gp.obj[0].worldX = 5 * gp.tileSize;
-        gp.obj[0].worldY = 5 * gp.tileSize;
+        gp.obj[0].worldX = gp.tileSize * 45;
+        gp.obj[0].worldY = gp.tileSize * 45;
     }
 
     public void setNPC() {
         //create 1 npc
         gp.npc[0] = new NPC(gp);
-        gp.npc[0].worldX = gp.tileSize*51;
-        gp.npc[0].worldY = gp.tileSize*51;
+        gp.npc[0].worldX = gp.tileSize *51;
+        gp.npc[0].worldY = gp.tileSize * 51;
     }
 }

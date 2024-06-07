@@ -2,10 +2,12 @@ package main;
 
 import entity.Entity;
 import entity.Player;
-import object.SuperObject;
 import tile.TileManager;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -49,8 +51,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     // Entities and objects
     public Player player = new Player(this, keyH);
-    public SuperObject obj[] = new SuperObject[10]; // to display up to 10 objects at the same time
+    public Entity obj[] = new Entity[10]; // to display up to 10 objects at the same time
     public Entity npc[] = new Entity[10];
+    ArrayList<Entity> entityList = new ArrayList<>(); // creates an array list to store all the entities
 
     public GamePanel() {//set default values for the gamepanel
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));//set screen dimensions
@@ -122,23 +125,37 @@ public class GamePanel extends JPanel implements Runnable {
             drawStart = System.nanoTime();
         }
 
-        tileM.draw(g2);//tiles are drawn before the player so to prevent layering issues
+        tileM.draw(g2); // tiles are drawn before the player so to prevent layering issues
 
-        // Draws the object
-        for (int i = 0; i < obj.length; i++) { // draws every object
+        entityList.add(player); // adds the player to the entity list
+
+        for (int i = 0; i < npc.length; i++) { // adds every npc to the entity list
+            if (npc[i] != null) {
+                entityList.add(npc[i]);
+            }
+        }
+
+        for (int i = 0; i < obj.length; i++) { // adds every object to the entity list
             if (obj[i] != null) {
-                obj[i].draw(g2, this);
+                entityList.add(obj[i]);
             }
         }
 
-        for (int i = 0; i < npc.length;i++) {
-            if(npc[i] != null) {
-                npc[i].draw(g2);
-            }
-        }
+        // Sorts the entities by their world y values
+        Collections.sort(entityList, new Comparator<Entity>() {
 
-        // Draws the player
-        player.draw(g2);
+            @Override
+            public int compare(Entity e1, Entity e2) {
+                int result = Integer.compare(e1.worldY, e2.worldY); // compares the two entity's world y values
+                return result;
+            }
+        });
+
+        // draws the entities based on their world y values (the ones further up are drawn first to avoid clipping the other entities)
+        for (int i = 0; i < entityList.size(); i++) {
+            entityList.get(i).draw(g2);
+        }
+        entityList.clear(); // resets the entity list so that it doesn't keep adding the same entities to the list every time the paintComponent method is called
 
         // Draws the UI
         ui.draw(g2);
@@ -149,9 +166,8 @@ public class GamePanel extends JPanel implements Runnable {
             long passed = drawEnd - drawStart;
             g2.setColor(Color.white);
             g2.drawString("Draw Time: " + passed, 10, 400);
-            System.out.println("Draw TIme: " + passed);
+            System.out.println("Draw Time: " + passed);
         }
-
         g2.dispose();//saves processing power
     }
 }
