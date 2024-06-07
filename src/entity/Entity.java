@@ -21,9 +21,10 @@ public class Entity {
     public boolean collisionOn = false;
     public int actionLockCounter = 0;//sets a pause for random movements in the npcs and other things
     public int solidAreaDefaultX, solidAreaDefaultY;
+  
     // Player health
-    public int maxHealth; // maximum number of lives the player has
-    public int health; // current number of lives the player has
+    public int[] maxHealth = new int[3]; // maximum number of lives the player has
+    public int[] health = new int[3]; // current number of lives the player has
 
     public Entity(GamePanel gp) {
         this.gp = gp;

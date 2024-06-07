@@ -11,9 +11,11 @@ import java.io.IOException;
 
 public class Player extends Entity {
     KeyHandler keyH;//call on keyhandler class
+    GamePanel gp; // call on the GamePanel class
+    KeyHandler keyH; // call on KeyHandler class
 
-    public boolean[] activeSpirit = new boolean[3];//boolean values that determine which spirit is currently being used
-    public int previousSpirit;//sets the default spirit to spirit #1, spirit bear
+    public boolean[] activeSpirit = new boolean[3];// boolean values that determine which spirit is currently being used
+    public int previousSpirit;// sets the default spirit to spirit #1, spirit bear
 
     public final int screenX;
     public final int screenY;
@@ -21,7 +23,7 @@ public class Player extends Entity {
     public int numTotems = 0; // keeps track of the number of totems the player has collected
 
     public Player(GamePanel gp, KeyHandler keyH) { //create default attributes (constructor)
-
+      
         super(gp);//call on GamePanel class
         this.keyH = keyH;
 
@@ -41,12 +43,19 @@ public class Player extends Entity {
         worldX = gp.tileSize * 3; // sets the default tile position x-coordinate
         worldY = gp.tileSize * 3; //sets the default tile position y-coordinate
         speed = 8;//sets speed to 4
+      
+        worldX = gp.tileSize * 50; // sets the default position x-coordinate
+        worldY = gp.tileSize * 50; //sets the default position y-coordinate
+        speed = 4;//sets speed to 4
+
         direction = "right";//can input any direction
         activeSpirit[0] = true;//starts the player with the bear spirit
 
-        // Player health
-        maxHealth = 6; // sets the maximum number of lives
-        health = maxHealth; // sets the current number of lives
+        // Default health values for each spirit
+        maxHealth[0] = 6; // bear health
+        health[0] = maxHealth[0]; // sets the current number of lives for the bear
+        maxHealth[1] = 6; // eagle health
+        health[1] = 5; // sets the current number of lives for the eagle
     }
 
     public void getPlayerImage() {
@@ -60,6 +69,8 @@ public class Player extends Entity {
             left2 = setup("bear/bear_left_2");
             right1 = setup("bear/bear_right");
             right2 = setup("bear/bear_right_2");
+
+            System.out.println("image loading started");
         }
         if (activeSpirit[1]) {//walking animation for only the eagle pngs
             up1 = setup("eagle/eagle_up");
@@ -131,18 +142,17 @@ public class Player extends Entity {
             }
         }
         if (keyH.onePressed) {
-            System.out.println("key 1 active");
-            activeSpirit[0] = true;//set the new spirit to bear
-            activeSpirit[previousSpirit] = false;//the previous spirit is no longer active
-            previousSpirit = 0;//reset the previous spirit
-            getPlayerImage();//reset the image pulls via playerimage method
+            switchSpirit(0); // switches to the bear
         } else if (keyH.twoPressed) {
-            System.out.println("Key 2 active");
-            activeSpirit[1] = true;//sets the new spirit to eagle
-            activeSpirit[previousSpirit] = false;//sets the previous spirit to false
-            previousSpirit = 1;//reset the previous spirit
-            getPlayerImage();//resets the image pulls via playerimage method
+            switchSpirit(1); // switches to the eagle
         }
+    }
+
+    public void switchSpirit(int spirit) {
+        activeSpirit[spirit] = true; // set the new spirit to bear
+        activeSpirit[previousSpirit] = false; // the previous spirit is no longer active
+        previousSpirit = spirit; // reset the previous spirit
+        getPlayerImage(); // reset the image pulls via getPlayerImage method
     }
 
     public void pickUpObject(int index) {

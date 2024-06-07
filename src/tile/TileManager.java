@@ -29,16 +29,13 @@ public class TileManager {
     public void getTileImage() {//retrieves the tile png's from the resource files
 
         //setup(index of tile, tile file name, collision on or off);
-            setup(0, "grass_1", false);
-            setup(1, "brick_1", true);
-            setup(2, "tree_1", true);
-            setup(3, "water_1", true);
-//            tile[0] = new Tile();
-//            tile[0].image = ImageIO.read(getClass().getResourceAsStream("/tiles/brick_1.png"));
-//
-//            tile[0] = new Tile();
-//            tile[0].image = ImageIO.read(getClass().getResourceAsStream("/tiles/brick_1.png"));
-
+            setup(0, "tree", true);
+            setup(1, "brick", true);
+            setup(2, "grass", false);
+            setup(3, "water", true);
+            setup(4, "dirt", false);
+            setup(5, "snow", false);
+            setup(6, "lilypad", false);
     }
 
     public void setup(int index, String imageName, boolean collision) {
