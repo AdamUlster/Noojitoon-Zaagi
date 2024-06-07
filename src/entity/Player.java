@@ -9,18 +9,18 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class Player extends Entity {
-    GamePanel gp;//call on the gamepanel class
-    KeyHandler keyH;//call on keyhandler class
+    GamePanel gp; // call on the GamePanel class
+    KeyHandler keyH; // call on KeyHandler class
 
-    public boolean[] activeSpirit = new boolean[3];//boolean values that determine which spirit is currently being used
-    public int previousSpirit;//sets the default spirit to spirit #1, spirit bear
+    public boolean[] activeSpirit = new boolean[3];// boolean values that determine which spirit is currently being used
+    public int previousSpirit;// sets the default spirit to spirit #1, spirit bear
 
     public final int screenX;
     public final int screenY;
 
     public int numTotems = 0; // keeps track of the number of totems the player has collected
 
-    public Player(GamePanel gp, KeyHandler keyH) { //create default attributes (constructor)
+    public Player(GamePanel gp, KeyHandler keyH) { // create default attributes (constructor)
         this.gp = gp;
         this.keyH = keyH;
 
@@ -37,15 +37,17 @@ public class Player extends Entity {
     }
 
     public void setDefaultValues() {//create default values to spawn the player
-        worldX = gp.tileSize * 3; // sets the default tile position x-coordinate
-        worldY = gp.tileSize * 3; //sets the default tile position y-coordinate
+        worldX = gp.tileSize * 50; // sets the default position x-coordinate
+        worldY = gp.tileSize * 50; //sets the default position y-coordinate
         speed = 4;//sets speed to 4
         direction = "right";//can input any direction
         activeSpirit[0] = true;//starts the player with the bear spirit
 
-        // Player health
-        maxHealth = 6; // sets the maximum number of lives
-        health = maxHealth; // sets the current number of lives
+        // Default health values for each spirit
+        maxHealth[0] = 6; // bear health
+        health[0] = maxHealth[0]; // sets the current number of lives for the bear
+        maxHealth[1] = 6; // eagle health
+        health[1] = 5; // sets the current number of lives for the eagle
     }
 
     public void getPlayerImage() {
@@ -72,16 +74,6 @@ public class Player extends Entity {
                 right1 = ImageIO.read(getClass().getResourceAsStream("/eagle/eagle_right.png"));
                 right2 = ImageIO.read(getClass().getResourceAsStream("/eagle/eagle_right_2.png"));
             }
-//            up1 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("G:\\My Drive\\ICS and other things\\my2dGame\\res\\player\\bear_up.png"));
-//            up2 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("G:\\My Drive\\ICS and other things\\my2dGame\\res\\player\\bear_up_2.png"));
-//            down1 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("G:\\My Drive\\ICS and other things\\my2dGame\\res\\player\\bear_down.png"));
-//            down2 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("G:\\My Drive\\ICS and other things\\my2dGame\\res\\player\\bear_down_2.png"));
-//            left1 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("G:\\My Drive\\ICS and other things\\my2dGame\\res\\player\\bear_left.png"));
-//            left2 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("G:\\My Drive\\ICS and other things\\my2dGame\\res\\player\\bear_left_2.png"));
-//            right1 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("G:\\My Drive\\ICS and other things\\my2dGame\\res\\player\\bear_right.png"));
-//            right2 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("G:\\My Drive\\ICS and other " +
-//
-//                                                                                         "things\\my2dGame\\res\\player\\bear_right_2.png"));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -141,18 +133,17 @@ public class Player extends Entity {
             }
         }
         if (keyH.onePressed) {
-            System.out.println("key 1 active");
-            activeSpirit[0] = true;//set the new spirit to bear
-            activeSpirit[previousSpirit] = false;//the previous spirit is no longer active
-            previousSpirit = 0;//reset the previous spirit
-            getPlayerImage();//reset the image pulls via playerimage method
+            switchSpirit(0); // switches to the bear
         } else if (keyH.twoPressed) {
-            System.out.println("Key 2 active");
-            activeSpirit[1] = true;//sets the new spirit to eagle
-            activeSpirit[previousSpirit] = false;//sets the previous spirit to false
-            previousSpirit = 1;//reset the previous spirit
-            getPlayerImage();//resets the image pulls via playerimage method
+            switchSpirit(1); // switches to the eagle
         }
+    }
+
+    public void switchSpirit(int spirit) {
+        activeSpirit[spirit] = true; // set the new spirit to bear
+        activeSpirit[previousSpirit] = false; // the previous spirit is no longer active
+        previousSpirit = spirit; // reset the previous spirit
+        getPlayerImage(); // reset the image pulls via getPlayerImage method
     }
 
     public void pickUpObject(int index) {

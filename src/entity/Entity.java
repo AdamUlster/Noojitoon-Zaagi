@@ -17,6 +17,6 @@ public class Entity {
     public int solidAreaDefaultX, solidAreaDefaultY;
 
     // Player health
-    public int maxHealth; // maximum number of lives the player has
-    public int health; // current number of lives the player has
+    public int[] maxHealth = new int[3]; // maximum number of lives the player has
+    public int[] health = new int[3]; // current number of lives the player has
 }
