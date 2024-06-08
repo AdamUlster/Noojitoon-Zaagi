@@ -75,48 +75,24 @@ public class CollisionChecker {
                 switch (entity.direction) {
                     case "up":
                         entity.solidArea.y -= entity.speed; // predicts the movement of the entity
-                        if (entity.solidArea.intersects(gp.obj[i].solidArea)) { // automatically checks if the two rectangles are colliding
-                            if (gp.obj[i].collision == true) { // if the object is solid
-                                entity.collisionOn = true;
-                            }
-                            if (player == true) { // if the entity is a player
-                                index = i;
-                            }
-                        }
                         break;
                     case "down":
                         entity.solidArea.y += entity.speed;
-                        if (entity.solidArea.intersects(gp.obj[i].solidArea)) { // automatically checks if the two rectangles are colliding
-                            if (gp.obj[i].collision == true) { // if the object is solid
-                                entity.collisionOn = true;
-                            }
-                            if (player == true) { // if the entity is a player
-                                index = i;
-                            }
-                        }
                         break;
                     case "left":
                         entity.solidArea.x -= entity.speed;
-                        if (entity.solidArea.intersects(gp.obj[i].solidArea)) { // automatically checks if the two rectangles are colliding
-                            if (gp.obj[i].collision == true) { // if the object is solid
-                                entity.collisionOn = true;
-                            }
-                            if (player == true) { // if the entity is a player
-                                index = i;
-                            }
-                        }
                         break;
                     case "right":
                         entity.solidArea.x += entity.speed;
-                        if (entity.solidArea.intersects(gp.obj[i].solidArea)) { // automatically checks if the two rectangles are colliding
-                            if (gp.obj[i].collision == true) { // if the object is solid
-                                entity.collisionOn = true;
-                            }
-                            if (player == true) { // only collides if the entity is a player
-                                index = i;
-                            }
-                        }
                         break;
+                }
+                if (entity.solidArea.intersects(gp.obj[i].solidArea)) { // automatically checks if the two rectangles are colliding
+                    if (gp.obj[i].collision == true) { // if the object is solid
+                        entity.collisionOn = true;
+                    }
+                    if (player == true) { // if the entity is a player
+                        index = i;
+                    }
                 }
 
                 // resets the entity and the object's collision box
@@ -149,32 +125,22 @@ public class CollisionChecker {
                 switch (entity.direction) {
                     case "up":
                         entity.solidArea.y -= entity.speed; // predicts the movement of the entity
-                        if (entity.solidArea.intersects(target[i].solidArea)) { // automatically checks if the two rectangles are colliding
-                            entity.collisionOn = true;
-                            index = i;
-                        }
                         break;
                     case "down":
                         entity.solidArea.y += entity.speed;
-                        if (entity.solidArea.intersects(target[i].solidArea)) { // automatically checks if the two rectangles are colliding
-                            entity.collisionOn = true;
-                            index = i;
-                        }
                         break;
                     case "left":
                         entity.solidArea.x -= entity.speed;
-                        if (entity.solidArea.intersects(target[i].solidArea)) { // automatically checks if the two rectangles are colliding
-                            entity.collisionOn = true;
-                            index = i;
-                        }
                         break;
                     case "right":
                         entity.solidArea.x += entity.speed;
-                        if (entity.solidArea.intersects(target[i].solidArea)) { // automatically checks if the two rectangles are colliding
-                            entity.collisionOn = true;
-                            index = i;
-                        }
                         break;
+                }
+                if (entity.solidArea.intersects(target[i].solidArea)) { // automatically checks if the two rectangles are colliding
+                    if (target[i] != entity) { // makes sure the entity does not collide with itself
+                        entity.collisionOn = true;
+                        index = i;
+                    }
                 }
 
                 // resets the entity and the object's collision box
@@ -188,8 +154,11 @@ public class CollisionChecker {
         return index;
     }
 
-    //CHECK IF NPC IS HITTING THE PLAYER
-    public void checkPlayer(Entity entity) {
+    //CHECK IF NPC OR MONSTER IS HITTING THE PLAYER
+    public boolean checkPlayer(Entity entity) {
+
+        boolean contactPlayer = false; // keeps track of whether another entity is making contact with the player
+
         // Get entity's solid area position
         entity.solidArea.x = entity.worldX + entity.solidArea.x;
         entity.solidArea.y = entity.worldY + entity.solidArea.y;
@@ -201,28 +170,20 @@ public class CollisionChecker {
         switch (entity.direction) {
             case "up":
                 entity.solidArea.y -= entity.speed; // predicts the movement of the entity
-                if (entity.solidArea.intersects(gp.player.solidArea)) { // automatically checks if the two rectangles are colliding
-                    entity.collisionOn = true;
-                }
                 break;
             case "down":
                 entity.solidArea.y += entity.speed;
-                if (entity.solidArea.intersects(gp.player.solidArea)) { // automatically checks if the two rectangles are colliding
-                    entity.collisionOn = true;
-                }
                 break;
             case "left":
                 entity.solidArea.x -= entity.speed;
-                if (entity.solidArea.intersects(gp.player.solidArea)) { // automatically checks if the two rectangles are colliding
-                    entity.collisionOn = true;
-                }
                 break;
             case "right":
                 entity.solidArea.x += entity.speed;
-                if (entity.solidArea.intersects(gp.player.solidArea)) { // automatically checks if the two rectangles are colliding
-                    entity.collisionOn = true;
-                }
                 break;
+        }
+        if (entity.solidArea.intersects(gp.player.solidArea)) { // automatically checks if the two rectangles are colliding
+            entity.collisionOn = true;
+            contactPlayer = true; // the entity has made contact with the player
         }
 
         // resets the entity and the object's collision box
@@ -230,5 +191,7 @@ public class CollisionChecker {
         entity.solidArea.y = entity.solidAreaDefaultY;
         gp.player.solidArea.x = gp.player.solidAreaDefaultX;
         gp.player.solidArea.y = gp.player.solidAreaDefaultY;
+
+        return contactPlayer;
     }
 }

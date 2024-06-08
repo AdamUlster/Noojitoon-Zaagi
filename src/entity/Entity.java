@@ -18,15 +18,18 @@ public class Entity {
     public int spriteNum = 1;
     public Rectangle solidArea = new Rectangle(0, 0, 48, 48); // the collision box of the character
     public boolean collisionOn = false;
-    public int actionLockCounter = 0;//sets a pause for random movements in the npcs and other things
+    public boolean invincible = false; // sets whether the entity is immune to damage
+    public int invicibilityCounter = 0; // keeps track of how long the entity is invisible for
+    public int actionLockCounter = 0; // sets a pause for random movements in the npcs and other things
     public int solidAreaDefaultX, solidAreaDefaultY;
     public BufferedImage image1, image2, image3;
     public String name;
     public boolean collision = false;
+    public int type; // 0 = player, 1 = NPC, 2 = monster
 
-    // Player health
-    public int[] maxHealth = new int[3]; // maximum number of lives the player has
-    public int[] health = new int[3]; // current number of lives the player has
+    // Entity health
+    public int maxHealth; // maximum number of lives the entity has
+    public int health; // current number of lives the entity has
 
     public Entity(GamePanel gp) {
         this.gp = gp;
@@ -37,10 +40,22 @@ public class Entity {
     public void update() {
         setAction();
 
+        Spirit currentSpirit = gp.player.getCurrentSpirit(); // gets the current spirit
+
         collisionOn = false;
         gp.cChecker.checkTile(this);
         gp.cChecker.checkObject(this,false);
-        gp.cChecker.checkPlayer(this);
+        gp.cChecker.checkEntity(this, gp.npc);
+        gp.cChecker.checkEntity(this, gp.monster);
+        boolean contactPlayer = gp.cChecker.checkPlayer(this);
+
+        if (this.type == 2 && contactPlayer == true) { // if this class is a monster and the monster has made contact with the player
+            if (gp.player.invincible == false) {
+                currentSpirit.health -= 1;
+                gp.player.invincible = true; // the player is now invincible for a given period of time
+            }
+
+        }
 
         // entity can only move if collision is false
         if (!collisionOn) {
@@ -119,13 +134,13 @@ public class Entity {
         }
     }
 
-    public BufferedImage setup(String imagePath) {
+    public BufferedImage setup(String imagePath, double scale) {
         UtilityTool uTool = new UtilityTool();
         BufferedImage image = null;
 
         try {
             image = ImageIO.read(getClass().getResourceAsStream("/" + imagePath + ".png"));
-            image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
+            image = uTool.scaleImage(image, (int) (gp.tileSize * scale), (int) (gp.tileSize * scale));
         } catch (IOException e) {
             e.printStackTrace();
         }

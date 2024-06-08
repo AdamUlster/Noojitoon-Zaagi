@@ -3,15 +3,12 @@ package object;
 import entity.Entity;
 import main.GamePanel;
 
-import javax.imageio.ImageIO;
-import java.io.IOException;
-
 public class OBJ_Totem extends Entity {
     public OBJ_Totem(GamePanel gp) { // constructor
-        super(gp);
+        super(gp); // calls the entity class
 
         name = "Totem";
-        down1 = setup("objects/totem");
+        down1 = setup("objects/totem", 1);
         collision = true;
     }
 }
