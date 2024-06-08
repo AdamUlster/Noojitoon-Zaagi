@@ -1,6 +1,7 @@
 package main;
 
 import entity.Entity;
+import entity.Spirit;
 import object.OBJ_Heart;
 import object.OBJ_Totem;
 
@@ -63,8 +64,10 @@ public class UI {
         int x = gp.tileSize;
         int y = gp.tileSize;
 
+        Spirit currentSpirit = gp.player.getCurrentSpirit(); // gets the current spirit
+
         // draws the blank hearts
-        for (int i = 0; i < gp.player.maxHealth[gp.player.previousSpirit] / 2; i++) { // since 2 lives means 1 heart
+        for (int i = 0; i < currentSpirit.getMaxHealth() / 2; i++) { // since 2 lives means 1 heart
             g2.drawImage(heart_blank, x, y, null);
             x += gp.tileSize; // moves over to the right to draw the next heart
         }
@@ -72,10 +75,10 @@ public class UI {
         // resets the coordinates
         x = gp.tileSize;
         y = gp.tileSize;
-        for (int i = 0; i < gp.player.health[gp.player.previousSpirit]; i++) {
+        for (int i = 0; i < currentSpirit.getHealth(); i++) {
             g2.drawImage(heart_half, x, y, null); // draws a half heart
             i++;
-            if (i < gp.player.health[gp.player.previousSpirit]) { // if the player's health still is not full, make the heart full
+            if (i < currentSpirit.getHealth()) { // if the player's health still is not full, make the heart full
                 g2.drawImage(heart_full, x, y, null); // draws the full heart
             }
             x += gp.tileSize; // moves over to the right to draw the next heart

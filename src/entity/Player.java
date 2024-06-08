@@ -2,18 +2,15 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
-import main.UtilityTool;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 public class Player extends Entity {
     KeyHandler keyH;//call on keyhandler class
 
-    public boolean[] activeSpirit = new boolean[3];// boolean values that determine which spirit is currently being used
-    public int previousSpirit;// sets the default spirit to spirit #1, spirit bear
+    public Spirit[] spirits = new Spirit[3];
+    public int currentSpiritIndex = 0; // keeps track of the current spirit
 
     public final int screenX;
     public final int screenY;
@@ -21,8 +18,8 @@ public class Player extends Entity {
     public int numTotems = 0; // keeps track of the number of totems the player has collected
 
     public Player(GamePanel gp, KeyHandler keyH) { //create default attributes (constructor)
-      
-        super(gp);//call on GamePanel class
+
+        super(gp); // call on Entity class
         this.keyH = keyH;
 
         screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
@@ -37,45 +34,51 @@ public class Player extends Entity {
         getPlayerImage();
     }
 
+    public Spirit getCurrentSpirit() { // gets the current spirit
+        return spirits[currentSpiritIndex];
+    }
+
     public void setDefaultValues() {//create default values to spawn the player
-      
+
         worldX = gp.tileSize * 50; // sets the default position x-coordinate
         worldY = gp.tileSize * 50; //sets the default position y-coordinate
         speed = 4;//sets speed to 4
-
         direction = "right";//can input any direction
-        activeSpirit[0] = true;//starts the player with the bear spirit
 
-        // Default health values for each spirit
-        maxHealth[0] = 6; // bear health
-        health[0] = maxHealth[0]; // sets the current number of lives for the bear
-        maxHealth[1] = 6; // eagle health
-        health[1] = 5; // sets the current number of lives for the eagle
+        // Initializes the spirits and their health values
+        spirits[0] = new Spirit(gp, "Bear");
+        spirits[0].maxHealth = 6;
+        spirits[0].health = 6;
+        spirits[1] = new Spirit(gp, "Eagle");
+        spirits[1].maxHealth = 6;
+        spirits[1].health = 5;
+        switchSpirit(0); // the player is the bear spirit to start
     }
 
     public void getPlayerImage() {
-        if (activeSpirit[0]) {//walking animation for only the bear pngs
-            //call on setup method to find image files
-            up1 = setup("bear/bear_up");
-            up2 = setup("bear/bear_up_2");
-            down1 = setup("bear/bear_down");
-            down2 = setup("bear/bear_down_2");
-            left1 = setup("bear/bear_left");
-            left2 = setup("bear/bear_left_2");
-            right1 = setup("bear/bear_right");
-            right2 = setup("bear/bear_right_2");
+        Spirit currentSpirit = getCurrentSpirit(); // gets the current spirit
+        if (currentSpirit.name.equals("Bear")) { // walking animation for only the bear pngs
+            // call on setup method to find image files
+            up1 = setup("bear/bear_up", 1);
+            up2 = setup("bear/bear_up_2", 1);
+            down1 = setup("bear/bear_down", 1);
+            down2 = setup("bear/bear_down_2", 1);
+            left1 = setup("bear/bear_left", 1);
+            left2 = setup("bear/bear_left_2", 1);
+            right1 = setup("bear/bear_right", 1);
+            right2 = setup("bear/bear_right_2", 1);
 
             System.out.println("image loading started");
         }
-        if (activeSpirit[1]) {//walking animation for only the eagle pngs
-            up1 = setup("eagle/eagle_up");
-            up2 = setup("eagle/eagle_up_2");
-            down1 = setup("eagle/eagle_down");
-            down2 = setup("eagle/eagle_down_2");
-            left1 = setup("eagle/eagle_left");
-            left2 = setup("eagle/eagle_left_2");
-            right1 = setup("eagle/eagle_right");
-            right2 = setup("eagle/eagle_right_2");
+        else if (currentSpirit.name.equals("Eagle")) { // walking animation for only the eagle pngs
+            up1 = setup("eagle/eagle_up", 1);
+            up2 = setup("eagle/eagle_up_2", 1);
+            down1 = setup("eagle/eagle_down", 1);
+            down2 = setup("eagle/eagle_down_2", 1);
+            left1 = setup("eagle/eagle_left", 1);
+            left2 = setup("eagle/eagle_left_2", 1);
+            right1 = setup("eagle/eagle_right", 1);
+            right2 = setup("eagle/eagle_right_2", 1);
         }
         System.out.println("new sprite loaded");
     }
@@ -100,13 +103,17 @@ public class Player extends Entity {
             collisionOn = false;
             gp.cChecker.checkTile(this);
 
-            //check object collision
+            // check object collision
             int objIndex = gp.cChecker.checkObject(this, true);
             pickUpObject(objIndex);
 
-            //check npc /monster? collision
+            // check npc collision
             int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
             interactNPC(npcIndex);
+
+            // check monster collision
+            int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+            contactMonster(monsterIndex); // runs when the user makes contact with the monster
 
             // player can only move if collision is false
             if (!collisionOn) {
@@ -141,12 +148,19 @@ public class Player extends Entity {
         } else if (keyH.twoPressed) {
             switchSpirit(1); // switches to the eagle
         }
+
+        // Gives the player 1 second of invincibility after making contact with a monster
+        if (invincible) {
+            invicibilityCounter ++;
+            if (invicibilityCounter > 60) {
+                invincible = false;
+                invicibilityCounter = 0;
+            }
+        }
     }
 
-    public void switchSpirit(int spirit) {
-        activeSpirit[spirit] = true; // set the new spirit to bear
-        activeSpirit[previousSpirit] = false; // the previous spirit is no longer active
-        previousSpirit = spirit; // reset the previous spirit
+    public void switchSpirit(int spiritIndex) {
+        currentSpiritIndex = spiritIndex; // sets the current spirit index to the spirit index
         getPlayerImage(); // reset the image pulls via getPlayerImage method
     }
 
@@ -166,8 +180,18 @@ public class Player extends Entity {
 
     public void interactNPC(int i) {
         if (i != 999) {
-//            gp.ui.showMessage("You insensitive schmuck! You are hitting an NPC!");
             System.out.println("you are hitting an npc");
+        }
+    }
+
+    public void contactMonster(int index) {
+        Spirit currentSpirit = gp.player.getCurrentSpirit(); // gets the current spirit
+
+        if (index != 999) { // if index is 999, no monster was touched
+            if (invincible == false) {
+                currentSpirit.setHealth(currentSpirit.getHealth() - 1);
+                invincible = true;
+            }
         }
     }
 
@@ -211,6 +235,12 @@ public class Player extends Entity {
                 }
                 break;
         }
+        if (invincible) {
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f)); // reduces the opacity to 70% to show when the player is invincible
+        }
+
         g2.drawImage(image, screenX, screenY, null);//draws the image, null means we cannot type
+
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // resets the opacity for future images
     }
 }

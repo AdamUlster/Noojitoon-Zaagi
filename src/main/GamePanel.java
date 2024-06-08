@@ -53,6 +53,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Player player = new Player(this, keyH);
     public Entity obj[] = new Entity[10]; // to display up to 10 objects at the same time
     public Entity npc[] = new Entity[10];
+    public Entity monster[] = new Entity[10];
     ArrayList<Entity> entityList = new ArrayList<>(); // creates an array list to store all the entities
 
     public GamePanel() {//set default values for the gamepanel
@@ -67,6 +68,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void setupGame() {
         aSetter.setObject();
         aSetter.setNPC();
+        aSetter.setMonster();
     }
 
     public void startGameThread() {//starts core logic when the program starts
@@ -99,15 +101,22 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    //update information
+    // update information
     public void update() {
         //UPDATE PLAYER
         player.update();
 
-        //UPDATE NPC
+        // update NPC
         for (int i = 0; i < npc.length; i++) {
             if (npc[i] != null) {
                 npc[i].update();
+            }
+        }
+
+       // update monster
+        for (int i = 0; i < monster.length; i++) {
+            if (monster[i] != null) {
+                monster[i].update();
             }
         }
     }
@@ -138,6 +147,12 @@ public class GamePanel extends JPanel implements Runnable {
         for (int i = 0; i < obj.length; i++) { // adds every object to the entity list
             if (obj[i] != null) {
                 entityList.add(obj[i]);
+            }
+        }
+
+        for (int i = 0; i < monster.length; i++) { // adds every monster to the entity list
+            if (monster[i] != null) {
+                entityList.add(monster[i]);
             }
         }
 
