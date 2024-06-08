@@ -41,7 +41,7 @@ public class Player extends Entity {
       
         worldX = gp.tileSize * 50; // sets the default position x-coordinate
         worldY = gp.tileSize * 50; //sets the default position y-coordinate
-        speed = 4;//sets speed to 4
+        speed = 8;//sets speed to 4
 
         direction = "right";//can input any direction
         activeSpirit[0] = true;//starts the player with the bear spirit
@@ -166,7 +166,7 @@ public class Player extends Entity {
 
     public void interactNPC(int i) {
         if (i != 999) {
-//            gp.ui.showMessage("You insensitive schmuck! You are hitting an NPC!");
+            gp.ui.showMessage("You insensitive schmuck! You are hitting an NPC!");
             System.out.println("you are hitting an npc");
         }
     }
