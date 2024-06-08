@@ -19,7 +19,7 @@ public class Entity {
     public Rectangle solidArea = new Rectangle(0, 0, 48, 48); // the collision box of the character
     public boolean collisionOn = false;
     public boolean invincible = false; // sets whether the entity is immune to damage
-    public int invicibilityCounter = 0; // keeps track of how long the entity is invisible for
+    public int invincibilityCounter = 0; // keeps track of how long the entity is invisible for
     public int actionLockCounter = 0; // sets a pause for random movements in the npcs and other things
     public int solidAreaDefaultX, solidAreaDefaultY;
     public BufferedImage image1, image2, image3;

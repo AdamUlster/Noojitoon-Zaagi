@@ -167,10 +167,10 @@ public class Player extends Entity {
 
         // Gives the player 1 second of invincibility after making contact with a monster
         if (invincible) {
-            invicibilityCounter ++;
-            if (invicibilityCounter > 60) {
+            invincibilityCounter ++;
+            if (invincibilityCounter > 60) {
                 invincible = false;
-                invicibilityCounter = 0;
+                invincibilityCounter = 0;
             }
         }
     }
