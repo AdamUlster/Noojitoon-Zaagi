@@ -5,9 +5,9 @@ import main.GamePanel;
 
 import java.util.Random;
 
-public class MON_Miasmna extends Entity {
+public class MON_Miasma extends Entity {
 
-    public MON_Miasmna(GamePanel gp) {
+    public MON_Miasma(GamePanel gp) {
         super(gp);
 
         type = 2; // sets this entity's type to a monster

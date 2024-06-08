@@ -1,7 +1,7 @@
 package main;
 
 import entity.NPC;
-import monster.MON_Miasmna;
+import monster.MON_Miasma;
 import object.OBJ_Totem;
 
 public class AssetSetter {
@@ -24,7 +24,7 @@ public class AssetSetter {
 
     public void setMonster() {
         // create 1 monster
-        gp.monster[0] = new MON_Miasmna(gp);
+        gp.monster[0] = new MON_Miasma(gp);
         gp.monster[0].worldX = gp.tileSize * 53;
         gp.monster[0].worldY = gp.tileSize * 53;
     }
