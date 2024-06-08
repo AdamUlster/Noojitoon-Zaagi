@@ -52,6 +52,9 @@ public class Player extends Entity {
         spirits[1] = new Spirit(gp, "Eagle");
         spirits[1].maxHealth = 6;
         spirits[1].health = 5;
+        spirits[2] = new Spirit(gp, "Turtle");
+        spirits[2].maxHealth = 8;
+        spirits[2].health = 8;
         switchSpirit(0); // the player is the bear spirit to start
     }
 
@@ -79,6 +82,16 @@ public class Player extends Entity {
             left2 = setup("eagle/eagle_left_2", 1);
             right1 = setup("eagle/eagle_right", 1);
             right2 = setup("eagle/eagle_right_2", 1);
+        }
+        else if (currentSpirit.name.equals("Turtle")) {
+            up1 = setup("turtle/turtle_up", 1);
+            up2 = setup("turtle/turtle_up_2", 1);
+            down1 = setup("turtle/turtle_down", 1);
+            down2 = setup("turtle/turtle_down_2", 1);
+            left1 = setup("turtle/turtle_left", 1);
+            left2 = setup("turtle/turtle_left_2", 1);
+            right1 = setup("turtle/turtle_right", 1);
+            right2 = setup("turtle/turtle_right_2", 1);
         }
         System.out.println("new sprite loaded");
     }
@@ -147,6 +160,9 @@ public class Player extends Entity {
             switchSpirit(0); // switches to the bear
         } else if (keyH.twoPressed) {
             switchSpirit(1); // switches to the eagle
+        }
+        else if (keyH.threePressed) {
+            switchSpirit(2);
         }
 
         // Gives the player 1 second of invincibility after making contact with a monster
