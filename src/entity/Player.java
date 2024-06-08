@@ -86,16 +86,16 @@ public class Player extends Entity {
 
     public void update() {
 
-        if (keyH.upPressed == true || keyH.downPressed == true ||
-                keyH.leftPressed == true || keyH.rightPressed == true) {//walking animations only occur if the key is being pressed
-            if (keyH.upPressed == true) {//move up
+        if (keyH.upPressed || keyH.downPressed ||
+                keyH.leftPressed || keyH.rightPressed) {//walking animations only occur if the key is being pressed
+            if (keyH.upPressed) {//move up
                 direction = "up";
-            } else if (keyH.downPressed == true) {//move down
+            } else if (keyH.downPressed) { // move down
                 direction = "down";
-            } else if (keyH.leftPressed == true) {//move left
+            } else if (keyH.leftPressed) { // move left
                 //remove the else portion to make x and y movements independent
                 direction = "left";
-            } else if (keyH.rightPressed == true) {//move right
+            } else if (keyH.rightPressed) { // move right
                 direction = "right";
             }
 
@@ -167,13 +167,10 @@ public class Player extends Entity {
     public void pickUpObject(int index) {
         if (index != 999) { // if index is 999, no index was touched
             String objectName = gp.obj[index].name;
-
-            switch (objectName) {
-                case "Totem":
-                    numTotems++; // increases the number of totems the user has collected
-                    gp.obj[index] = null; // removes the object
-                    gp.ui.showMessage("You picked up a totem!");
-                    break;
+            if (objectName.equals("Totem")) {
+                numTotems++; // increases the number of totems the user has collected
+                gp.obj[index] = null; // removes the object
+                gp.ui.showMessage("You picked up a totem!");
             }
         }
     }
@@ -184,11 +181,11 @@ public class Player extends Entity {
         }
     }
 
-    public void contactMonster(int index) {
+    public void contactMonster(int index) { // modifies the player's invincibility if they make contact with a monster
         Spirit currentSpirit = gp.player.getCurrentSpirit(); // gets the current spirit
 
         if (index != 999) { // if index is 999, no monster was touched
-            if (invincible == false) {
+            if (!invincible) {
                 currentSpirit.setHealth(currentSpirit.getHealth() - 1);
                 invincible = true;
             }
@@ -196,10 +193,6 @@ public class Player extends Entity {
     }
 
     public void draw(Graphics2D g2) {
-        //g2.setColor(Color.white);//set colour of the painter to white
-        //
-        //g2.fillRect(x, y, gp.tileSize, gp.tileSize);//create and fill something
-
         BufferedImage image = null;
         switch (direction) {//check the direction, based on the direction it picks a different image
             case "up":
