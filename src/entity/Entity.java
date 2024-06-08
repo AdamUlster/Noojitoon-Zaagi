@@ -49,8 +49,8 @@ public class Entity {
         gp.cChecker.checkEntity(this, gp.monster);
         boolean contactPlayer = gp.cChecker.checkPlayer(this);
 
-        if (this.type == 2 && contactPlayer == true) { // if this class is a monster and the monster has made contact with the player
-            if (gp.player.invincible == false) {
+        if (this.type == 2 && contactPlayer) { // if this class is a monster and the monster has made contact with the player
+            if (!gp.player.invincible) {
                 currentSpirit.health -= 1;
                 gp.player.invincible = true; // the player is now invincible for a given period of time
             }
