@@ -17,6 +17,11 @@ public class Player extends Entity {
 
     public int numTotems = 0; // keeps track of the number of totems the player has collected
 
+    //scaling factors for hitboxes
+    public double bearHitboxScale = 0.75;//bear hit box scale
+    public double eagleHitboxScale = 0.75;//eagle hit box scale
+    public double turtleHitboxScale = 1.35;//turtle hit box scale
+
     public Player(GamePanel gp, KeyHandler keyH) { //create default attributes (constructor)
 
         super(gp); // call on Entity class
@@ -41,9 +46,15 @@ public class Player extends Entity {
         direction = "right";//can input any direction
 
         // Initializes the spirits and their health values
-        spirits[0] = new Spirit(gp, "Bear", 6, 6, 8, 16, 32, 32);
-        spirits[1] = new Spirit(gp, "Eagle", 6, 5, 8, 16, 152, 152);
-        spirits[2] = new Spirit(gp, "Turtle", 8, 8, 8, 16, 52, 52);
+        spirits[0] = new Spirit(gp, "Bear", 6, 6, (int)(gp.tileSize * (1.0-bearHitboxScale))/2,
+                (int)(gp.tileSize * (1.0-bearHitboxScale))/2, (int)(gp.tileSize * bearHitboxScale),
+                (int)(gp.tileSize * bearHitboxScale));
+        spirits[1] = new Spirit(gp, "Eagle", 6, 5, (int)(gp.tileSize * (1.0 - eagleHitboxScale)/2),
+                (int)(gp.tileSize * (1.0 - eagleHitboxScale)/2), (int)(gp.tileSize * eagleHitboxScale),
+                (int)(gp.tileSize * eagleHitboxScale));
+        spirits[2] = new Spirit(gp, "Turtle", 8, 8, (int)(gp.tileSize * (1.0 - turtleHitboxScale)/2) + 40,
+                (int)(gp.tileSize * (1.0 - turtleHitboxScale)/2) + 40, (int)(gp.tileSize * turtleHitboxScale),
+                (int)(gp.tileSize * turtleHitboxScale));
         switchSpirit(0); // the player is the bear spirit to start
     }
 
