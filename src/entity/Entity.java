@@ -16,7 +16,13 @@ public class Entity {
     public String direction = "down";
     public int spriteCounter = 0;
     public int spriteNum = 1;
-    public Rectangle solidArea = new Rectangle(0, 0, 48, 48); // the collision box of the character
+
+    // Dimensions of the rectangle
+    public int x = 0;
+    public int y = 0;
+    public int width = 48;
+    public int height = 48;
+    public Rectangle solidArea = new Rectangle(x, y, width, height); // the collision box of the character
     public boolean collisionOn = false;
     public boolean invincible = false; // sets whether the entity is immune to damage
     public int invincibilityCounter = 0; // keeps track of how long the entity is invisible for
@@ -131,6 +137,7 @@ public class Entity {
                     break;
             }
             g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+
             g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
         }
     }
