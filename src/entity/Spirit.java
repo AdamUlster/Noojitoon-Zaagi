@@ -2,6 +2,8 @@ package entity;
 
 import main.GamePanel;
 
+import java.awt.*;
+
 public class Spirit extends Entity {
     public Spirit(GamePanel gp, String name, int maxHealth, int health) {
         super(gp);
@@ -20,6 +22,14 @@ public class Spirit extends Entity {
 
     public void setHealth(int health) { // sets the spirit's current health
         this.health = health;
+    }
+
+    public void setHitBox (int width, int height) {
+        solidArea = new Rectangle(8, 16, width, height);
+
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
+        System.out.println("hitbox established");
     }
 
 }

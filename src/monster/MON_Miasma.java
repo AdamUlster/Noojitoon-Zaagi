@@ -7,6 +7,7 @@ import java.util.Random;
 
 public class MON_Miasma extends Entity {
 
+    public double hitboxScale = 0.70;//scaling factor for hitbox
     public MON_Miasma(GamePanel gp) {
         super(gp);
 
@@ -16,13 +17,15 @@ public class MON_Miasma extends Entity {
         maxHealth = 4;
         health = maxHealth;
 
-        // sets the collision box for the monster
-        solidArea.x = 3;
-        solidArea.y = 18;
-        solidArea.width = 42;
-        solidArea.height = 30;
+        // sets the collision box for the monster in the center
+        solidArea.width = (int)(gp.tileSize * hitboxScale);
+        solidArea.height = (int)(gp.tileSize * hitboxScale);
+        solidArea.x = (gp.tileSize - solidArea.width)/2;
+        solidArea.y = (gp.tileSize - solidArea.height) / 2;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
+
+
 
         getImage();
     }

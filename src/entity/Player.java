@@ -25,7 +25,8 @@ public class Player extends Entity {
         screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
 
-        solidArea = new Rectangle(8, 16, 32, 32); // initiates the rectangle
+        solidArea = new Rectangle(8, 16, (int)(gp.tileSize * 0.65), (int)(gp.tileSize * 0.65)); // initiates the
+        // rectangle
 
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
@@ -154,8 +155,7 @@ public class Player extends Entity {
             switchSpirit(0); // switches to the bear
         } else if (keyH.twoPressed) {
             switchSpirit(1); // switches to the eagle
-        }
-        else if (keyH.threePressed) {
+        } else if (keyH.threePressed) {
             switchSpirit(2);
         }
 
