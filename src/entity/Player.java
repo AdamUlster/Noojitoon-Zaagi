@@ -101,14 +101,6 @@ public class Player extends Entity {
                 direction = "right";
             }
 
-            // sets the player's hit box to the current spirit's hit box
-            this.solidArea.x = getCurrentSpirit().solidArea.x;
-            this.solidArea.y = getCurrentSpirit().solidArea.y;
-            this.solidArea.width = getCurrentSpirit().solidArea.width;
-            this.solidArea.height = getCurrentSpirit().solidArea.height;
-            this.solidAreaDefaultX = getCurrentSpirit().x;
-            this.solidAreaDefaultY = getCurrentSpirit().y;
-
             // check tile collision
             collisionOn = false;
             gp.cChecker.checkTile(this);
@@ -176,6 +168,14 @@ public class Player extends Entity {
     public void switchSpirit(int spiritIndex) {
         currentSpiritIndex = spiritIndex; // sets the current spirit index to the spirit index
         getPlayerImage(); // reset the image pulls via getPlayerImage method
+
+        // sets the player's hit box to the current spirit's hit box
+        this.solidArea.x = getCurrentSpirit().solidArea.x;
+        this.solidArea.y = getCurrentSpirit().solidArea.y;
+        this.solidArea.width = getCurrentSpirit().solidArea.width;
+        this.solidArea.height = getCurrentSpirit().solidArea.height;
+        this.solidAreaDefaultX = getCurrentSpirit().x;
+        this.solidAreaDefaultY = getCurrentSpirit().y;
     }
 
     public void pickUpObject(int index) {
