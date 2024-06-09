@@ -84,14 +84,14 @@ public class Player extends Entity {
             right2 = setup("eagle/eagle_right_2", 1);
         }
         else if (currentSpirit.name.equals("Turtle")) {
-            up1 = setup("turtle/turtle_up", 1.2);
-            up2 = setup("turtle/turtle_up_2", 1.2);
-            down1 = setup("turtle/turtle_down", 1.2);
-            down2 = setup("turtle/turtle_down_2", 1.2);
-            left1 = setup("turtle/turtle_left", 1.2);
-            left2 = setup("turtle/turtle_left_2", 1.2);
-            right1 = setup("turtle/turtle_right", 1.2);
-            right2 = setup("turtle/turtle_right_2", 1.2);
+            up1 = setup("turtle/turtle_up", 1.8);
+            up2 = setup("turtle/turtle_up_2", 1.8);
+            down1 = setup("turtle/turtle_down", 1.8);
+            down2 = setup("turtle/turtle_down_2", 1.8);
+            left1 = setup("turtle/turtle_left", 1.8);
+            left2 = setup("turtle/turtle_left_2", 1.8);
+            right1 = setup("turtle/turtle_right", 1.8);
+            right2 = setup("turtle/turtle_right_2", 1.8);
         }
         System.out.println("new sprite loaded");
     }
