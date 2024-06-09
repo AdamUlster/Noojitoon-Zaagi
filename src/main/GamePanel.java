@@ -15,7 +15,9 @@ public class GamePanel extends JPanel implements Runnable {
     //screen settings
     public final int originalTileSize = 32;
     //32 x 32 means the game operates with objects of 32 pixel tiles, so objects, sprites etc.
-    public final int scale = 3;//DO NOT CHANGE, WILL SCREW EVERYTHING UP
+    public final int scale = 3;//CHANGE ONLY THIS IF YOU WANT ANYTHING TO BE LARGER, EVERYTHING RELIES ON THIS ONE
+    // INTEGER, IF YOU MODIFY ANYTHING SIZE RELATED IT IS THE SAME AS HARD CODING THE CHANGE AND WILL SCREW
+    // EVERYTHING UP
     //all the characters we create will be as if they are 32x32 but will be scaled up threefold
 
     public final int tileSize = originalTileSize * scale;//48x48 actual tile size that will be displayed
