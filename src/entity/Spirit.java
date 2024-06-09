@@ -27,4 +27,12 @@ public class Spirit extends Entity {
         this.health = health;
     }
 
+    public void setHitBox (int width, int height) {
+        solidArea = new Rectangle(8, 16, width, height);
+
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
+        System.out.println("hitbox established");
+    }
+
 }

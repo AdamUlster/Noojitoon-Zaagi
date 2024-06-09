@@ -7,6 +7,7 @@ import java.util.Random;
 
 public class MON_Windigo extends Entity {
 
+    public double hitboxScale = 0.75;//scaling factor for hitbox
     public MON_Windigo(GamePanel gp) {
         super(gp);
 
@@ -17,10 +18,11 @@ public class MON_Windigo extends Entity {
         health = maxHealth;
 
         // sets the collision box for the monster
-        solidArea.x = 3;
-        solidArea.y = 18;
-        solidArea.width = 42;
-        solidArea.height = 30;
+        solidArea.width = (int)(gp.tileSize * hitboxScale);
+        solidArea.height = (int)(gp.tileSize * hitboxScale);
+        solidArea.x = (gp.tileSize - solidArea.width) /2;
+        solidArea.y = (gp.tileSize - solidArea.height) / 2;
+
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 

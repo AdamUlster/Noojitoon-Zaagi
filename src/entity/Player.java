@@ -150,8 +150,7 @@ public class Player extends Entity {
 
         } else if (keyH.twoPressed) {
             switchSpirit(1); // switches to the eagle
-        }
-        else if (keyH.threePressed) {
+        } else if (keyH.threePressed) {
             switchSpirit(2);
         }
 

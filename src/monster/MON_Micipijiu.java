@@ -7,6 +7,8 @@ import java.util.Random;
 
 public class MON_Micipijiu extends Entity {
 
+    public double widthHitboxScale = 0.70;//scaling factor for the hitbox width
+    public double heightHitboxScale = 0.35;//scaling factor for the hitbox height
     public MON_Micipijiu(GamePanel gp) {
         super(gp);
 
@@ -16,11 +18,14 @@ public class MON_Micipijiu extends Entity {
         maxHealth = 4;
         health = maxHealth;
 
-        // sets the collision box for the monster
-        solidArea.x = 3;
-        solidArea.y = 18;
-        solidArea.width = 42;
-        solidArea.height = 30;
+        // sets the collision box for the monster in the center
+        solidArea.width = (int)(gp.tileSize * widthHitboxScale);
+        solidArea.height = (int)(gp.tileSize * heightHitboxScale);
+        solidArea.x = (gp.tileSize - solidArea.width) /2;
+        solidArea.y = (gp.tileSize - solidArea.height) /2;
+
+        //solidArea.width = 42 * (int)(gp.scale * 0.65);
+//        solidArea.height = 30 * (int)(gp.scale * 0.65);
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 

@@ -5,12 +5,21 @@ import main.GamePanel;
 import java.util.Random;
 
 public class NPC extends Entity {
+    public double hitboxScale = 0.65;
     public NPC(GamePanel gp) {
         super(gp);
 
         type = 1; // sets this entity's type to an NPC
         direction = "down";
         speed = 2;
+
+        solidArea.width = (int)(gp.tileSize * hitboxScale);
+        solidArea.height = (int)(gp.tileSize * hitboxScale);
+        solidArea.x = (gp.tileSize - solidArea.width) / 2;
+        solidArea.y = (gp.tileSize - solidArea.height) / 2;
+
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
 
         getImage();
     }
