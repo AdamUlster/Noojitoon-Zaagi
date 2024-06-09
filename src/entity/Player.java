@@ -20,7 +20,7 @@ public class Player extends Entity {
     //scaling factors for hitboxes
     public double bearHitboxScale = 0.75;//bear hit box scale
     public double eagleHitboxScale = 0.75;//eagle hit box scale
-    public double turtleHitboxScale = 1.35;//turtle hit box scale
+    public double turtleHitboxScale = 1;//turtle hit box scale
 
     public Player(GamePanel gp, KeyHandler keyH) { //create default attributes (constructor)
 
