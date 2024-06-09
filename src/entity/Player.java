@@ -25,12 +25,6 @@ public class Player extends Entity {
         screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
 
-        solidArea = new Rectangle(8, 16, (int)(gp.tileSize * 0.65), (int)(gp.tileSize * 0.65)); // initiates the
-        // rectangle
-
-        solidAreaDefaultX = solidArea.x;
-        solidAreaDefaultY = solidArea.y;
-
         setDefaultValues();//sets default values for the player
         getPlayerImage();
     }
@@ -47,9 +41,9 @@ public class Player extends Entity {
         direction = "right";//can input any direction
 
         // Initializes the spirits and their health values
-        spirits[0] = new Spirit(gp, "Bear", 6, 6);
-        spirits[1] = new Spirit(gp, "Eagle", 6, 5);
-        spirits[2] = new Spirit(gp, "Turtle", 8, 8);
+        spirits[0] = new Spirit(gp, "Bear", 6, 6, 8, 16, 32, 32);
+        spirits[1] = new Spirit(gp, "Eagle", 6, 5, 8, 16, 152, 152);
+        spirits[2] = new Spirit(gp, "Turtle", 8, 8, 8, 16, 52, 52);
         switchSpirit(0); // the player is the bear spirit to start
     }
 
@@ -153,6 +147,7 @@ public class Player extends Entity {
         }
         if (keyH.onePressed) {
             switchSpirit(0); // switches to the bear
+
         } else if (keyH.twoPressed) {
             switchSpirit(1); // switches to the eagle
         } else if (keyH.threePressed) {
@@ -172,6 +167,14 @@ public class Player extends Entity {
     public void switchSpirit(int spiritIndex) {
         currentSpiritIndex = spiritIndex; // sets the current spirit index to the spirit index
         getPlayerImage(); // reset the image pulls via getPlayerImage method
+
+        // sets the player's hit box to the current spirit's hit box
+        this.solidArea.x = getCurrentSpirit().solidArea.x;
+        this.solidArea.y = getCurrentSpirit().solidArea.y;
+        this.solidArea.width = getCurrentSpirit().solidArea.width;
+        this.solidArea.height = getCurrentSpirit().solidArea.height;
+        this.solidAreaDefaultX = getCurrentSpirit().x;
+        this.solidAreaDefaultY = getCurrentSpirit().y;
     }
 
     public void pickUpObject(int index) {
@@ -243,7 +246,11 @@ public class Player extends Entity {
         }
 
         g2.drawImage(image, screenX, screenY, null);//draws the image, null means we cannot type
-        g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
+
+        // Temporary
+        Spirit currentSpirit = gp.player.getCurrentSpirit();
+        g2.fillRect(screenX + currentSpirit.solidArea.x, screenY + currentSpirit.solidArea.y, currentSpirit.solidArea.width, currentSpirit.solidArea.height);
+        //
 
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // resets the opacity for future images
     }
