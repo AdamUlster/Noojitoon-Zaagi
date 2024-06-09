@@ -35,7 +35,7 @@ public class AssetSetter {
         gp.monster[1].worldY = gp.tileSize * 48;
 
         gp.monster[2] = new MON_Windigo(gp);
-        gp.monster[2].worldX = gp.tileSize * 51;
-        gp.monster[2].worldY = gp.tileSize * 51;
+        gp.monster[2].worldX = gp.tileSize * 49;
+        gp.monster[2].worldY = gp.tileSize * 49;
     }
 }
