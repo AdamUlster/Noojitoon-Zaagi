@@ -46,15 +46,9 @@ public class Player extends Entity {
         direction = "right";//can input any direction
 
         // Initializes the spirits and their health values
-        spirits[0] = new Spirit(gp, "Bear");
-        spirits[0].maxHealth = 6;
-        spirits[0].health = 6;
-        spirits[1] = new Spirit(gp, "Eagle");
-        spirits[1].maxHealth = 6;
-        spirits[1].health = 5;
-        spirits[2] = new Spirit(gp, "Turtle");
-        spirits[2].maxHealth = 8;
-        spirits[2].health = 8;
+        spirits[0] = new Spirit(gp, "Bear", 6, 6);
+        spirits[1] = new Spirit(gp, "Eagle", 6, 5);
+        spirits[2] = new Spirit(gp, "Turtle", 8, 8);
         switchSpirit(0); // the player is the bear spirit to start
     }
 
@@ -249,6 +243,7 @@ public class Player extends Entity {
         }
 
         g2.drawImage(image, screenX, screenY, null);//draws the image, null means we cannot type
+        g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
 
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // resets the opacity for future images
     }

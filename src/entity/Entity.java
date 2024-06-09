@@ -131,6 +131,7 @@ public class Entity {
                     break;
             }
             g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+            g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
         }
     }
 

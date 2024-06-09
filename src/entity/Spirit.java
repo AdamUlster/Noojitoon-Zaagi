@@ -3,9 +3,11 @@ package entity;
 import main.GamePanel;
 
 public class Spirit extends Entity {
-    public Spirit(GamePanel gp, String name) {
+    public Spirit(GamePanel gp, String name, int maxHealth, int health) {
         super(gp);
         this.name = name; // sets the spirit's name to the value passed to it
+        this.maxHealth = maxHealth;
+        this.health = health;
     }
 
     public int getMaxHealth() { // gets the spirit's max health
