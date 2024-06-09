@@ -5,13 +5,13 @@ import main.GamePanel;
 
 import java.util.Random;
 
-public class MON_Miasma extends Entity {
+public class MON_Micipijiu extends Entity {
 
-    public MON_Miasma(GamePanel gp) {
+    public MON_Micipijiu(GamePanel gp) {
         super(gp);
 
         type = 2; // sets this entity's type to a monster
-        name = "Miasma";
+        name = "Micipijiu";
         speed = 3;
         maxHealth = 4;
         health = maxHealth;
@@ -28,14 +28,14 @@ public class MON_Miasma extends Entity {
     }
 
     public void getImage() {
-        up1 = setup("monsters/miasma_1", 1);
-        up2 = setup("monsters/miasma_2", 1);
-        down1 = setup("monsters/miasma_1", 1);
-        down2 = setup("monsters/miasma_2", 1);
-        left1 = setup("monsters/miasma_1", 1);
-        left2 = setup("monsters/miasma_2", 1);
-        right1 = setup("monsters/miasma_1", 1);
-        right2 = setup("monsters/miasma_2", 1);
+        up1 = setup("monsters/micipijiu_right", 1);
+        up2 = setup("monsters/micipijiu_right", 1);
+        down1 = setup("monsters/micipijiu_right", 1);
+        down2 = setup("monsters/micipijiu_right", 1);
+        left1 = setup("monsters/micipijiu_left", 1);
+        left2 = setup("monsters/micipijiu_left", 1);
+        right1 = setup("monsters/micipijiu_right", 1);
+        right2 = setup("monsters/micipijiu_right", 1);
     }
 
     public void setAction() {
