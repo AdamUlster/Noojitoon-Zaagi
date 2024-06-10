@@ -7,6 +7,7 @@ import java.security.Key;
 //handle keyboard inputs
 public class KeyHandler implements KeyListener {
 
+    public GamePanel gp;
     public boolean upPressed, downPressed, leftPressed, rightPressed;//boolean values that determine which keys are
     // pressed and which are not
     public boolean onePressed, twoPressed, threePressed;//boolean values that determine which number keys have been
@@ -14,6 +15,11 @@ public class KeyHandler implements KeyListener {
     // pressed for sprite switching
     //DEBUG STUFF
     boolean checkDrawTime = false;
+
+    public KeyHandler (GamePanel gp) { // constructor
+        this.gp = gp;
+
+    }
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -36,15 +42,23 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_D) {//if D key has been pressed
             rightPressed = true;
         }
-        if (code == KeyEvent.VK_1) {//if 1 key has been pressed
+        if (code == KeyEvent.VK_1 && !gp.player.spirits[0].dead) {//if 1 key has been pressed and bear is not dead
             onePressed = true;
         }
-        if (code == KeyEvent.VK_2) {//if key 2 has been pressed
+        else if (code == KeyEvent.VK_1 && gp.player.spirits[0].dead && gp.player.displayDeathMessage) { // if the spirit is dead and the death message should be displayed
+            gp.ui.showMessage("You cannot switch to the bear since the bear is dead");
+        }
+        if (code == KeyEvent.VK_2 && !gp.player.spirits[1].dead) {//if key 2 has been pressed and eagle is not dead
             twoPressed = true;
         }
-        if (code == KeyEvent.VK_3) {//if key 3 has been pressed
+        else if (code == KeyEvent.VK_2 && gp.player.spirits[1].dead && gp.player.displayDeathMessage) { // if the spirit is dead and the death message should be displayed
+            gp.ui.showMessage("You cannot switch to the eagle since the eagle is dead");
+        }
+        if (code == KeyEvent.VK_3 && !gp.player.spirits[2].dead) {//if key 3 has been pressed and turtle is not dead
             threePressed = true;
         }
+        else if (code == KeyEvent.VK_3 && gp.player.spirits[2].dead && gp.player.displayDeathMessage) { // if the spirit is dead and the death message should be displayed
+            gp.ui.showMessage("You cannot switch to the turtle since the turtle is dead");
         if (code == KeyEvent.VK_K) {//K key has been pressed
             primaryPressed = true;
         }

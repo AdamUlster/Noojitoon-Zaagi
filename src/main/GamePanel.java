@@ -42,7 +42,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     // System
     TileManager tileM = new TileManager(this); // passes the game panel
-    KeyHandler keyH = new KeyHandler();//call on the keyhandle class to create the keylistener
+    KeyHandler keyH = new KeyHandler(this);//call on the keyhandle class to create the keylistener
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this); // passes the game panel as a parameter
     public UI ui = new UI(this);
