@@ -31,14 +31,14 @@ public class MON_Miasma extends Entity {
     }
 
     public void getImage() {
-        up1 = setup("monsters/miasma_1", 1);
-        up2 = setup("monsters/miasma_2", 1);
-        down1 = setup("monsters/miasma_1", 1);
-        down2 = setup("monsters/miasma_2", 1);
-        left1 = setup("monsters/miasma_1", 1);
-        left2 = setup("monsters/miasma_2", 1);
-        right1 = setup("monsters/miasma_1", 1);
-        right2 = setup("monsters/miasma_2", 1);
+        up1 = setup("monsters/miasma_1", 1,1);
+        up2 = setup("monsters/miasma_2", 1,1);
+        down1 = setup("monsters/miasma_1", 1,1);
+        down2 = setup("monsters/miasma_2", 1,1);
+        left1 = setup("monsters/miasma_1", 1,1);
+        left2 = setup("monsters/miasma_2", 1,1);
+        right1 = setup("monsters/miasma_1", 1,1);
+        right2 = setup("monsters/miasma_2", 1,1);
     }
 
     public void setAction() {
