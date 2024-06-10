@@ -2,10 +2,12 @@ package main;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.security.Key;
 
 //handle keyboard inputs
-public class KeyHandler implements KeyListener {
+public class KeyHandler implements KeyListener, MouseListener {
 
     public GamePanel gp;
     public boolean upPressed, downPressed, leftPressed, rightPressed;//boolean values that determine which keys are
@@ -76,37 +78,68 @@ public class KeyHandler implements KeyListener {
     }
 
         @Override
-        public void keyReleased (KeyEvent e){
+    public void keyReleased (KeyEvent e){
 
-            int code = e.getKeyCode();//returns the keycode of a key that has beeen released
+        int code = e.getKeyCode();//returns the keycode of a key that has beeen released
 
-            //now resets the keypressed booleans when the key is released
-            if (code == KeyEvent.VK_W) {//if w key has been released
-                upPressed = false;
-            }
-            if (code == KeyEvent.VK_S) {//if s key has been released
-                downPressed = false;
-            }
-            if (code == KeyEvent.VK_A) {//if A key has been released
-                leftPressed = false;
-            }
-            if (code == KeyEvent.VK_D) {//if D key has been released
-                rightPressed = false;
-            }
-            if (code == KeyEvent.VK_1) {//if key 1 has been released
-                onePressed = false;
-            }
-            if (code == KeyEvent.VK_2) {
-                twoPressed = false;
-            }
-            if (code == KeyEvent.VK_3) {
-                threePressed = false;
-            }
-            if (code == KeyEvent.VK_K) {//K key has been pressed
-                primaryPressed = false;
-            }
-            if (code == KeyEvent.VK_L) {//K key has been pressed
-                secondaryPressed = false;
-            }
-        }//implements a class that listens to keyboard inputs
+        //now resets the keypressed booleans when the key is released
+        if (code == KeyEvent.VK_W) {//if w key has been released
+            upPressed = false;
+        }
+        if (code == KeyEvent.VK_S) {//if s key has been released
+            downPressed = false;
+        }
+        if (code == KeyEvent.VK_A) {//if A key has been released
+            leftPressed = false;
+        }
+        if (code == KeyEvent.VK_D) {//if D key has been released
+            rightPressed = false;
+        }
+        if (code == KeyEvent.VK_1) {//if key 1 has been released
+            onePressed = false;
+        }
+        if (code == KeyEvent.VK_2) {
+            twoPressed = false;
+        }
+        if (code == KeyEvent.VK_3) {
+            threePressed = false;
+        }
+    } // implements a class that listens to keyboard inputs
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
     }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        int button = e.getButton(); // gets the mouse button that was clicked
+        if (button == MouseEvent.BUTTON1) { // left click
+            primaryPressed = true;
+        }
+        else if (button == MouseEvent.BUTTON3) { // right click
+            secondaryPressed = true;
+        }
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        int button = e.getButton(); // gets the mouse button that was clicked
+        if (button == MouseEvent.BUTTON1) { // left click
+            primaryPressed = false;
+        }
+        else if (button == MouseEvent.BUTTON3) { // right click
+            secondaryPressed = false;
+        }
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+}

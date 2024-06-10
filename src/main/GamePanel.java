@@ -61,7 +61,8 @@ public class GamePanel extends JPanel implements Runnable {
         this.setBackground(Color.black);//changeable colour via rgb values
         this.setDoubleBuffered(true);//all graphics are now done buffered, ie the screen gets rendered before being displayed
         //improves rendering performance
-        this.addKeyListener(keyH);//adds the key listener to the gamepanel
+        this.addKeyListener(keyH); // adds the key listener to the gamepanel
+        this.addMouseListener(keyH); // adds the mouse listener to the gamepanel
         this.setFocusable(true);//changes the focus of the gamepanel to the key inputs
     }
 
