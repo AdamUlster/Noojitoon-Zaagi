@@ -25,14 +25,14 @@ public class NPC extends Entity {
     }
 
     public void getImage() {
-        up1 = setup("npc/npc_1", 1);
-        up2 = setup("npc/npc_2", 1);
-        down1 = setup("npc/npc_3", 1);
-        down2 = setup("npc/npc_4", 1);
-        left1 = setup("npc/npc_5", 1);
-        left2 = setup("npc/npc_6", 1);
-        right1 = setup("npc/npc_7", 1);
-        right2 = setup("npc/npc_8", 1);
+        up1 = setup("npc/npc_1", 1,1);
+        up2 = setup("npc/npc_2", 1,1);
+        down1 = setup("npc/npc_3", 1,1);
+        down2 = setup("npc/npc_4", 1,1);
+        left1 = setup("npc/npc_5", 1,1);
+        left2 = setup("npc/npc_6", 1,1);
+        right1 = setup("npc/npc_7", 1,1);
+        right2 = setup("npc/npc_8", 1,1);
     }
 
     public void setAction() {

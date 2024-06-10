@@ -9,7 +9,7 @@ public class OBJ_Totem extends Entity {
         super(gp); // calls the entity class
 
         name = "Totem";
-        down1 = setup("objects/totem", 1);
+        down1 = setup("objects/totem", 1,1);
         collision = true;
 
         //create hitbox in the center
