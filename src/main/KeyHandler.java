@@ -2,6 +2,7 @@ package main;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.security.Key;
 
 //handle keyboard inputs
 public class KeyHandler implements KeyListener {
@@ -10,6 +11,7 @@ public class KeyHandler implements KeyListener {
     public boolean upPressed, downPressed, leftPressed, rightPressed;//boolean values that determine which keys are
     // pressed and which are not
     public boolean onePressed, twoPressed, threePressed;//boolean values that determine which number keys have been
+    public boolean primaryPressed, secondaryPressed;
     // pressed for sprite switching
     //DEBUG STUFF
     boolean checkDrawTime = false;
@@ -57,6 +59,11 @@ public class KeyHandler implements KeyListener {
         }
         else if (code == KeyEvent.VK_3 && gp.player.spirits[2].dead && gp.player.displayDeathMessage) { // if the spirit is dead and the death message should be displayed
             gp.ui.showMessage("You cannot switch to the turtle since the turtle is dead");
+        if (code == KeyEvent.VK_K) {//K key has been pressed
+            primaryPressed = true;
+        }
+        if (code == KeyEvent.VK_L) {//K key has been pressed
+            secondaryPressed = true;
         }
         //DEBUG STUFF
         if (code == KeyEvent.VK_T) {
@@ -95,6 +102,12 @@ public class KeyHandler implements KeyListener {
         }
         if (code == KeyEvent.VK_3) {
             threePressed = false;
+        }
+        if (code == KeyEvent.VK_K) {//K key has been pressed
+            primaryPressed = false;
+        }
+        if (code == KeyEvent.VK_L) {//K key has been pressed
+            secondaryPressed = false;
         }
     }//implements a class that listens to keyboard inputs
 }

@@ -30,14 +30,14 @@ public class MON_Windigo extends Entity {
     }
 
     public void getImage() {
-        up1 = setup("monsters/windigo", 1);
-        up2 = setup("monsters/windigo", 1);
-        down1 = setup("monsters/windigo", 1);
-        down2 = setup("monsters/windigo", 1);
-        left1 = setup("monsters/windigo", 1);
-        left2 = setup("monsters/windigo", 1);
-        right1 = setup("monsters/windigo", 1);
-        right2 = setup("monsters/windigo", 1);
+        up1 = setup("monsters/windigo", 1,1);
+        up2 = setup("monsters/windigo", 1,1);
+        down1 = setup("monsters/windigo", 1,1);
+        down2 = setup("monsters/windigo", 1,1);
+        left1 = setup("monsters/windigo", 1,1);
+        left2 = setup("monsters/windigo", 1,1);
+        right1 = setup("monsters/windigo", 1,1);
+        right2 = setup("monsters/windigo", 1,1);
     }
 
     public void setAction() {
