@@ -26,6 +26,10 @@ public class Entity {
     public boolean collisionOn = false;
     public boolean invincible = false; // sets whether the entity is immune to damage
     public int invincibilityCounter = 0; // keeps track of how long the entity is invisible for
+    public boolean displayDeathMessage = false; // whether the death message should be displayed
+    public boolean dead = false; // sets whether the entity is dead
+    public boolean deadFlicker = false; // sets whether the entity should be flickering dead
+    public int deadCounter = 0; // keeps track of how long the entity is dead for
     public int actionLockCounter = 0; // sets a pause for random movements in the npcs and other things
     public int solidAreaDefaultX, solidAreaDefaultY;
     public BufferedImage image1, image2, image3;

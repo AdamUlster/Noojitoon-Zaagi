@@ -1,7 +1,6 @@
 package main;
 
 import entity.Entity;
-import entity.Spirit;
 import object.OBJ_Heart;
 import object.OBJ_Totem;
 
@@ -20,7 +19,7 @@ public class UI {
         this.gp = gp;
         arial_40 = new Font("Arial", Font.PLAIN, 40);
         OBJ_Totem totem = new OBJ_Totem(gp);
-        totemImage = totem.image1;
+        totemImage = totem.down1;
 
         // Display hearts on screen
         Entity heart = new OBJ_Heart(gp); // creates a heart object
@@ -37,7 +36,7 @@ public class UI {
     }
 
     public void draw(Graphics g2) {
-        drawPlayerHealth(g2); // draws the player health
+        drawSpiritsHealth(g2); // draws the spirits' health
 
         g2.setFont(arial_40);
         g2.setColor(Color.white);
@@ -58,30 +57,92 @@ public class UI {
         }
     }
 
-    public void drawPlayerHealth(Graphics g2) {
+    public void drawSpiritsHealth(Graphics g2) {
 
-        // sets the coordinates of first heart in terms of the tile size
-        int x = gp.tileSize;
-        int y = gp.tileSize;
+        // sets the coordinates of the spirit name in terms of the tile size
+        int x;
+        int y = gp.tileSize * 2;
+        float fontSize; // font size of the name of the spirits
+        float scale; // a scale to scale the images when drawing them
 
-        Spirit currentSpirit = gp.player.getCurrentSpirit(); // gets the current spirit
+        g2.setFont(arial_40);
+        g2.setColor(Color.white);
 
-        // draws the blank hearts
-        for (int i = 0; i < currentSpirit.getMaxHealth() / 2; i++) { // since 2 lives means 1 heart
-            g2.drawImage(heart_blank, x, y, null);
-            x += gp.tileSize; // moves over to the right to draw the next heart
-        }
-
-        // resets the coordinates
-        x = gp.tileSize;
-        y = gp.tileSize;
-        for (int i = 0; i < currentSpirit.getHealth(); i++) {
-            g2.drawImage(heart_half, x, y, null); // draws a half heart
-            i++;
-            if (i < currentSpirit.getHealth()) { // if the player's health still is not full, make the heart full
-                g2.drawImage(heart_full, x, y, null); // draws the full heart
+        for (int i = 0; i < gp.player.spirits.length; i++) {
+            if (gp.player.spirits[i] == gp.player.getCurrentSpirit()) {
+                fontSize = 30F;
             }
-            x += gp.tileSize; // moves over to the right to draw the next heart
+            else {
+                fontSize = 20F;
+            }
+            g2.setFont(g2.getFont().deriveFont(fontSize)); // changes the font size
+
+            x = gp.tileSize;
+            g2.drawString(gp.player.spirits[i].name, x, y);
+            x += 150;
+            y -= 60;
+
+            // Adjusts the drawing of the spirits if the spirit is a turtle to account for the differences in its drawig
+            if (gp.player.spirits[i].name.equals("Turtle")) {
+                x -= 25;
+                y -= 50;
+            }
+
+            // Get the original width and height of the image
+            int originalWidth = gp.player.spirits[i].right1.getWidth();
+            int originalHeight = gp.player.spirits[i].right1.getHeight();
+
+            // Calculate scaled size
+            if (gp.player.spirits[i] == gp.player.getCurrentSpirit()) {
+                scale = 1F;
+            }
+            else {
+                scale = 0.6F;
+            }
+            int scaledWidth = (int) (originalWidth * scale);
+            int scaledHeight = (int) (originalHeight * scale);
+
+            // Draws the image at the scaled size
+            g2.drawImage(gp.player.spirits[i].right1, x, y, scaledWidth, scaledHeight, null);
+            y += 60;
+
+            // Resets the coordinates after drawing the turtle
+            if (gp.player.spirits[i].name.equals("Turtle")) {
+                x += 25;
+                y += 50;
+            }
+
+            x += 110;
+            y -= 80;
+
+            // Draws the hearts at the scaled size
+            originalWidth = heart_blank.getWidth();
+            originalHeight = heart_blank.getHeight();
+            scaledWidth = (int) (originalWidth * scale);
+            scaledHeight = (int) (originalHeight * scale);
+
+            for (int j = 0; j < gp.player.spirits[i].getMaxHealth() / 2; j++) { // since 2 lives means 1 heart
+                g2.drawImage(heart_blank, x, y, scaledWidth, scaledHeight, null);
+                x += gp.tileSize * 0.9; // moves over to the right to draw the next heart
+            }
+
+            // resets the coordinates
+            x = gp.tileSize + 260;
+
+            for (int j = 0; j < gp.player.spirits[i].getHealth(); j++) {
+                g2.drawImage(heart_half, x, y, scaledWidth, scaledHeight, null); // draws a half heart
+                j++;
+                if (j < gp.player.spirits[i].getHealth()) { // if the player's health still is not full, make the heart full
+                    g2.drawImage(heart_full, x, y, scaledWidth, scaledHeight, null); // draws the full heart
+                }
+                x += gp.tileSize * 0.9; // moves over to the right to draw the next heart
+            }
+            if (gp.player.spirits[i] == gp.player.getCurrentSpirit()) {
+                y += 170;
+            }
+            else {
+                y += 140;
+            }
         }
     }
 }

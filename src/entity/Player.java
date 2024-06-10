@@ -60,39 +60,17 @@ public class Player extends Entity {
 
     public void getPlayerImage() {
         Spirit currentSpirit = getCurrentSpirit(); // gets the current spirit
-        if (currentSpirit.name.equals("Bear")) { // walking animation for only the bear pngs
-            // call on setup method to find image files
-            up1 = setup("bear/bear_up", 1);
-            up2 = setup("bear/bear_up_2", 1);
-            down1 = setup("bear/bear_down", 1);
-            down2 = setup("bear/bear_down_2", 1);
-            left1 = setup("bear/bear_left", 1);
-            left2 = setup("bear/bear_left_2", 1);
-            right1 = setup("bear/bear_right", 1);
-            right2 = setup("bear/bear_right_2", 1);
 
-            System.out.println("image loading started");
-        }
-        else if (currentSpirit.name.equals("Eagle")) { // walking animation for only the eagle pngs
-            up1 = setup("eagle/eagle_up", 1);
-            up2 = setup("eagle/eagle_up_2", 1);
-            down1 = setup("eagle/eagle_down", 1);
-            down2 = setup("eagle/eagle_down_2", 1);
-            left1 = setup("eagle/eagle_left", 1);
-            left2 = setup("eagle/eagle_left_2", 1);
-            right1 = setup("eagle/eagle_right", 1);
-            right2 = setup("eagle/eagle_right_2", 1);
-        }
-        else if (currentSpirit.name.equals("Turtle")) {
-            up1 = setup("turtle/turtle_up", 1.8);
-            up2 = setup("turtle/turtle_up_2", 1.8);
-            down1 = setup("turtle/turtle_down", 1.8);
-            down2 = setup("turtle/turtle_down_2", 1.8);
-            left1 = setup("turtle/turtle_left", 1.8);
-            left2 = setup("turtle/turtle_left_2", 1.8);
-            right1 = setup("turtle/turtle_right", 1.8);
-            right2 = setup("turtle/turtle_right_2", 1.8);
-        }
+        // Sets the player's images to the current spirit's images
+        up1 = currentSpirit.up1;
+        up2 = currentSpirit.up2;
+        down1 = currentSpirit.down1;
+        down2 = currentSpirit.down2;
+        left1 = currentSpirit.left1;
+        left2 = currentSpirit.left2;
+        right1 = currentSpirit.right1;
+        right2 = currentSpirit.right2;
+
         System.out.println("new sprite loaded");
     }
 
@@ -173,6 +151,28 @@ public class Player extends Entity {
                 invincibilityCounter = 0;
             }
         }
+
+        if (gp.player.getCurrentSpirit().health <= 0) {
+            displayDeathMessage = false;
+            gp.player.getCurrentSpirit().dead = true;
+            deadCounter++;
+            if (deadCounter <= 240) {
+                if (deadCounter % 30 == 0) {
+                    if (deadFlicker) {
+                        deadFlicker = false;
+                    } else {
+                        deadFlicker = true;
+                    }
+                }
+            }
+            else {
+                displayDeathMessage = true; // display the death message
+                deadFlicker = false;
+                deadCounter = 0;
+                int spiritIndex = nextAliveSpirit(); // gets the next alive spirit, returns -1 otherwise
+                switchSpirit(spiritIndex);
+            }
+        }
     }
 
     public void switchSpirit(int spiritIndex) {
@@ -188,8 +188,18 @@ public class Player extends Entity {
         this.solidAreaDefaultY = getCurrentSpirit().y;
     }
 
+    public int nextAliveSpirit() {
+        for (int i = currentSpiritIndex + 1; i < currentSpiritIndex + gp.player.spirits.length; i++) {
+            int loopIndex = i % gp.player.spirits.length; // Calculates the loop index
+            if (!gp.player.spirits[loopIndex].dead) {
+                return loopIndex;
+            }
+        }
+        return -1;
+    }
+
     public void pickUpObject(int index) {
-        if (index != 999) { // if index is 999, no index was touched
+        if (index != 999) { // if index is 999, no object was touched
             String objectName = gp.obj[index].name;
             if (objectName.equals("Totem")) {
                 numTotems++; // increases the number of totems the user has collected
@@ -252,8 +262,11 @@ public class Player extends Entity {
                 }
                 break;
         }
-        if (invincible) {
+        if ((invincible && !gp.player.getCurrentSpirit().dead) || deadFlicker) {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f)); // reduces the opacity to 70% to show when the player is invincible
+        }
+        else {
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         }
 
         g2.drawImage(image, screenX, screenY, null);//draws the image, null means we cannot type
