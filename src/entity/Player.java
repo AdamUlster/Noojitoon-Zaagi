@@ -330,6 +330,7 @@ public class Player extends Entity {
             }
         }
         return -1; // returns -1 if every spirit is dead
+    }
       
     public void attacking() {
         spriteCounter++;
