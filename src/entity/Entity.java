@@ -32,6 +32,7 @@ public class Entity {
     public int invincibilityCounter = 0; // keeps track of how long the entity is invisible for
     public boolean displayDeathMessage = false; // whether the death message should be displayed
     public boolean dead = false; // sets whether the entity is dead
+    public boolean isDying = false; // sets whether the entity is dying
     public boolean deadFlicker = false; // sets whether the entity should be flickering dead
     public int deadCounter = 0; // keeps track of how long the entity is dead for
     public int actionLockCounter = 0; // sets a pause for random movements in the npcs and other things

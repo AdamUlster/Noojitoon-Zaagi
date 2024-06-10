@@ -16,9 +16,8 @@ public class KeyHandler implements KeyListener {
     //DEBUG STUFF
     boolean checkDrawTime = false;
 
-    public KeyHandler (GamePanel gp) { // constructor
+    public KeyHandler(GamePanel gp) { // constructor
         this.gp = gp;
-
     }
 
     @Override
@@ -42,72 +41,72 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_D) {//if D key has been pressed
             rightPressed = true;
         }
-        if (code == KeyEvent.VK_1 && !gp.player.spirits[0].dead) {//if 1 key has been pressed and bear is not dead
-            onePressed = true;
-        }
-        else if (code == KeyEvent.VK_1 && gp.player.spirits[0].dead && gp.player.displayDeathMessage) { // if the spirit is dead and the death message should be displayed
-            gp.ui.showMessage("You cannot switch to the bear since the bear is dead");
-        }
-        if (code == KeyEvent.VK_2 && !gp.player.spirits[1].dead) {//if key 2 has been pressed and eagle is not dead
-            twoPressed = true;
-        }
-        else if (code == KeyEvent.VK_2 && gp.player.spirits[1].dead && gp.player.displayDeathMessage) { // if the spirit is dead and the death message should be displayed
-            gp.ui.showMessage("You cannot switch to the eagle since the eagle is dead");
-        }
-        if (code == KeyEvent.VK_3 && !gp.player.spirits[2].dead) {//if key 3 has been pressed and turtle is not dead
-            threePressed = true;
-        }
-        else if (code == KeyEvent.VK_3 && gp.player.spirits[2].dead && gp.player.displayDeathMessage) { // if the spirit is dead and the death message should be displayed
-            gp.ui.showMessage("You cannot switch to the turtle since the turtle is dead");
-        if (code == KeyEvent.VK_K) {//K key has been pressed
-            primaryPressed = true;
-        }
-        if (code == KeyEvent.VK_L) {//K key has been pressed
-            secondaryPressed = true;
-        }
-        //DEBUG STUFF
-        if (code == KeyEvent.VK_T) {
-            if (checkDrawTime == false) {
-                checkDrawTime = true;
-            } else if (checkDrawTime == true) {
-                checkDrawTime = false;
+        if (!gp.player.isDying) { // runs if the player is not dying
+            if (code == KeyEvent.VK_1 && !gp.player.spirits[0].dead) {//if 1 key has been pressed and bear is not dead
+                onePressed = true;
+            } else if (code == KeyEvent.VK_1 && gp.player.spirits[0].dead && gp.player.displayDeathMessage) { // if the spirit is dead and the death message should be displayed
+                gp.ui.showMessage("You cannot switch to the bear since the bear is dead");
+            }
+            if (code == KeyEvent.VK_2 && !gp.player.spirits[1].dead) {//if key 2 has been pressed and eagle is not dead
+                twoPressed = true;
+            } else if (code == KeyEvent.VK_2 && gp.player.spirits[1].dead && gp.player.displayDeathMessage) { // if the spirit is dead and the death message should be displayed
+                gp.ui.showMessage("You cannot switch to the eagle since the eagle is dead");
+            }
+            if (code == KeyEvent.VK_3 && !gp.player.spirits[2].dead) {//if key 3 has been pressed and turtle is not dead
+                threePressed = true;
+            } else if (code == KeyEvent.VK_3 && gp.player.spirits[2].dead && gp.player.displayDeathMessage) { // if the spirit is dead and the death message should be displayed
+                gp.ui.showMessage("You cannot switch to the turtle since the turtle is dead");
+                if (code == KeyEvent.VK_K) {//K key has been pressed
+                    primaryPressed = true;
+                }
+                if (code == KeyEvent.VK_L) {//K key has been pressed
+                    secondaryPressed = true;
+                }
+                //DEBUG STUFF
+                if (code == KeyEvent.VK_T) {
+                    if (checkDrawTime == false) {
+                        checkDrawTime = true;
+                    } else if (checkDrawTime == true) {
+                        checkDrawTime = false;
+                    }
+                }
+                //continue this chain for when more moves are added
             }
         }
-        //continue this chain for when more moves are added
     }
 
-    @Override
-    public void keyReleased(KeyEvent e) {
+        @Override
+        public void keyReleased (KeyEvent e){
 
-        int code = e.getKeyCode();//returns the keycode of a key that has beeen released
+            int code = e.getKeyCode();//returns the keycode of a key that has beeen released
 
-        //now resets the keypressed booleans when the key is released
-        if (code == KeyEvent.VK_W) {//if w key has been released
-            upPressed = false;
-        }
-        if (code == KeyEvent.VK_S) {//if s key has been released
-            downPressed = false;
-        }
-        if (code == KeyEvent.VK_A) {//if A key has been released
-            leftPressed = false;
-        }
-        if (code == KeyEvent.VK_D) {//if D key has been released
-            rightPressed = false;
-        }
-        if (code == KeyEvent.VK_1) {//if key 1 has been released
-            onePressed = false;
-        }
-        if (code == KeyEvent.VK_2) {
-            twoPressed = false;
-        }
-        if (code == KeyEvent.VK_3) {
-            threePressed = false;
-        }
-        if (code == KeyEvent.VK_K) {//K key has been pressed
-            primaryPressed = false;
-        }
-        if (code == KeyEvent.VK_L) {//K key has been pressed
-            secondaryPressed = false;
-        }
-    }//implements a class that listens to keyboard inputs
-}
+            //now resets the keypressed booleans when the key is released
+            if (code == KeyEvent.VK_W) {//if w key has been released
+                upPressed = false;
+            }
+            if (code == KeyEvent.VK_S) {//if s key has been released
+                downPressed = false;
+            }
+            if (code == KeyEvent.VK_A) {//if A key has been released
+                leftPressed = false;
+            }
+            if (code == KeyEvent.VK_D) {//if D key has been released
+                rightPressed = false;
+            }
+            if (code == KeyEvent.VK_1) {//if key 1 has been released
+                onePressed = false;
+            }
+            if (code == KeyEvent.VK_2) {
+                twoPressed = false;
+            }
+            if (code == KeyEvent.VK_3) {
+                threePressed = false;
+            }
+            if (code == KeyEvent.VK_K) {//K key has been pressed
+                primaryPressed = false;
+            }
+            if (code == KeyEvent.VK_L) {//K key has been pressed
+                secondaryPressed = false;
+            }
+        }//implements a class that listens to keyboard inputs
+    }

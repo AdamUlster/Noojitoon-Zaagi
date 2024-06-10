@@ -285,6 +285,7 @@ public class Player extends Entity {
         }
 
         if (gp.player.getCurrentSpirit().health <= 0) {
+            isDying = true;
             displayDeathMessage = false;
             gp.player.getCurrentSpirit().dead = true;
             deadCounter++;
@@ -298,6 +299,7 @@ public class Player extends Entity {
                 }
             }
             else {
+                isDying = false;
                 displayDeathMessage = true; // display the death message
                 deadFlicker = false;
                 deadCounter = 0;
