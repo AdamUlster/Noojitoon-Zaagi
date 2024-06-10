@@ -131,6 +131,20 @@ public class Player extends Entity {
             attackRight2 = setup("bear/bear_right_attack_2", 1.25, 1.25);
             attackRight3 = setup("bear/bear_right_attack_3", 1.25, 1.25);
         }
+        if (getCurrentSpirit().name.equals("Eagle")) {
+            attackUp1 = setup("eagle/eagle_up_attack_1", 1.25, 1.25);
+            attackUp2 = setup("eagle/eagle_up_attack_2", 1.25, 1.25);
+            attackUp3 = setup("eagle/eagle_up_attack_3", 1.25, 1.25);
+            attackDown1 = setup("eagle/eagle_down_attack_1", 1.25, 1.25);
+            attackDown2 = setup("eagle/eagle_down_attack_2", 1.25, 1.25);
+            attackDown3 = setup("eagle/eagle_down_attack_3", 1.25, 1.25);
+            attackLeft1 = setup("eagle/eagle_left_attack_1", 1.25, 1.25);
+            attackLeft2 = setup("eagle/eagle_left_attack_2", 1.25, 1.25);
+            attackLeft3 = setup("eagle/eagle_left_attack_3", 1.25, 1.25);
+            attackRight1 = setup("eagle/eagle_right_attack_1", 1.25, 1.25);
+            attackRight2 = setup("eagle/eagle_right_attack_2", 1.25, 1.25);
+            attackRight3 = setup("eagle/eagle_right_attack_3", 1.25, 1.25);
+        }
     }
 
     public void getPlayerSpecialAttackImage () {//get sprites for secondary attack
