@@ -27,6 +27,7 @@ public class Entity {
     public int width = 48;
     public int height = 48;
     public Rectangle solidArea = new Rectangle(x, y, width, height); // the collision box of the character
+    public Rectangle attackArea = new Rectangle(0, 0, 0, 0); // the part of the spirit that is attacking the monster
 
     //COUNTER
     public int invincibilityCounter = 0; // keeps track of how long the entity is invisible for

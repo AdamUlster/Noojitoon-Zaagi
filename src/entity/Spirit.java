@@ -5,7 +5,7 @@ import main.GamePanel;
 import java.awt.*;
 
 public class Spirit extends Entity {
-    public Spirit(GamePanel gp, String name, int maxHealth, int health, int x, int y, int width, int height) {
+    public Spirit(GamePanel gp, String name, int maxHealth, int health, int x, int y, int width, int height, int x2, int y2, int width2, int height2) {
         super(gp);
         this.name = name; // sets the spirit's name to the value passed to it
         this.maxHealth = maxHealth;
@@ -45,6 +45,9 @@ public class Spirit extends Entity {
 
         // Collision box
         this.solidArea = new Rectangle(x, y, width, height);
+
+        // Attack area
+        this.attackArea = new Rectangle(x2, y2, width2, height2);
     }
 
     public int getMaxHealth() { // gets the spirit's max health

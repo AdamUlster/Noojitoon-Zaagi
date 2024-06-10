@@ -17,10 +17,13 @@ public class Player extends Entity {
 
     public int numTotems = 0; // keeps track of the number of totems the player has collected
 
-    //scaling factors for hitboxes
+    //scaling factors for hitboxes and attack areas
     public double bearHitboxScale = 0.75;//bear hit box scale
     public double eagleHitboxScale = 0.75;//eagle hit box scale
     public double turtleHitboxScale = 1;//turtle hit box scale
+    public double bearAttackBoxScale = 0.75;
+    public double eagleAttackBoxScale = 0.75;
+    public double turtleAttackBoxScale = 1;
 
     //COUNTERS
     public int primaryICD;//internal cooldown for attacks
@@ -55,15 +58,33 @@ public class Player extends Entity {
         direction = "right";//can input any direction
 
         // Initializes the spirits and their health values
-        spirits[0] = new Spirit(gp, "Bear", 6, 6, (int) (gp.tileSize * (1.0 - bearHitboxScale)) / 2,
-                (int) (gp.tileSize * (1.0 - bearHitboxScale)) / 2, (int) (gp.tileSize * bearHitboxScale),
-                (int) (gp.tileSize * bearHitboxScale));
-        spirits[1] = new Spirit(gp, "Eagle", 6, 5, (int) (gp.tileSize * (1.0 - eagleHitboxScale) / 2),
-                (int) (gp.tileSize * (1.0 - eagleHitboxScale) / 2), (int) (gp.tileSize * eagleHitboxScale),
-                (int) (gp.tileSize * eagleHitboxScale));
-        spirits[2] = new Spirit(gp, "Turtle", 8, 8, (int) (gp.tileSize * (1.0 - turtleHitboxScale) / 2) + 40,
-                (int) (gp.tileSize * (1.0 - turtleHitboxScale) / 2) + 40, (int) (gp.tileSize * turtleHitboxScale),
-                (int) (gp.tileSize * turtleHitboxScale));
+        spirits[0] = new Spirit(gp, "Bear", 6, 6,
+                (int) (gp.tileSize * (1.0 - bearHitboxScale)) / 2,
+                (int) (gp.tileSize * (1.0 - bearHitboxScale)) / 2,
+                (int) (gp.tileSize * bearHitboxScale),
+                (int) (gp.tileSize * bearHitboxScale),
+                (int) (gp.tileSize * (1.0 - bearAttackBoxScale)) / 2,
+                (int) (gp.tileSize * (1.0 - bearAttackBoxScale)) / 2,
+                (int) (gp.tileSize * bearAttackBoxScale),
+                (int) (gp.tileSize * bearAttackBoxScale));
+        spirits[1] = new Spirit(gp, "Eagle", 6, 5,
+                (int) (gp.tileSize * (1.0 - eagleHitboxScale)) / 2,
+                (int) (gp.tileSize * (1.0 - eagleHitboxScale)) / 2,
+                (int) (gp.tileSize * eagleHitboxScale),
+                (int) (gp.tileSize * eagleHitboxScale),
+                (int) (gp.tileSize * (1.0 - eagleAttackBoxScale)) / 2,
+                (int) (gp.tileSize * (1.0 - eagleAttackBoxScale)) / 2,
+                (int) (gp.tileSize * eagleAttackBoxScale),
+                (int) (gp.tileSize * eagleAttackBoxScale));
+        spirits[2] = new Spirit(gp, "Turtle", 8, 8,
+                (int) (gp.tileSize * (1.0 - turtleHitboxScale)) / 2,
+                (int) (gp.tileSize * (1.0 - turtleHitboxScale)) / 2,
+                (int) (gp.tileSize * turtleHitboxScale),
+                (int) (gp.tileSize * turtleHitboxScale),
+                (int) (gp.tileSize * (1.0 - turtleAttackBoxScale)) / 2,
+                (int) (gp.tileSize * (1.0 - turtleAttackBoxScale)) / 2,
+                (int) (gp.tileSize * turtleAttackBoxScale),
+                (int) (gp.tileSize * turtleAttackBoxScale));
         switchSpirit(0); // the player is the bear spirit to start
     }
 
@@ -322,6 +343,10 @@ public class Player extends Entity {
         this.solidArea.height = getCurrentSpirit().solidArea.height;
         this.solidAreaDefaultX = getCurrentSpirit().x;
         this.solidAreaDefaultY = getCurrentSpirit().y;
+
+        // sets the player's attack area to the current spirit's attack area
+        this.attackArea.width = getCurrentSpirit().attackArea.width;
+        this.attackArea.height = getCurrentSpirit().attackArea.height;
     }
 
     public int nextAliveSpirit() {
@@ -336,12 +361,46 @@ public class Player extends Entity {
       
     public void attacking() {
         spriteCounter++;
-System.out.println(spriteCounter);
         if (spriteCounter <= 10) {
             spriteNum = 1;
         }
         if (spriteCounter > 10 && spriteCounter <= 15) {
             spriteNum = 2;
+
+            // Save the current world coordinates and the solid areas to be able to reset to them later
+            int currentWorldX = worldX;
+            int currentWorldY = worldY;
+            int solidAreaWidth = solidArea.width;
+            int solidAreaHeight = solidArea.height;
+
+            // gets the area the user can hit
+            switch (direction) {
+                case "up":
+                    worldY -= attackArea.height;
+                    break;
+                case "down":
+                    worldY += attackArea.height;
+                    break;
+                case "left":
+                    worldX -= attackArea.width;
+                    break;
+                case "right":
+                    worldX += attackArea.width;
+                    break;
+            }
+
+            // attack area becomes solid area
+            solidArea.width = attackArea.width;
+            solidArea.height = attackArea.height;
+
+            int monsterIndex = gp.cChecker.checkEntity(this, gp.monster); // gets the monster that the user is making contact with
+            damageMonster(monsterIndex);
+
+            // Reset the world coordinates and solid area to the previous coordinates
+            worldX = currentWorldX;
+            worldY = currentWorldY;
+            solidArea.width = solidAreaWidth;
+            solidArea.height = solidAreaHeight;
         }
         if (spriteCounter > 15 && spriteCounter <= 25) {
             spriteNum = 3;
@@ -416,27 +475,52 @@ System.out.println(spriteCounter);
         }
     }
 
+    public void damageMonster(int index) { // deals damage to the monster
+        if (index != 999) { // if index is 999, no monster was touched
+            System.out.println("Hit");
+        }
+        else {
+            System.out.println("Miss");
+        }
+    }
+
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
+
+        // sets temporary screen variables to account for change in spirit position when attacking
+        int tempScreenX = screenX;
+        int tempScreenY = screenY;
 
         if (attacking && !specialAttacking) {
             switch (direction) {//check the direction, based on the direction it picks a different image
                 case "up":
+                    // Moves the sprite when doing the attacking animation
+                    tempScreenX = screenX - (int) (gp.tileSize * 0.125);
+                    tempScreenY = screenY - (int) (gp.tileSize * 0.25);
                         if (spriteNum == 1) {image = attackUp1;}
                         if (spriteNum == 2) {image = attackUp2;}
                         if (spriteNum == 3) {image = attackUp3;}
                     break;
                 case "down":
+                    // Moves the sprite when doing the attacking animation
+                    tempScreenX = screenX - (int) (gp.tileSize * 0.125);
+                    tempScreenY = screenY - (int) (gp.tileSize * 0.125);
                         if (spriteNum == 1) {image = attackDown1;}
                         if (spriteNum == 2) {image = attackDown2;}
                         if (spriteNum == 3) {image = attackDown3;}
                     break;
                 case "left":
+                    // Moves the sprite when doing the attacking animation
+                    tempScreenX = screenX - (int) (gp.tileSize * 0.125);
+                    tempScreenY = screenY - (int) (gp.tileSize * 0.125);
                         if (spriteNum == 1) {image = attackLeft1;}
                         if (spriteNum == 2) {image = attackLeft2;}
                         if (spriteNum == 3) {image = attackLeft3;}
                     break;
                 case "right":
+                    // Moves the sprite when doing the attacking animation
+                    tempScreenX = screenX - (int) (gp.tileSize * 0.125);
+                    tempScreenY = screenY - (int) (gp.tileSize * 0.125);
                         if (spriteNum == 1) {image = attackRight1;}
                         if (spriteNum == 2) {image = attackRight2;}
                         if (spriteNum == 3) {image = attackRight3;}
@@ -510,7 +594,7 @@ System.out.println(spriteCounter);
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         }
 
-        g2.drawImage(image, screenX, screenY, null);//draws the image, null means we cannot type
+        g2.drawImage(image, tempScreenX, tempScreenY, null);//draws the image, null means we cannot type
 
         // Temporary
         Spirit currentSpirit = gp.player.getCurrentSpirit();
