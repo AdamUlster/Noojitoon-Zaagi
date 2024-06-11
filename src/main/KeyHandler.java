@@ -58,18 +58,19 @@ public class KeyHandler implements KeyListener, MouseListener {
                 threePressed = true;
             } else if (code == KeyEvent.VK_3 && gp.player.spirits[2].dead && gp.player.displayDeathMessage) { // if the spirit is dead and the death message should be displayed
                 gp.ui.showMessage("You cannot switch to the turtle since the turtle is dead");
-                if (code == KeyEvent.VK_K) {//K key has been pressed
-                    primaryPressed = true;
-                }
-                if (code == KeyEvent.VK_L) {//K key has been pressed
-                    secondaryPressed = true;
-                }
-                //continue this chain for when more moves are added
             }
+            if (code == KeyEvent.VK_K) {//K key has been pressed
+                primaryPressed = true;
+            }
+            if (code == KeyEvent.VK_L) {//L key has been pressed
+                secondaryPressed = true;
+            }
+            //continue this chain for when more moves are added
         }
-        if (code == KeyEvent.VK_F) { // shoot the projectile
+        if (code == KeyEvent.VK_F && gp.player.getCurrentSpirit().name.equals("Turtle")) { // only allow the projectile to be shot if the "F" key is pressed and the current spirit is a turtle
             shotKeyPressed = true;
-          
+        }
+
         //DEBUG STUFF
         if (code == KeyEvent.VK_T) {
             if (checkDrawTime == false) {
@@ -83,7 +84,7 @@ public class KeyHandler implements KeyListener, MouseListener {
         @Override
     public void keyReleased (KeyEvent e){
 
-        int code = e.getKeyCode();//returns the keycode of a key that has beeen released
+        int code = e.getKeyCode();//returns the keycode of a key that has been released
 
         //now resets the keypressed booleans when the key is released
         if (code == KeyEvent.VK_W) {//if w key has been released

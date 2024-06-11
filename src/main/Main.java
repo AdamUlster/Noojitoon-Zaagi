@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 public class Main {
     public static void main(String[] args) {
         JFrame window = new JFrame();
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // exits program when user hits the x buton
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // exits program when user hits the x button
         window.setResizable(false); // user cannot resize the window
         window.setTitle("my 2D adventure"); // game title
 

@@ -501,20 +501,20 @@ public class Player extends Entity {
 
                 // Scales the attack boxes for the sprites
                 case "up":
-                    worldX += attackArea.width - gp.tileSize * 0.75;
-                    worldY -= attackArea.height - gp.tileSize * 0.4;
+                    worldX += (int) (attackArea.width - gp.tileSize * 0.75);
+                    worldY -= (int) (attackArea.height - gp.tileSize * 0.4);
                     break;
                 case "down":
-                    worldX += attackArea.width - gp.tileSize * 0.75;
-                    worldY += attackArea.height - gp.tileSize * 0.3;
+                    worldX += (int) (attackArea.width - gp.tileSize * 0.75);
+                    worldY += (int) (attackArea.height - gp.tileSize * 0.3);
                     break;
                 case "left":
-                    worldX -= attackArea.width - gp.tileSize * 0.4;
-                    worldY -= attackArea.height - gp.tileSize * 0.8;
+                    worldX -= (int) (attackArea.width - gp.tileSize * 0.4);
+                    worldY -= (int) (attackArea.height - gp.tileSize * 0.8);
                     break;
                 case "right":
-                    worldX += attackArea.width - gp.tileSize * 0.6;
-                    worldY -= attackArea.height - gp.tileSize * 0.8;
+                    worldX += (int) (attackArea.width - gp.tileSize * 0.6);
+                    worldY -= (int) (attackArea.height - gp.tileSize * 0.8);
                     break;
             }
 
@@ -638,49 +638,6 @@ public class Player extends Entity {
         if (attacking && !specialAttacking) {
             switch (direction) {//check the direction, based on the direction it picks a different image
                 case "up":
-                    if (spriteNum == 1) {
-                        image = attackUp1;
-                    }
-                    if (spriteNum == 2) {
-                        image = attackUp2;
-                    }
-                    if (spriteNum == 3) {
-                        image = attackUp3;
-                    }
-                    break;
-                case "down":
-                    if (spriteNum == 1) {
-                        image = attackDown1;
-                    }
-                    if (spriteNum == 2) {
-                        image = attackDown2;
-                    }
-                    if (spriteNum == 3) {
-                        image = attackDown3;
-                    }
-                    break;
-                case "left":
-                    if (spriteNum == 1) {
-                        image = attackLeft1;
-                    }
-                    if (spriteNum == 2) {
-                        image = attackLeft2;
-                    }
-                    if (spriteNum == 3) {
-                        image = attackLeft3;
-                    }
-                    break;
-                case "right":
-                    if (spriteNum == 1) {
-                        image = attackRight1;
-                    }
-                    if (spriteNum == 2) {
-                        image = attackRight2;
-                    }
-                    if (spriteNum == 3) {
-                        image = attackRight3;
-                    }
-
                     // Moves the sprite when doing the attacking animation
                     tempScreenX = screenX - (int) (gp.tileSize * 0.125);
                     tempScreenY = screenY - (int) (gp.tileSize * 0.25);
