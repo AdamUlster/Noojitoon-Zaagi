@@ -308,7 +308,7 @@ public class Player extends Entity {
             switchSpirit(2);
         }
 
-        if (keyH.shotKeyPressed && projectile.alive == false && shotAvailableCounter == 30) { // the player can only shoot one projectile at a time (and no quicker than half a second apart)
+        if (keyH.shotKeyPressed && !projectile.alive && shotAvailableCounter == 30) { // the player can only shoot one projectile at a time (and no quicker than half a second apart)
 
             // sets default coordinates for the projectile
             projectile.set(worldX, worldY, direction, true, this);
@@ -510,7 +510,7 @@ public class Player extends Entity {
     public void damageMonster(int index, int attack) { // deals damage to the monster
 
         if (index != 999) { // if index is 999, no monster was touched
-            if (gp.monster[index].invincible == false) { // if there is no cooldown
+            if (!gp.monster[index].invincible) { // if there is no cooldown
                 int damage = attack - gp.monster[index].defense;
                 if (damage < 0) { // so damage is not negative
                     damage = 0;
