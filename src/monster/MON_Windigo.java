@@ -16,6 +16,8 @@ public class MON_Windigo extends Entity {
         speed = 3;
         maxHealth = 4;
         health = maxHealth;
+        attack = 5;
+        defense = 0;
 
         // sets the collision box for the monster
         solidArea.width = (int)(gp.tileSize * hitboxScale);
@@ -63,6 +65,10 @@ public class MON_Windigo extends Entity {
             }
             actionLockCounter = 0;
         }
+    }
 
+    public void damageReaction() {
+        actionLockCounter = 0;
+        direction = gp.player.direction; // makes the monster face the player
     }
 }

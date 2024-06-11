@@ -5,11 +5,13 @@ import main.GamePanel;
 import java.awt.*;
 
 public class Spirit extends Entity {
-    public Spirit(GamePanel gp, String name, int maxHealth, int health, int x, int y, int width, int height, int x2, int y2, int width2, int height2) {
+    public Spirit(GamePanel gp, String name, int maxHealth, int health, int x, int y, int width, int height, int width2, int height2, int attack, int defense) {
         super(gp);
         this.name = name; // sets the spirit's name to the value passed to it
         this.maxHealth = maxHealth;
         this.health = health;
+        this.attack = attack;
+        this.defense = defense;
 
         // gives each spirit its own image
         if (name.equals("Bear")) {
@@ -47,7 +49,7 @@ public class Spirit extends Entity {
         this.solidArea = new Rectangle(x, y, width, height);
 
         // Attack area
-        this.attackArea = new Rectangle(x2, y2, width2, height2);
+        this.attackArea = new Rectangle(x, y, width2, height2);
     }
 
     public int getMaxHealth() { // gets the spirit's max health

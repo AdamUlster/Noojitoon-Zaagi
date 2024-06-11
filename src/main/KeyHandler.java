@@ -10,7 +10,7 @@ import java.security.Key;
 public class KeyHandler implements KeyListener, MouseListener {
 
     public GamePanel gp;
-    public boolean upPressed, downPressed, leftPressed, rightPressed;//boolean values that determine which keys are
+    public boolean upPressed, downPressed, leftPressed, rightPressed, shotKeyPressed;//boolean values that determine which keys are
     // pressed and which are not
     public boolean onePressed, twoPressed, threePressed;//boolean values that determine which number keys have been
     public boolean primaryPressed, secondaryPressed;
@@ -67,6 +67,9 @@ public class KeyHandler implements KeyListener, MouseListener {
                 //continue this chain for when more moves are added
             }
         }
+        if (code == KeyEvent.VK_F) { // shoot the projectile
+            shotKeyPressed = true;
+          
         //DEBUG STUFF
         if (code == KeyEvent.VK_T) {
             if (checkDrawTime == false) {
@@ -103,6 +106,9 @@ public class KeyHandler implements KeyListener, MouseListener {
         }
         if (code == KeyEvent.VK_3) {
             threePressed = false;
+        }
+        if (code == KeyEvent.VK_F) {
+            shotKeyPressed = false;
         }
     } // implements a class that listens to keyboard inputs
 

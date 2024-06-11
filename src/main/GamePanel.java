@@ -54,6 +54,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Entity obj[] = new Entity[10]; // to display up to 10 objects at the same time
     public Entity npc[] = new Entity[10];
     public Entity monster[] = new Entity[10];
+    public ArrayList<Entity> projectileList = new ArrayList<>(); // holds the projectiles
     ArrayList<Entity> entityList = new ArrayList<>(); // creates an array list to store all the entities
 
     public GamePanel() {//set default values for the gamepanel
@@ -120,6 +121,18 @@ public class GamePanel extends JPanel implements Runnable {
                 monster[i].update();
             }
         }
+
+        // update projectile
+        for (int i = 0; i < projectileList.size(); i++) {
+            if (projectileList.get(i) != null) { // if the projectile exists
+                if (projectileList.get(i).alive) {
+                    projectileList.get(i).update();
+                }
+                if (projectileList.get(i).alive == false) {
+                    projectileList.remove(i); // removes the projectile if it is no longer alive
+                }
+            }
+        }
     }
 
     //draw screen with updated information
@@ -154,6 +167,12 @@ public class GamePanel extends JPanel implements Runnable {
         for (int i = 0; i < monster.length; i++) { // adds every monster to the entity list
             if (monster[i] != null) {
                 entityList.add(monster[i]);
+            }
+        }
+
+        for (int i = 0; i < projectileList.size(); i++) { // adds every projectile to the entity list
+            if (projectileList.get(i) != null) {
+                entityList.add(projectileList.get(i));
             }
         }
 
