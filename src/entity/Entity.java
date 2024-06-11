@@ -63,6 +63,7 @@ public class Entity {
     public int attack;
     public int defense;
     public Projectile projectile;
+    public TargetingProjectile targetProjectile;
 
     //ITEM ATTRIBUTES
     public int useCost;

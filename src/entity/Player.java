@@ -2,6 +2,7 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import object.OBJ_EagleShot;
 import object.OBJ_Water_Jet;
 
 import java.awt.*;
@@ -59,6 +60,7 @@ public class Player extends Entity {
         speed = 4;//sets speed to 4
         direction = "right";//can input any direction
         projectile = new OBJ_Water_Jet(gp);
+        targetProjectile = new OBJ_EagleShot(gp);
 
         // Initializes the spirits and their health values
         spirits[0] = new Spirit(gp, "Bear", 10, 9,
@@ -617,13 +619,17 @@ public class Player extends Entity {
         if (spriteCounter > 25) {
 //            getPlayerImage();
             damageMonster(monsterIndex, attack);
-=======
             if (getCurrentSpirit().name.equals("Eagle")) {
                 int targetSmallestDistance = -1;
-                int targetIndex; //
+                int targetIndex = -1;
                 for (int i = 0; i < gp.monster.length ; i ++) {
-                    if (targetSmallestDistance < ()
+                    if (targetSmallestDistance < getDistance(i)) {
+                        targetIndex = i;
+                        targetSmallestDistance = getDistance(i);
+                    }
                 }
+                // add the projectile to the list of projectiles
+                gp.targetProjectileList.add(targetProjectile);
             }
                 //use search algorithm to find the index of the nearest monster
                 //create targeting projectile that inputs this index of the 'nearest monster'
@@ -638,7 +644,8 @@ public class Player extends Entity {
         }
     }
     public int getDistance (int i) {//gets current distance from player to a monster
-        int currentDistance =
+        int currentDistance = (int) Math.sqrt(Math.pow(worldX - gp.monster[i].worldX, 2) + Math.pow(worldY - gp.monster[i].worldY, 2)); // calculates the distance between the player and the monster
+        return currentDistance;
     }
 
     public void specialAttacking() {
