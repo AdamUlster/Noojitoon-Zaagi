@@ -9,7 +9,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class Entity {
-    GamePanel gp;
+    protected GamePanel gp;
+    public BufferedImage image1, image2, image3;
     public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
     public BufferedImage attackUp1, attackUp2, attackUp3, attackDown1, attackDown2,
             attackDown3, attackLeft1, attackLeft2, attackLeft3, attackRight1,
@@ -31,32 +32,42 @@ public class Entity {
 
     //COUNTER
     public int invincibilityCounter = 0; // keeps track of how long the entity is invisible for
-    public boolean displayDeathMessage = false; // whether the death message should be displayed
-    public boolean dead = false; // sets whether the entity is dead
-    public boolean isDying = false; // sets whether the entity is dying
-    public boolean deadFlicker = false; // sets whether the entity should be flickering dead
     public int deadCounter = 0; // keeps track of how long the entity is dead for
     public int actionLockCounter = 0; // sets a pause for random movements in the npcs and other things
-    public int solidAreaDefaultX, solidAreaDefaultY;
-    public BufferedImage image1, image2, image3;
     public int spriteCounter = 0;
+    public int shotAvailableCounter = 0; // sets a counter that tracks whether the user can shoot a projectile
+    int dyingCounter = 0;
+    int healthBarCounter = 0;
 
     //STATE
     public int worldX, worldY;
+    public int solidAreaDefaultX, solidAreaDefaultY;
     public String direction = "down";
     public int spriteNum = 1;
     public boolean invincible = false; // sets whether the entity is immune to damage
     public boolean collisionOn = false;
     boolean attacking = false;
     boolean specialAttacking = false;
+    public boolean displayDeathMessage = false; // whether the death message should be displayed
+    public boolean alive = true; // keeps track of whether the projectile is alive
+    public boolean dead = false; // sets whether the entity is dead
+    public boolean isDying = false; // sets whether the entity is dying
+    public boolean deadFlicker = false; // sets whether the entity should be flickering dead
+    public boolean healthBarOn = false; // whether the monster has a health bar above them
 
     //CHARACTER ATTRIBUTES
     public int maxHealth; // maximum number of lives the entity has
     public int health; // current number of lives the entity has
     public String name;
     public boolean collision = false;
-    public int type; // 0= player, 1 = NPC, 2 = monster
+    public int type; // 0 = player, 1 = NPC, 2 = monster
     public int speed;
+    public int attack;
+    public int defense;
+    public Projectile projectile;
+
+    //ITEM ATTRIBUTES
+    public int useCost;
 
     public Entity(GamePanel gp) {
         this.gp = gp;
@@ -64,6 +75,8 @@ public class Entity {
 
     public void setAction() {
     }
+
+    public void damageReaction() {} // controls the monster's reaction to taking damage. This method is modified in the individual monster classes
 
     public void update() {
         setAction();
@@ -79,10 +92,11 @@ public class Entity {
 
         if (this.type == 2 && contactPlayer) { // if this class is a monster and the monster has made contact with the player
             if (!gp.player.invincible) {
-                currentSpirit.health -= 1;
+
+                int damage = attack - gp.player.defense;
+                currentSpirit.health -= damage;
                 gp.player.invincible = true; // the player is now invincible for a given period of time
             }
-
         }
 
         // entity can only move if collision is false
@@ -111,6 +125,22 @@ public class Entity {
                 spriteNum = 1;
             }
             spriteCounter = 0;//resets the sprite counter
+        }
+
+        // Gives the player 0.67 seconds of invincibility after making contact with a monster
+        if (invincible || gp.player.invincible) { // if the entity or another player is invisible
+            invincibilityCounter++;
+            if (invincibilityCounter > 40) {
+                if (invincible) { // if another entity is invisible, make it visible
+                    healthBarOn = true; // the monster's health bar should now be displayed
+                    healthBarCounter = 0; // resets the health bar counter
+                    invincible = false;
+                }
+                else { // if the player is invisible, make it visible
+                    gp.player.invincible = false;
+                }
+                invincibilityCounter = 0;
+            }
         }
     }
 
@@ -159,9 +189,30 @@ public class Entity {
                         }
                         break;
                 }
-                g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+
+                // Monster health bar
+                if (type == 2 && healthBarOn) { // if the entity is a monster and the health bar should be displayed
+                    double oneHealthLength = gp.tileSize / maxHealth; // size of one of a monster's lives
+                    double healthBarValue = oneHealthLength * health;
+
+                    g2.setColor(new Color(35, 35, 35));
+                    g2.fillRect(screenX - 1, screenY - 16, gp.tileSize + 2, 12); // displays the outline above the health bar
+
+                    g2.setColor(new Color(255, 0, 0));
+                    g2.fillRect(screenX, screenY - 15, (int) healthBarValue, 10); // subtracts from screenY to display above monster and draws the rectangle the same size as the monster's health
+
+                    healthBarCounter ++;
+
+                    if (healthBarCounter > 600) { // after 10 seconds after its appearance, the monster's health bar disappears
+                        healthBarCounter = 0;
+                        healthBarOn = false;
+                    }
+                }
+                g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null); // draws the attacking animation
             }
-//            g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
+
+            // For debugging
+            //g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
         }
     }
 
