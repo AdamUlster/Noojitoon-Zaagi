@@ -61,7 +61,7 @@ public class Player extends Entity {
         projectile = new OBJ_Water_Jet(gp);
 
         // Initializes the spirits and their health values
-        spirits[0] = new Spirit(gp, "Bear", 6, 6,
+        spirits[0] = new Spirit(gp, "Bear", 10, 9,
                 (int) (gp.tileSize * (1.0 - bearHitboxScale)) / 2,
                 (int) (gp.tileSize * (1.0 - bearHitboxScale)) / 2,
                 (int) (gp.tileSize * bearHitboxScale),
@@ -617,6 +617,17 @@ public class Player extends Entity {
         if (spriteCounter > 25) {
 //            getPlayerImage();
             damageMonster(monsterIndex, attack);
+=======
+            if (getCurrentSpirit().name.equals("Eagle")) {
+                int targetSmallestDistance = -1;
+                int targetIndex; //
+                for (int i = 0; i < gp.monster.length ; i ++) {
+                    if (targetSmallestDistance < ()
+                }
+            }
+                //use search algorithm to find the index of the nearest monster
+                //create targeting projectile that inputs this index of the 'nearest monster'
+
             spriteNum = 1;
             spriteCounter = 0;
             attacking = false;
@@ -625,6 +636,9 @@ public class Player extends Entity {
         if (shotAvailableCounter < 30) { // after half a second
             shotAvailableCounter ++;
         }
+    }
+    public int getDistance (int i) {//gets current distance from player to a monster
+        int currentDistance =
     }
 
     public void specialAttacking() {
@@ -655,6 +669,31 @@ public class Player extends Entity {
         if (spriteCounter > 40) {
 //            getPlayerImage();
             damageMonster(monsterIndex, attack);
+          
+            if (getCurrentSpirit().name.equals("Bear")) {//berserker mode for bear
+                System.out.println(spirits[0].health);
+                if (spirits[0].health < 8) {
+                    spirits[0].health += 3;
+                } else {
+                    spirits[0].health = spirits[0].maxHealth;
+                }
+                //TODO
+                // find a way to increase attack for 10 seconds or smth idk
+            }
+            if (getCurrentSpirit().name.equals("Turtle")) {
+                if (spirits[0].health < spirits[0].maxHealth) {
+                    spirits[0].health = spirits[0].maxHealth;
+                }
+                if (spirits[1].health < spirits[0].maxHealth) {
+                    spirits[1].health = spirits[1].maxHealth;
+                }
+                if (spirits[2].health < spirits[0].maxHealth) {
+                    spirits[2].health = spirits[2].maxHealth;
+                }
+                //TODO
+                // once sprite health has been decided, we can hard code some healing numbers instead of restoring all health
+            }
+
             spriteNum = 1;
             spriteCounter = 0;
             specialAttacking = false;
@@ -771,132 +810,60 @@ public class Player extends Entity {
         if (specialAttacking && !attacking) {
             switch (direction) {//check the direction, based on the direction it picks a different image
                 case "up":
-                    if (spriteNum == 1) {
-                        image = specialUp1;
-                    }
-                    if (spriteNum == 2) {
-                        image = specialUp2;
-                    }
-                    if (spriteNum == 3) {
-                        image = specialUp3;
-                    }
-                    if (spriteNum == 4) {
-                        image = specialUp4;
-                    }
-                    if (spriteNum == 5) {
-                        image = specialUp5;
-                    }
-                    if (spriteNum == 6) {
-                        image = specialUp6;
-                    }
-                    if (spriteNum == 7) {
-                        image = specialUp7;
-                    }
+                    if (spriteNum == 1) {image = specialUp1;}
+                    if (spriteNum == 2) {image = specialUp2;}
+                    if (spriteNum == 3) {image = specialUp3;}
+                    if (spriteNum == 4) {image = specialUp4;}
+                    if (spriteNum == 5) {image = specialUp5;}
+                    if (spriteNum == 6) {image = specialUp6;}
+                    if (spriteNum == 7) {image = specialUp7;}
                     break;
                 case "down":
-                    if (spriteNum == 1) {
-                        image = specialDown1;
-                    }
-                    if (spriteNum == 2) {
-                        image = specialDown2;
-                    }
-                    if (spriteNum == 3) {
-                        image = specialDown3;
-                    }
-                    if (spriteNum == 4) {
-                        image = specialDown4;
-                    }
-                    if (spriteNum == 5) {
-                        image = specialDown5;
-                    }
-                    if (spriteNum == 6) {
-                        image = specialDown6;
-                    }
-                    if (spriteNum == 7) {
-                        image = specialDown7;
-                    }
+                    if (spriteNum == 1) {image = specialDown1;}
+                    if (spriteNum == 2) {image = specialDown2;}
+                    if (spriteNum == 3) {image = specialDown3;}
+                    if (spriteNum == 4) {image = specialDown4;}
+                    if (spriteNum == 5) {image = specialDown5;}
+                    if (spriteNum == 6) {image = specialDown6;}
+                    if (spriteNum == 7) {image = specialDown7;}
                     break;
                 case "left":
-                    if (spriteNum == 1) {
-                        image = specialLeft1;
-                    }
-                    if (spriteNum == 2) {
-                        image = specialLeft2;
-                    }
-                    if (spriteNum == 3) {
-                        image = specialLeft3;
-                    }
-                    if (spriteNum == 4) {
-                        image = specialLeft4;
-                    }
-                    if (spriteNum == 5) {
-                        image = specialLeft5;
-                    }
-                    if (spriteNum == 6) {
-                        image = specialLeft6;
-                    }
-                    if (spriteNum == 7) {
-                        image = specialLeft7;
-                    }
+                    if (spriteNum == 1) {image = specialLeft1;}
+                    if (spriteNum == 2) {image = specialLeft2;}
+                    if (spriteNum == 3) {image = specialLeft3;}
+                    if (spriteNum == 4) {image = specialLeft4;}
+                    if (spriteNum == 5) {image = specialLeft5;}
+                    if (spriteNum == 6) {image = specialLeft6;}
+                    if (spriteNum == 7) {image = specialLeft7;}
                     break;
                 case "right":
-                    if (spriteNum == 1) {
-                        image = specialRight1;
-                    }
-                    if (spriteNum == 2) {
-                        image = specialRight2;
-                    }
-                    if (spriteNum == 3) {
-                        image = specialRight3;
-                    }
-                    if (spriteNum == 4) {
-                        image = specialRight4;
-                    }
-                    if (spriteNum == 5) {
-                        image = specialRight5;
-                    }
-                    if (spriteNum == 6) {
-                        image = specialRight6;
-                    }
-                    if (spriteNum == 7) {
-                        image = specialRight7;
-                    }
+                    if (spriteNum == 1) {image = specialRight1;}
+                    if (spriteNum == 2) {image = specialRight2;}
+                    if (spriteNum == 3) {image = specialRight3;}
+                    if (spriteNum == 4) {image = specialRight4;}
+                    if (spriteNum == 5) {image = specialRight5;}
+                    if (spriteNum == 6) {image = specialRight6;}
+                    if (spriteNum == 7) {image = specialRight7;}
                     break;
             }
         }
         if (!specialAttacking && !attacking) {
             switch (direction) {//check the direction, based on the direction it picks a different image
                 case "up":
-                    if (spriteNum == 1) {
-                        image = up1;
-                    }
-                    if (spriteNum == 2) {
-                        image = up2;
-                    }
+                    if (spriteNum == 1) {image = up1;}
+                    if (spriteNum == 2) {image = up2;}
                     break;
                 case "down":
-                    if (spriteNum == 1) {
-                        image = down1;
-                    }
-                    if (spriteNum == 2) {
-                        image = down2;
-                    }
+                    if (spriteNum == 1) {image = down1;}
+                    if (spriteNum == 2) {image = down2;}
                     break;
                 case "left":
-                    if (spriteNum == 1) {
-                        image = left1;
-                    }
-                    if (spriteNum == 2) {
-                        image = left2;
-                    }
+                    if (spriteNum == 1) {image = left1;}
+                    if (spriteNum == 2) {image = left2;}
                     break;
                 case "right":
-                    if (spriteNum == 1) {
-                        image = right1;
-                    }
-                    if (spriteNum == 2) {
-                        image = right2;
-                    }
+                    if (spriteNum == 1) {image = right1;}
+                    if (spriteNum == 2) {image = right2;}
                     break;
             }
         }

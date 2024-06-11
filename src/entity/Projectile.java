@@ -43,15 +43,6 @@ public class Projectile extends Entity {
         if (health <= 0) {
             alive = false; // the projectile disappears when it has no more health
         }
-        spriteCounter ++;
-        if (spriteCounter > 12) {
-            if (spriteNum == 1) {
-                spriteNum = 2;
-            }
-            else if (spriteNum == 2) {
-                spriteNum = 1;
-            }
-            spriteCounter = 0;
-        }
+
     }
 }

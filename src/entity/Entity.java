@@ -140,36 +140,20 @@ public class Entity {
                     worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
                 switch (direction) {//check the direction, based on the direction it picks a different image
                     case "up":
-                        if (spriteNum == 1) {
-                            image = up1;
-                        }
-                        if (spriteNum == 2) {
-                            image = up2;
-                        }
+                        if (spriteNum == 1) {image = up1;}
+                        if (spriteNum == 2) {image = up2;}
                         break;
                     case "down":
-                        if (spriteNum == 1) {
-                            image = down1;
-                        }
-                        if (spriteNum == 2) {
-                            image = down2;
-                        }
+                        if (spriteNum == 1) {image = down1;}
+                        if (spriteNum == 2) {image = down2;}
                         break;
                     case "left":
-                        if (spriteNum == 1) {
-                            image = left1;
-                        }
-                        if (spriteNum == 2) {
-                            image = left2;
-                        }
+                        if (spriteNum == 1) {image = left1;}
+                        if (spriteNum == 2) {image = left2;}
                         break;
                     case "right":
-                        if (spriteNum == 1) {
-                            image = right1;
-                        }
-                        if (spriteNum == 2) {
-                            image = right2;
-                        }
+                        if (spriteNum == 1) {image = right1;}
+                        if (spriteNum == 2) {image = right2;}
                         break;
                 }
 
