@@ -22,9 +22,9 @@ public class Player extends Entity {
     public double bearHitboxScale = 0.75;//bear hit box scale
     public double eagleHitboxScale = 0.75;//eagle hit box scale
     public double turtleHitboxScale = 1;//turtle hit box scale
-    public double bearAttackBoxScaleSize = 0.85;
-    public double eagleAttackBoxScaleSize = 0.85;
-    public double turtleAttackBoxScaleSize = 0.85;
+    public double bearAttackBoxScaleSize = 1.25;
+    public double eagleAttackBoxScaleSize = 1.25;
+    public double turtleAttackBoxScaleSize = 1;
 
 
     //COUNTERS
@@ -409,20 +409,7 @@ public class Player extends Entity {
             switchSpirit(2);
         }
 
-        if (keyH.shotKeyPressed && !projectile.alive && shotAvailableCounter == 30) { // the player can only shoot one projectile at a time (and no quicker than half a second apart)
 
-            // sets default coordinates for the projectile
-            projectile.set(worldX, worldY, direction, true, this);
-
-            // add the projectile to the list of projectiles
-            gp.projectileList.add(projectile);
-
-            shotAvailableCounter = 0; // resets the counter
-        }
-
-        if (shotAvailableCounter < 30) { // after half a second
-            shotAvailableCounter ++;
-        }
 
         if (gp.player.getCurrentSpirit().health <= 0) {
             isDying = true;
@@ -497,24 +484,90 @@ public class Player extends Entity {
             int solidAreaHeight = solidArea.height;
 
             // gets the area the user can hit
+//            switch (direction) {
+//
+//                // Scales the attack boxes for the sprites
+//                case "up":
+//                    worldX += (int) (attackArea.width - gp.tileSize * 0.75);
+//                    worldY -= (int) (attackArea.height - gp.tileSize * 0.4);
+//                    break;
+//                case "down":
+//                    worldX += (int) (attackArea.width - gp.tileSize * 0.75);
+//                    worldY += (int) (attackArea.height - gp.tileSize * 0.3);
+//                    break;
+//                case "left":
+//                    worldX -= (int) (attackArea.width - gp.tileSize * 0.4);
+//                    worldY -= (int) (attackArea.height - gp.tileSize * 0.8);
+//                    break;
+//                case "right":
+//                    worldX += (int) (attackArea.width - gp.tileSize * 0.6);
+//                    worldY -= (int) (attackArea.height - gp.tileSize * 0.8);
+//                    break;
+//            }
             switch (direction) {
-
-                // Scales the attack boxes for the sprites
                 case "up":
-                    worldX += (int) (attackArea.width - gp.tileSize * 0.75);
-                    worldY -= (int) (attackArea.height - gp.tileSize * 0.4);
+                    switch(getCurrentSpirit().name) {
+                        case "Bear":
+                            worldX += (int) (attackArea.width - (gp.tileSize * 1.35));
+                            worldY -= (int) (attackArea.height + (gp.tileSize * 0.3));
+                            break;
+                        case "Eagle":
+                            worldX += (int) (attackArea.width - (gp.tileSize * 1.35));
+                            worldY -= (int) (attackArea.height + (gp.tileSize * 0.3));
+                            break;
+                        case "Turtle":
+                            worldX += (int) (attackArea.width - (gp.tileSize * 0.65));
+                            worldY -= (int) (attackArea.height + (gp.tileSize * 0.4));
+                            break;
+                    }
                     break;
                 case "down":
-                    worldX += (int) (attackArea.width - gp.tileSize * 0.75);
-                    worldY += (int) (attackArea.height - gp.tileSize * 0.3);
+                    switch(getCurrentSpirit().name) {
+                        case "Bear":
+                            worldX += (int) (attackArea.width - (gp.tileSize * 1.35));
+                            worldY += (int) (attackArea.height + (gp.tileSize * -0.5));
+                            break;
+                        case "Eagle":
+                            worldX += (int) (attackArea.width - (gp.tileSize * 1.35));
+                            worldY += (int) (attackArea.height + (gp.tileSize * -0.5));
+                            break;
+                        case "Turtle":
+                            worldX += (int) (attackArea.width - (gp.tileSize * 0.6));
+                            worldY += (int) (attackArea.height + (gp.tileSize * 0.4));
+                            break;
+                    }
                     break;
                 case "left":
-                    worldX -= (int) (attackArea.width - gp.tileSize * 0.4);
-                    worldY -= (int) (attackArea.height - gp.tileSize * 0.8);
+                    switch(getCurrentSpirit().name) {
+                        case "Bear":
+                            worldX -= (int) (attackArea.width + (gp.tileSize * 0.2));
+                            worldY += (int) (attackArea.height - (gp.tileSize * 1.4));
+                            break;
+                        case "Eagle":
+                            worldX -= (int) (attackArea.width + (gp.tileSize * 0.2));
+                            worldY += (int) (attackArea.height - (gp.tileSize * 1.2));
+                            break;
+                        case "Turtle":
+                            worldX -= (int) (attackArea.width + (gp.tileSize * 0.3));
+                            worldY += (int) (attackArea.height - (gp.tileSize * 0.6));
+                            break;
+                    }
                     break;
                 case "right":
-                    worldX += (int) (attackArea.width - gp.tileSize * 0.6);
-                    worldY -= (int) (attackArea.height - gp.tileSize * 0.8);
+                    switch(getCurrentSpirit().name) {
+                        case "Bear":
+                            worldX += (int) (attackArea.width - (gp.tileSize * 0.4));
+                            worldY -= (int) (attackArea.height + (gp.tileSize * 1));
+                            break;
+                        case "Eagle":
+                            worldX += (int) (attackArea.width - (gp.tileSize * 0.4));
+                            worldY -= (int) (attackArea.height + (gp.tileSize * 1.3));
+                            break;
+                        case "Turtle":
+                            worldX += (int) (attackArea.width + (gp.tileSize * 0.5));
+                            worldY += (int) (attackArea.height - (gp.tileSize * 0.5));
+                            break;
+                    }
                     break;
             }
 
@@ -533,13 +586,40 @@ public class Player extends Entity {
         }
         if (spriteCounter > 15 && spriteCounter <= 25) {
             spriteNum = 3;
+            if (getCurrentSpirit().name.equals("Turtle") && !projectile.alive && shotAvailableCounter == 30) { // the player can only shoot one projectile at a time (and no quicker than half a second apart)
+
+                // sets default coordinates for the projectile
+                switch (direction) {
+                    case"up":
+                        projectile.set(worldX + (int) (attackArea.width - (gp.tileSize * 0.65)), worldY - (int) (attackArea.height + (gp.tileSize * 0.4)), direction, true, this);
+                        break;
+                    case "down":
+                        projectile.set(worldX + (int) (attackArea.width - (gp.tileSize * 0.6)), worldY + (int) (attackArea.height + (gp.tileSize * 0.4)), direction, true, this);
+                        break;
+                    case "left":
+                        projectile.set(worldX - (int) (attackArea.width + (gp.tileSize * 0.3)), worldY + (int) (attackArea.height - (gp.tileSize * 0.6)), direction, true, this);
+                        break;
+                    case "right":
+                        projectile.set(worldX + (int) (attackArea.width + (gp.tileSize * 0.5)), worldY + (int) (attackArea.height - (gp.tileSize * 0.5)), direction, true, this);
+                        break;
+                }
+
+                // add the projectile to the list of projectiles
+                gp.projectileList.add(projectile);
+
+                shotAvailableCounter = 0; // resets the counter
+            }
         }
         if (spriteCounter > 25) {
 //            getPlayerImage();
             spriteNum = 1;
             spriteCounter = 0;
             attacking = false;
+        }
 
+
+        if (shotAvailableCounter < 30) { // after half a second
+            shotAvailableCounter ++;
         }
     }
 
@@ -818,20 +898,68 @@ public class Player extends Entity {
         tempScreenY = screenY + solidArea.y;
         switch (direction) {
             case "up":
-                tempScreenX = (int) (screenX + attackArea.width - (gp.tileSize * 0.75));
-                tempScreenY = (int) (screenY - attackArea.height + (gp.tileSize * 0.4));
+                switch(getCurrentSpirit().name) {
+                    case "Bear":
+                        tempScreenX = (int) (screenX + attackArea.width - (gp.tileSize * 1.35));
+                        tempScreenY = (int) (screenY - attackArea.height + (gp.tileSize * 0.3));
+                        break;
+                    case "Eagle":
+                        tempScreenX = (int) (screenX + attackArea.width - (gp.tileSize * 1.35));
+                        tempScreenY = (int) (screenY - attackArea.height + (gp.tileSize * 0.3));
+                        break;
+                    case "Turtle":
+                        tempScreenX = (int) (screenX + attackArea.width - (gp.tileSize * 0.65));
+                        tempScreenY = (int) (screenY - attackArea.height + (gp.tileSize * 0.4));
+                        break;
+                }
                 break;
             case "down":
-                tempScreenX = (int) (screenX + attackArea.width - (gp.tileSize * 0.75));
-                tempScreenY = (int) (screenY + attackArea.height - (gp.tileSize * 0.3));
+                switch(getCurrentSpirit().name) {
+                    case "Bear":
+                        tempScreenX = (int) (screenX + attackArea.width - (gp.tileSize * 1.35));
+                        tempScreenY = (int) (screenY + attackArea.height + (gp.tileSize * -0.5));
+                        break;
+                    case "Eagle":
+                        tempScreenX = (int) (screenX + attackArea.width - (gp.tileSize * 1.35));
+                        tempScreenY = (int) (screenY + attackArea.height + (gp.tileSize * -0.5));
+                        break;
+                    case "Turtle":
+                        tempScreenX = (int) (screenX + attackArea.width - (gp.tileSize * 0.6));
+                        tempScreenY = (int) (screenY + attackArea.height + (gp.tileSize * 0.4));
+                        break;
+                }
                 break;
             case "left":
-                tempScreenX = (int) (screenX - attackArea.width + (gp.tileSize * 0.4));
-                tempScreenY = (int) (screenY - attackArea.height + (gp.tileSize * 0.8));
+                switch(getCurrentSpirit().name) {
+                    case "Bear":
+                        tempScreenX = (int) (screenX - attackArea.width + (gp.tileSize * 0.2));
+                        tempScreenY = (int) (screenY + attackArea.height - (gp.tileSize * 1.4));
+                        break;
+                    case "Eagle":
+                        tempScreenX = (int) (screenX - attackArea.width + (gp.tileSize * 0.2));
+                        tempScreenY = (int) (screenY + attackArea.height - (gp.tileSize * 1.2));
+                        break;
+                    case "Turtle":
+                        tempScreenX = (int) (screenX - attackArea.width + (gp.tileSize * 0.3));
+                        tempScreenY = (int) (screenY + attackArea.height - (gp.tileSize * 0.6));
+                        break;
+                }
                 break;
             case "right":
-                tempScreenX = (int) (screenX + attackArea.width - (gp.tileSize * 0.3));
-                tempScreenY = (int) (screenY - attackArea.height + (gp.tileSize * 0.8));
+                switch(getCurrentSpirit().name) {
+                    case "Bear":
+                        tempScreenX = (int) (screenX + attackArea.width - (gp.tileSize * 0.4));
+                        tempScreenY = (int) (screenY - attackArea.height + (gp.tileSize * 1));
+                        break;
+                    case "Eagle":
+                        tempScreenX = (int) (screenX + attackArea.width - (gp.tileSize * 0.4));
+                        tempScreenY = (int) (screenY - attackArea.height + (gp.tileSize * 1.3));
+                        break;
+                    case "Turtle":
+                        tempScreenX = (int) (screenX + attackArea.width + (gp.tileSize * 0.5));
+                        tempScreenY = (int) (screenY + attackArea.height - (gp.tileSize * 0.5));
+                        break;
+                }
                 break;
         }
         g2.drawRect(tempScreenX, tempScreenY, attackArea.width, attackArea.height);
