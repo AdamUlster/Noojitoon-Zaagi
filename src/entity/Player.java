@@ -26,10 +26,13 @@ public class Player extends Entity {
     public double eagleAttackBoxScaleSize = 1.25;
     public double turtleAttackBoxScaleSize = 1;
 
+    //INDICES
+    int monsterIndex;
 
     //COUNTERS
-    public int primaryICD;//internal cooldown for attacks
-    public int secondaryICD;//internal cooldown for special/secondary moves
+    public int invincibilityCounter = 0;
+    public int primaryICD = 0;//internal cooldown for attacks
+    public int secondaryICD = 0;//internal cooldown for special/secondary moves
 
     public Player(GamePanel gp, KeyHandler keyH) { //create default attributes (constructor)
 
@@ -38,9 +41,6 @@ public class Player extends Entity {
 
         screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
-
-        primaryICD = 30;//set internal cooldown
-        secondaryICD = 200;//set internal cooldown
 
         setDefaultValues();//sets default values for the player
         getPlayerImage();
@@ -68,7 +68,7 @@ public class Player extends Entity {
                 (int) (gp.tileSize * bearHitboxScale),
                 (int) (gp.tileSize * bearAttackBoxScaleSize),
                 (int) (gp.tileSize * bearAttackBoxScaleSize),
-                1, 1);
+                1, 4);
         spirits[1] = new Spirit(gp, "Eagle", 6, 5,
                 (int) (gp.tileSize * eagleHitboxScale) / 2,
                 (int) (gp.tileSize * eagleHitboxScale) / 2,
@@ -76,7 +76,7 @@ public class Player extends Entity {
                 (int) (gp.tileSize * eagleHitboxScale),
                 (int) (gp.tileSize * eagleAttackBoxScaleSize),
                 (int) (gp.tileSize * eagleAttackBoxScaleSize),
-                1, 1);
+                1, 4);
         spirits[2] = new Spirit(gp, "Turtle", 8, 8,
                 (int) (gp.tileSize * (1.0 - turtleHitboxScale)) / 2,
                 (int) (gp.tileSize * (1.0 - turtleHitboxScale)) / 2,
@@ -84,7 +84,7 @@ public class Player extends Entity {
                 (int) (gp.tileSize * turtleHitboxScale),
                 (int) (gp.tileSize * turtleAttackBoxScaleSize),
                 (int) (gp.tileSize * turtleAttackBoxScaleSize),
-                1, 1);
+                1, 4);
         switchSpirit(0); // the player is the bear spirit to start
     }
 
@@ -400,6 +400,14 @@ public class Player extends Entity {
                 }
             }
         }
+            if (invincible) { // if the player is invisible
+                invincibilityCounter++;
+                if (invincibilityCounter > 40) {
+                    invincible = false;
+                    invincibilityCounter = 0;
+                }
+            }
+
         if (keyH.onePressed) {
             switchSpirit(0); // switches to the bear
         } else if (keyH.twoPressed) {
@@ -408,8 +416,6 @@ public class Player extends Entity {
         } else if (keyH.threePressed) {
             switchSpirit(2);
         }
-
-
 
         if (gp.player.getCurrentSpirit().health <= 0) {
             isDying = true;
@@ -470,7 +476,6 @@ public class Player extends Entity {
 
     public void attacking() {
         spriteCounter++;
-        System.out.println(spriteCounter);
         if (spriteCounter <= 10) {
             spriteNum = 1;
         }
@@ -575,8 +580,7 @@ public class Player extends Entity {
             solidArea.width = attackArea.width;
             solidArea.height = attackArea.height;
 
-            int monsterIndex = gp.cChecker.checkEntity(this, gp.monster); // gets the monster that the user is making contact with
-            damageMonster(monsterIndex, attack);
+            monsterIndex = gp.cChecker.checkEntity(this, gp.monster); // gets the monster that the user is making contact with
 
             // Reset the world coordinates and solid area to the previous coordinates
             worldX = currentWorldX;
@@ -611,6 +615,9 @@ public class Player extends Entity {
             }
         }
         if (spriteCounter > 25) {
+//            getPlayerImage();
+            damageMonster(monsterIndex, attack);
+=======
             if (getCurrentSpirit().name.equals("Eagle")) {
                 int targetSmallestDistance = -1;
                 int targetIndex; //
@@ -620,11 +627,11 @@ public class Player extends Entity {
             }
                 //use search algorithm to find the index of the nearest monster
                 //create targeting projectile that inputs this index of the 'nearest monster'
+
             spriteNum = 1;
             spriteCounter = 0;
             attacking = false;
         }
-
 
         if (shotAvailableCounter < 30) { // after half a second
             shotAvailableCounter ++;
@@ -641,6 +648,7 @@ public class Player extends Entity {
             spriteNum = 1;
         }
         if (spriteCounter > 10 && spriteCounter <= 15) {
+            monsterIndex = gp.cChecker.checkEntity(this, gp.monster); // gets the monster that the user is making contact with
             spriteNum = 2;
         }
         if (spriteCounter > 15 && spriteCounter <= 20) {
@@ -660,6 +668,8 @@ public class Player extends Entity {
         }
         if (spriteCounter > 40) {
 //            getPlayerImage();
+            damageMonster(monsterIndex, attack);
+          
             if (getCurrentSpirit().name.equals("Bear")) {//berserker mode for bear
                 System.out.println(spirits[0].health);
                 if (spirits[0].health < 8) {
@@ -683,11 +693,26 @@ public class Player extends Entity {
                 //TODO
                 // once sprite health has been decided, we can hard code some healing numbers instead of restoring all health
             }
+
             spriteNum = 1;
             spriteCounter = 0;
             specialAttacking = false;
-
         }
+
+        int currentWorldX = worldX;
+        int currentWorldY = worldY;
+        int solidAreaWidth = solidArea.width;
+        int solidAreaHeight = solidArea.height;
+
+        // attack area becomes solid area
+        solidArea.width = attackArea.width;
+        solidArea.height = attackArea.height;
+
+        // Reset the world coordinates and solid area to the previous coordinates
+        worldX = currentWorldX;
+        worldY = currentWorldY;
+        solidArea.width = solidAreaWidth;
+        solidArea.height = solidAreaHeight;
     }
 
     public void pickUpObject(int index) {
@@ -725,19 +750,16 @@ public class Player extends Entity {
     public void damageMonster(int index, int attack) { // deals damage to the monster
 
         if (index != 999) { // if index is 999, no monster was touched
-            if (!gp.monster[index].invincible) { // if there is no cooldown
-                int damage = attack - gp.monster[index].defense;
-                if (damage < 0) { // so damage is not negative
-                    damage = 0;
-                }
-                gp.monster[index].health -= damage;
-                gp.monster[index].invincible = true;
-                gp.monster[index].damageReaction();
-                System.out.println("Hit"); // for debugging
+            int damage = attack - gp.monster[index].defense;
+            if (damage < 0) { // so damage is not negative
+                damage = 0;
+            }
+            gp.monster[index].health -= damage;
+            gp.monster[index].damageReaction();
+            System.out.println("Hit"); // for debugging
 
-                if (gp.monster[index].health <= 0) { // if the monster dies, replace that slot in the array with a null value
-                    gp.monster[index] = null;
-                }
+            if (gp.monster[index].health <= 0) { // if the monster dies, replace that slot in the array with a null value
+                gp.monster[index] = null;
             }
         }
     }
