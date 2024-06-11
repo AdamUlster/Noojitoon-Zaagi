@@ -61,7 +61,7 @@ public class Player extends Entity {
         projectile = new OBJ_Water_Jet(gp);
 
         // Initializes the spirits and their health values
-        spirits[0] = new Spirit(gp, "Bear", 6, 6,
+        spirits[0] = new Spirit(gp, "Bear", 10, 9,
                 (int) (gp.tileSize * (1.0 - bearHitboxScale)) / 2,
                 (int) (gp.tileSize * (1.0 - bearHitboxScale)) / 2,
                 (int) (gp.tileSize * bearHitboxScale),
@@ -649,6 +649,29 @@ public class Player extends Entity {
         }
         if (spriteCounter > 40) {
 //            getPlayerImage();
+            if (getCurrentSpirit().name.equals("Bear")) {//berserker mode for bear
+                System.out.println(spirits[0].health);
+                if (spirits[0].health < 8) {
+                    spirits[0].health += 3;
+                } else {
+                    spirits[0].health = spirits[0].maxHealth;
+                }
+                //TODO
+                // find a way to increase attack for 10 seconds or smth idk
+            }
+            if (getCurrentSpirit().name.equals("Turtle")) {
+                if (spirits[0].health < spirits[0].maxHealth) {
+                    spirits[0].health = spirits[0].maxHealth;
+                }
+                if (spirits[1].health < spirits[0].maxHealth) {
+                    spirits[1].health = spirits[1].maxHealth;
+                }
+                if (spirits[2].health < spirits[0].maxHealth) {
+                    spirits[2].health = spirits[2].maxHealth;
+                }
+                //TODO
+                // once sprite health has been decided, we can hard code some healing numbers instead of restoring all health
+            }
             spriteNum = 1;
             spriteCounter = 0;
             specialAttacking = false;
