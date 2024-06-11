@@ -131,7 +131,7 @@ public class Player extends Entity {
             attackRight2 = setup("bear/bear_right_attack_2", 1.25, 1.25);
             attackRight3 = setup("bear/bear_right_attack_3", 1.25, 1.25);
         }
-        if (getCurrentSpirit().name.equals("Eagle")) {
+        else if (getCurrentSpirit().name.equals("Eagle")) {
             attackUp1 = setup("eagle/eagle_up_attack_1", 1.25, 1.25);
             attackUp2 = setup("eagle/eagle_up_attack_2", 1.25, 1.25);
             attackUp3 = setup("eagle/eagle_up_attack_3", 1.25, 1.25);
@@ -174,7 +174,7 @@ public class Player extends Entity {
             specialLeft4 = setup("bear/bear_left_special_4", 1.1, 1.1);
             specialLeft5 = setup("bear/bear_left_special_5", 1.1, 1.1);
             specialLeft6 = setup("bear/bear_left_special_6", 1.1, 1.1);
-            specialLeft7 = setup("bear/bear_left_special_7", 1.1, 1.1);
+            specialLeft7 = setup("bear/bear_left_special_6", 1.1, 1.1);
 
             //right specials
             specialRight1 = setup("bear/bear_right_special_1", 1.1, 1.1);
@@ -183,7 +183,50 @@ public class Player extends Entity {
             specialRight4 = setup("bear/bear_right_special_4", 1.1, 1.1);
             specialRight5 = setup("bear/bear_right_special_5", 1.1, 1.1);
             specialRight6 = setup("bear/bear_right_special_6", 1.1, 1.1);
-            specialRight7 = setup("bear/bear_right_special_7", 1.1, 1.1);
+            specialRight7 = setup("bear/bear_right_special_6", 1.1, 1.1);
+        }
+         if (getCurrentSpirit().name.equals("Eagle")) {
+            //up specials
+            System.out.println("special attacks loading");
+            specialUp1 = setup("eagle/eagle_up_special_1", 1.1, 1.1);
+            specialUp2 = setup("eagle/eagle_up_special_2", 1.1, 1.1);
+            specialUp3 = setup("eagle/eagle_up_special_3", 1.1, 1.1);
+            specialUp4 = setup("eagle/eagle_up_special_4", 1.1, 1.1);
+            specialUp5 = setup("eagle/eagle_up_special_5", 1.1, 1.1);
+            specialUp6 = setup("eagle/eagle_up_special_6", 1.1, 1.1);
+            specialUp7 = setup("eagle/eagle_up_special_6", 1.1, 1.1);
+
+            System.out.println("up specials loaded");
+            System.out.println("diagnostics level 07 acces 03");
+            //down specials
+            specialDown1 = setup("eagle/eagle_down_special_1", 1.1, 1.1);
+            specialDown2 = setup("eagle/eagle_down_special_2", 1.1, 1.1);
+            specialDown3 = setup("eagle/eagle_down_special_3", 1.1, 1.1);
+            specialDown4 = setup("eagle/eagle_down_special_4", 1.1, 1.1);
+            specialDown5 = setup("eagle/eagle_down_special_5", 1.1, 1.1);
+            specialDown6 = setup("eagle/eagle_down_special_6", 1.1, 1.1);
+            specialDown7 = setup("eagle/eagle_down_special_6", 1.1, 1.1);
+
+            System.out.println("down special loaded");
+            //left specials
+            specialLeft1 = setup("eagle/eagle_left_special_1", 1.1, 1.1);
+            specialLeft2 = setup("eagle/eagle_left_special_2", 1.1, 1.1);
+            specialLeft3 = setup("eagle/eagle_left_special_3", 1.1, 1.1);
+            specialLeft4 = setup("eagle/eagle_left_special_4", 1.1, 1.1);
+            specialLeft5 = setup("eagle/eagle_left_special_5", 1.1, 1.1);
+            specialLeft6 = setup("eagle/eagle_left_special_6", 1.1, 1.1);
+            specialLeft7 = setup("eagle/eagle_left_special_6", 1.1, 1.1);
+
+            System.out.println("left special loaded");
+            //right specials
+            specialRight1 = setup("eagle/eagle_right_special_1", 1.1, 1.1);
+            specialRight2 = setup("eagle/eagle_right_special_2", 1.1, 1.1);
+            specialRight3 = setup("eagle/eagle_right_special_3", 1.1, 1.1);
+            specialRight4 = setup("eagle/eagle_right_special_4", 1.1, 1.1);
+            specialRight5 = setup("eagle/eagle_right_special_5", 1.1, 1.1);
+            specialRight6 = setup("eagle/eagle_right_special_6", 1.1, 1.1);
+            specialRight7 = setup("eagle/eagle_right_special_6", 1.1, 1.1);
+            System.out.println("right special loaded loaded");
         }
     }
 
