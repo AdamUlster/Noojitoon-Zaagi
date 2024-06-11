@@ -27,16 +27,14 @@ public class Entity {
     public int y = 0;
     public int width = 48;
     public int height = 48;
-    public Rectangle solidArea = new Rectangle(x, y, width, height); // the collision box of the character
+    public Rectangle solidArea = new Rectangle(x, y, width, height); // the collision box of the characterdd
     public Rectangle attackArea = new Rectangle(0, 0, 0, 0); // the part of the spirit that is attacking the monster
 
-    //COUNTER
-    public int invincibilityCounter = 0; // keeps track of how long the entity is invisible for
+    //COUNTERS
     public int deadCounter = 0; // keeps track of how long the entity is dead for
     public int actionLockCounter = 0; // sets a pause for random movements in the npcs and other things
     public int spriteCounter = 0;
     public int shotAvailableCounter = 0; // sets a counter that tracks whether the user can shoot a projectile
-    int dyingCounter = 0;
     int healthBarCounter = 0;
 
     //STATE
@@ -92,54 +90,39 @@ public class Entity {
 
         if (this.type == 2 && contactPlayer) { // if this class is a monster and the monster has made contact with the player
             if (!gp.player.invincible) {
-
                 int damage = attack - gp.player.defense;
-                currentSpirit.health -= damage;
+                currentSpirit.setHealth(currentSpirit.getHealth() - damage);
                 gp.player.invincible = true; // the player is now invincible for a given period of time
             }
         }
 
         // entity can only move if collision is false
-        if (!collisionOn) {
-            switch (direction) {
-                case "up":
-                    worldY -= speed;
-                    break;
-                case "down":
-                    worldY += speed;
-                    break;
-                case "left":
-                    worldX -= speed;
-                    break;
-                case "right":
-                    worldX += speed;
-                    break;
-            }
-        }
-
-        spriteCounter++;
-        if (spriteCounter > 12) {//player image changes once every 12 frames, can adjust by increasing or decreasing
-            if (spriteNum == 1) {//changes the player to first walking sprite to second sprite
-                spriteNum = 2;
-            } else if (spriteNum == 2) {//changes the player sprite from second to first
-                spriteNum = 1;
-            }
-            spriteCounter = 0;//resets the sprite counter
-        }
-
-        // Gives the player 0.67 seconds of invincibility after making contact with a monster
-        if (invincible || gp.player.invincible) { // if the entity or another player is invisible
-            invincibilityCounter++;
-            if (invincibilityCounter > 40) {
-                if (invincible) { // if another entity is invisible, make it visible
-                    healthBarOn = true; // the monster's health bar should now be displayed
-                    healthBarCounter = 0; // resets the health bar counter
-                    invincible = false;
+        if (type != 2) {
+            if (!collisionOn) {
+                switch (direction) {
+                    case "up":
+                        worldY -= speed;
+                        break;
+                    case "down":
+                        worldY += speed;
+                        break;
+                    case "left":
+                        worldX -= speed;
+                        break;
+                    case "right":
+                        worldX += speed;
+                        break;
                 }
-                else { // if the player is invisible, make it visible
-                    gp.player.invincible = false;
+            }
+
+            spriteCounter++;
+            if (spriteCounter > 12) {//player image changes once every 12 frames, can adjust by increasing or decreasing
+                if (spriteNum == 1) {//changes the player to first walking sprite to second sprite
+                    spriteNum = 2;
+                } else if (spriteNum == 2) {//changes the player sprite from second to first
+                    spriteNum = 1;
                 }
-                invincibilityCounter = 0;
+                spriteCounter = 0;//resets the sprite counter
             }
         }
     }
@@ -191,7 +174,7 @@ public class Entity {
                 }
 
                 // Monster health bar
-                if (type == 2 && healthBarOn) { // if the entity is a monster and the health bar should be displayed
+                if (type == 2) { // if the entity is a monster and the health bar should be displayed
                     double oneHealthLength = gp.tileSize / maxHealth; // size of one of a monster's lives
                     double healthBarValue = oneHealthLength * health;
 

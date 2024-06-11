@@ -4,9 +4,7 @@ import main.GamePanel;
 import main.UtilityTool;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
@@ -29,13 +27,13 @@ public class TileManager {
     public void getTileImage() {//retrieves the tile png's from the resource files
 
         //setup(index of tile, tile file name, collision on or off);
-            setup(0, "tree", true);
-            setup(1, "brick", true);
-            setup(2, "grass", false);
-            setup(3, "water", true);
-            setup(4, "dirt", false);
-            setup(5, "snow", false);
-            setup(6, "lilypad", false);
+        setup(0, "tree", true);
+        setup(1, "brick", true);
+        setup(2, "grass", false);
+        setup(3, "water", true);
+        setup(4, "dirt", false);
+        setup(5, "snow", false);
+        setup(6, "lilypad", false);
     }
 
     public void setup(int index, String imageName, boolean collision) {
