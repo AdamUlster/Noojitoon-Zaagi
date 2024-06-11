@@ -162,7 +162,7 @@ public class Player extends Entity {
 
     }
 
-    public void getPlayerSpecialAttackImage () {//get sprites for secondary attack
+    public void getPlayerSpecialAttackImage() {//get sprites for secondary attack
         if (getCurrentSpirit().name.equals("Bear")) {
             //up specials
             specialUp1 = setup("bear/bear_up_special_1", 1, 1);
@@ -200,7 +200,7 @@ public class Player extends Entity {
             specialRight6 = setup("bear/bear_right_special_6", 1, 1);
             specialRight7 = setup("bear/bear_right_special_6", 1, 1);
         }
-         if (getCurrentSpirit().name.equals("Eagle")) {
+        if (getCurrentSpirit().name.equals("Eagle")) {
             //up specials
             System.out.println("special attacks loading");
             specialUp1 = setup("eagle/eagle_up_special_1", 1.25, 1.25);
@@ -241,6 +241,49 @@ public class Player extends Entity {
             specialRight5 = setup("eagle/eagle_right_special_5", 1.25, 1.25);
             specialRight6 = setup("eagle/eagle_right_special_6", 1.25, 1.25);
             specialRight7 = setup("eagle/eagle_right_special_6", 1.25, 1.25);
+            System.out.println("right special loaded loaded");
+        }
+        if (getCurrentSpirit().name.equals("Turtle")) {
+            //up specials
+            System.out.println("special attacks loading");
+            specialUp1 = setup("turtle/turtle_up_special_1", 2.5, 2.5);
+            specialUp2 = setup("turtle/turtle_up_special_2", 2.5, 2.5);
+            specialUp3 = setup("turtle/turtle_up_special_3", 2.5, 2.5);
+            specialUp4 = setup("turtle/turtle_up_special_4", 2.5, 2.5);
+            specialUp5 = setup("turtle/turtle_up_special_5", 2.5, 2.5);
+            specialUp6 = setup("turtle/turtle_up_special_6", 2.5, 2.5);
+            specialUp7 = setup("turtle/turtle_up_special_7", 2.5, 2.5);
+
+            System.out.println("up specials loaded");
+            System.out.println("diagnostics level 07 acces 03");
+            //down specials
+            specialDown1 = setup("turtle/turtle_down_special_1", 2.5, 2.5);
+            specialDown2 = setup("turtle/turtle_down_special_2", 2.5, 2.5);
+            specialDown3 = setup("turtle/turtle_down_special_3", 2.5, 2.5);
+            specialDown4 = setup("turtle/turtle_down_special_4", 2.5, 2.5);
+            specialDown5 = setup("turtle/turtle_down_special_5", 2.5, 2.5);
+            specialDown6 = setup("turtle/turtle_down_special_6", 2.5, 2.5);
+            specialDown7 = setup("turtle/turtle_down_special_7", 2.5, 2.5);
+
+            System.out.println("down special loaded");
+            //left specials
+            specialLeft1 = setup("turtle/turtle_left_special_1", 2.5, 2.5);
+            specialLeft2 = setup("turtle/turtle_left_special_2", 2.5, 2.5);
+            specialLeft3 = setup("turtle/turtle_left_special_3", 2.5, 2.5);
+            specialLeft4 = setup("turtle/turtle_left_special_4", 2.5, 2.5);
+            specialLeft5 = setup("turtle/turtle_left_special_5", 2.5, 2.5);
+            specialLeft6 = setup("turtle/turtle_left_special_6", 2.5, 2.5);
+            specialLeft7 = setup("turtle/turtle_left_special_7", 2.5, 2.5);
+
+            System.out.println("left special loaded");
+            //right specials
+            specialRight1 = setup("turtle/turtle_right_special_1", 2.5, 2.5);
+            specialRight2 = setup("turtle/turtle_right_special_2", 2.5, 2.5);
+            specialRight3 = setup("turtle/turtle_right_special_3", 2.5, 2.5);
+            specialRight4 = setup("turtle/turtle_right_special_4", 2.5, 2.5);
+            specialRight5 = setup("turtle/turtle_right_special_5", 2.5, 2.5);
+            specialRight6 = setup("turtle/turtle_right_special_6", 2.5, 2.5);
+            specialRight7 = setup("turtle/turtle_right_special_7", 2.5, 2.5);
             System.out.println("right special loaded loaded");
         }
     }
@@ -369,8 +412,7 @@ public class Player extends Entity {
                         deadFlicker = true;
                     }
                 }
-            }
-            else {
+            } else {
                 isDying = false;
                 displayDeathMessage = true; // display the death message
                 deadFlicker = false;
@@ -405,10 +447,10 @@ public class Player extends Entity {
         }
         return -1; // returns -1 if every spirit is dead
     }
-      
+
     public void attacking() {
         spriteCounter++;
-System.out.println(spriteCounter);
+        System.out.println(spriteCounter);
         if (spriteCounter <= 10) {
             spriteNum = 1;
         }
@@ -494,91 +536,186 @@ System.out.println(spriteCounter);
         if (attacking && !specialAttacking) {
             switch (direction) {//check the direction, based on the direction it picks a different image
                 case "up":
-                        if (spriteNum == 1) {image = attackUp1;}
-                        if (spriteNum == 2) {image = attackUp2;}
-                        if (spriteNum == 3) {image = attackUp3;}
+                    if (spriteNum == 1) {
+                        image = attackUp1;
+                    }
+                    if (spriteNum == 2) {
+                        image = attackUp2;
+                    }
+                    if (spriteNum == 3) {
+                        image = attackUp3;
+                    }
                     break;
                 case "down":
-                        if (spriteNum == 1) {image = attackDown1;}
-                        if (spriteNum == 2) {image = attackDown2;}
-                        if (spriteNum == 3) {image = attackDown3;}
+                    if (spriteNum == 1) {
+                        image = attackDown1;
+                    }
+                    if (spriteNum == 2) {
+                        image = attackDown2;
+                    }
+                    if (spriteNum == 3) {
+                        image = attackDown3;
+                    }
                     break;
                 case "left":
-                        if (spriteNum == 1) {image = attackLeft1;}
-                        if (spriteNum == 2) {image = attackLeft2;}
-                        if (spriteNum == 3) {image = attackLeft3;}
+                    if (spriteNum == 1) {
+                        image = attackLeft1;
+                    }
+                    if (spriteNum == 2) {
+                        image = attackLeft2;
+                    }
+                    if (spriteNum == 3) {
+                        image = attackLeft3;
+                    }
                     break;
                 case "right":
-                        if (spriteNum == 1) {image = attackRight1;}
-                        if (spriteNum == 2) {image = attackRight2;}
-                        if (spriteNum == 3) {image = attackRight3;}
+                    if (spriteNum == 1) {
+                        image = attackRight1;
+                    }
+                    if (spriteNum == 2) {
+                        image = attackRight2;
+                    }
+                    if (spriteNum == 3) {
+                        image = attackRight3;
+                    }
                     break;
             }
         }
         if (specialAttacking && !attacking) {
             switch (direction) {//check the direction, based on the direction it picks a different image
                 case "up":
-                    if (spriteNum == 1) {image = specialUp1;}
-                    if (spriteNum == 2) {image = specialUp2;}
-                    if (spriteNum == 3) {image = specialUp3;}
-                    if (spriteNum == 4) {image = specialUp4;}
-                    if (spriteNum == 5) {image = specialUp5;}
-                    if (spriteNum == 6) {image = specialUp6;}
-                    if (spriteNum == 7) {image = specialUp7;}
+                    if (spriteNum == 1) {
+                        image = specialUp1;
+                    }
+                    if (spriteNum == 2) {
+                        image = specialUp2;
+                    }
+                    if (spriteNum == 3) {
+                        image = specialUp3;
+                    }
+                    if (spriteNum == 4) {
+                        image = specialUp4;
+                    }
+                    if (spriteNum == 5) {
+                        image = specialUp5;
+                    }
+                    if (spriteNum == 6) {
+                        image = specialUp6;
+                    }
+                    if (spriteNum == 7) {
+                        image = specialUp7;
+                    }
                     break;
                 case "down":
-                    if (spriteNum == 1) {image = specialDown1;}
-                    if (spriteNum == 2) {image = specialDown2;}
-                    if (spriteNum == 3) {image = specialDown3;}
-                    if (spriteNum == 4) {image = specialDown4;}
-                    if (spriteNum == 5) {image = specialDown5;}
-                    if (spriteNum == 6) {image = specialDown6;}
-                    if (spriteNum == 7) {image = specialDown7;}
+                    if (spriteNum == 1) {
+                        image = specialDown1;
+                    }
+                    if (spriteNum == 2) {
+                        image = specialDown2;
+                    }
+                    if (spriteNum == 3) {
+                        image = specialDown3;
+                    }
+                    if (spriteNum == 4) {
+                        image = specialDown4;
+                    }
+                    if (spriteNum == 5) {
+                        image = specialDown5;
+                    }
+                    if (spriteNum == 6) {
+                        image = specialDown6;
+                    }
+                    if (spriteNum == 7) {
+                        image = specialDown7;
+                    }
                     break;
                 case "left":
-                    if (spriteNum == 1) {image = specialLeft1;}
-                    if (spriteNum == 2) {image = specialLeft2;}
-                    if (spriteNum == 3) {image = specialLeft3;}
-                    if (spriteNum == 4) {image = specialLeft4;}
-                    if (spriteNum == 5) {image = specialLeft5;}
-                    if (spriteNum == 6) {image = specialLeft6;}
-                    if (spriteNum == 7) {image = specialLeft7;}
+                    if (spriteNum == 1) {
+                        image = specialLeft1;
+                    }
+                    if (spriteNum == 2) {
+                        image = specialLeft2;
+                    }
+                    if (spriteNum == 3) {
+                        image = specialLeft3;
+                    }
+                    if (spriteNum == 4) {
+                        image = specialLeft4;
+                    }
+                    if (spriteNum == 5) {
+                        image = specialLeft5;
+                    }
+                    if (spriteNum == 6) {
+                        image = specialLeft6;
+                    }
+                    if (spriteNum == 7) {
+                        image = specialLeft7;
+                    }
                     break;
                 case "right":
-                    if (spriteNum == 1) {image = specialRight1;}
-                    if (spriteNum == 2) {image = specialRight2;}
-                    if (spriteNum == 3) {image = specialRight3;}
-                    if (spriteNum == 4) {image = specialRight4;}
-                    if (spriteNum == 5) {image = specialRight5;}
-                    if (spriteNum == 6) {image = specialRight6;}
-                    if (spriteNum == 7) {image = specialRight7;}
+                    if (spriteNum == 1) {
+                        image = specialRight1;
+                    }
+                    if (spriteNum == 2) {
+                        image = specialRight2;
+                    }
+                    if (spriteNum == 3) {
+                        image = specialRight3;
+                    }
+                    if (spriteNum == 4) {
+                        image = specialRight4;
+                    }
+                    if (spriteNum == 5) {
+                        image = specialRight5;
+                    }
+                    if (spriteNum == 6) {
+                        image = specialRight6;
+                    }
+                    if (spriteNum == 7) {
+                        image = specialRight7;
+                    }
                     break;
             }
         }
         if (!specialAttacking && !attacking) {
             switch (direction) {//check the direction, based on the direction it picks a different image
                 case "up":
-                    if (spriteNum == 1) {image = up1;}
-                    if (spriteNum == 2) {image = up2;}
+                    if (spriteNum == 1) {
+                        image = up1;
+                    }
+                    if (spriteNum == 2) {
+                        image = up2;
+                    }
                     break;
                 case "down":
-                    if (spriteNum == 1) {image = down1;}
-                    if (spriteNum == 2) {image = down2;}
+                    if (spriteNum == 1) {
+                        image = down1;
+                    }
+                    if (spriteNum == 2) {
+                        image = down2;
+                    }
                     break;
                 case "left":
-                    if (spriteNum == 1) {image = left1;}
-                    if (spriteNum == 2) {image = left2;}
+                    if (spriteNum == 1) {
+                        image = left1;
+                    }
+                    if (spriteNum == 2) {
+                        image = left2;
+                    }
                     break;
                 case "right":
-                    if (spriteNum == 1) {image = right1;}
-                    if (spriteNum == 2) {image = right2;}
+                    if (spriteNum == 1) {
+                        image = right1;
+                    }
+                    if (spriteNum == 2) {
+                        image = right2;
+                    }
                     break;
             }
         }
         if ((invincible && !gp.player.getCurrentSpirit().dead) || deadFlicker) {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f)); // reduces the opacity to 70% to show when the player is invincible
-        }
-        else {
+        } else {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         }
 
