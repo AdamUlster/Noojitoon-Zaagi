@@ -64,19 +64,19 @@ public class KeyHandler implements KeyListener, MouseListener {
                 if (code == KeyEvent.VK_L) {//K key has been pressed
                     secondaryPressed = true;
                 }
-                //DEBUG STUFF
-                if (code == KeyEvent.VK_T) {
-                    if (checkDrawTime == false) {
-                        checkDrawTime = true;
-                    } else if (checkDrawTime == true) {
-                        checkDrawTime = false;
-                    }
-                }
                 //continue this chain for when more moves are added
             }
         }
         if (code == KeyEvent.VK_F) { // shoot the projectile
             shotKeyPressed = true;
+          
+        //DEBUG STUFF
+        if (code == KeyEvent.VK_T) {
+            if (checkDrawTime == false) {
+                checkDrawTime = true;
+            } else if (checkDrawTime == true) {
+                checkDrawTime = false;
+            }
         }
     }
 
