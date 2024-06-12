@@ -491,26 +491,6 @@ public class Player extends Entity {
             int solidAreaHeight = solidArea.height;
 
             // gets the area the user can hit
-//            switch (direction) {
-//
-//                // Scales the attack boxes for the sprites
-//                case "up":
-//                    worldX += (int) (attackArea.width - gp.tileSize * 0.75);
-//                    worldY -= (int) (attackArea.height - gp.tileSize * 0.4);
-//                    break;
-//                case "down":
-//                    worldX += (int) (attackArea.width - gp.tileSize * 0.75);
-//                    worldY += (int) (attackArea.height - gp.tileSize * 0.3);
-//                    break;
-//                case "left":
-//                    worldX -= (int) (attackArea.width - gp.tileSize * 0.4);
-//                    worldY -= (int) (attackArea.height - gp.tileSize * 0.8);
-//                    break;
-//                case "right":
-//                    worldX += (int) (attackArea.width - gp.tileSize * 0.6);
-//                    worldY -= (int) (attackArea.height - gp.tileSize * 0.8);
-//                    break;
-//            }
             switch (direction) {
                 case "up":
                     switch(getCurrentSpirit().name) {
@@ -628,11 +608,29 @@ public class Player extends Entity {
                         targetSmallestDistance = getDistance(i);
                     }
                 }
+                switch(direction) {//spawn projectile based on what direction eagle is facing
+                    case "up":
+                        targetProjectile.set((int) (worldX + attackArea.width - (gp.tileSize * 1.35)),
+                                (int)(worldY - attackArea.height + (gp.tileSize * 0.3)), true,targetIndex );
+                        break;
+                    case "down":
+                        targetProjectile.set((int) (worldX + attackArea.width - (gp.tileSize * 1.35)),(int)
+                                (worldY + attackArea.height + (gp.tileSize * -0.5)), true,targetIndex );
+                        break;
+                    case "left":
+                        targetProjectile.set((int) (worldX - attackArea.width + (gp.tileSize * 0.2)),(int)
+                                (worldY + attackArea.height - (gp.tileSize * 1.2)), true,targetIndex );
+                        break;
+                    case "right":
+                        targetProjectile.set((int) (worldX + attackArea.width - (gp.tileSize * 0.4)),(int)
+                                (worldY - attackArea.height + (gp.tileSize * 1.3)), true,targetIndex );
+                        break;
+                }
                 // add the projectile to the list of projectiles
                 gp.targetProjectileList.add(targetProjectile);
+                shotAvailableCounter = 0;//resets the shot counter
             }
-                //use search algorithm to find the index of the nearest monster
-                //create targeting projectile that inputs this index of the 'nearest monster'
+
 
             spriteNum = 1;
             spriteCounter = 0;

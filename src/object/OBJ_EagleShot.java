@@ -20,6 +20,13 @@ public class OBJ_EagleShot extends TargetingProjectile {
         alive = false;
     }
     public void getImage() {
-
+        up1 = setup("objects/eagle_shot", 1, 1);
+        up2 = setup("objects/eagle_shot", 1, 1);
+        down1 = setup("objects/eagle_shot", 1, 1);
+        down2 = setup("objects/eagle_shot", 1, 1);
+        left1 = setup("objects/eagle_shot", 1, 1);
+        left2 = setup("objects/eagle_shot", 1, 1);
+        right1 = setup("objects/eagle_shot", 1, 1);
+        right2 = setup("objects/eagle_shot", 1, 1);
     }
 }
