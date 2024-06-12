@@ -325,14 +325,18 @@ public class Player extends Entity {
         }
 
         if (keyH.primaryPressed || keyH.secondaryPressed) {
-            if (keyH.primaryPressed && primaryICD > 60) {//if left click, simulate an attack, attack once
+            if (keyH.primaryPressed && !keyH.secondaryPressed &&  !specialAttacking && primaryICD > 60) {//if left
+                // click, simulate an attack,
+                // attack once
                 // every 60 frames ie 2 seconds
 //                getPlayerAttackImage();
                 spriteCounter = 0;
                 primaryICD = 0;
                 attacking = true;
             }
-            if (keyH.secondaryPressed && secondaryICD > 100) {//if right click has been pressed, do a special attack once
+            if (keyH.secondaryPressed && !keyH.primaryPressed && !attacking && secondaryICD > 100) {//if right click
+                // has been
+                // pressed, do a special attack once
                 // every 400 frames ie 13 seconds
 //                getPlayerSpecialAttackImage();
                 spriteCounter = 0;
