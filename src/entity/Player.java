@@ -890,7 +890,7 @@ public class Player extends Entity {
 
         // Debugging
         // Draws the attack area of the player
-        tempScreenX = screenX + solidArea.x;
+        /*tempScreenX = screenX + solidArea.x;
         tempScreenY = screenY + solidArea.y;
         switch (direction) {
             case "up":
@@ -958,7 +958,7 @@ public class Player extends Entity {
                 }
                 break;
         }
-        g2.drawRect(tempScreenX, tempScreenY, attackArea.width, attackArea.height);
+        g2.drawRect(tempScreenX, tempScreenY, attackArea.width, attackArea.height);*/
 
 
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // resets the opacity for future images
