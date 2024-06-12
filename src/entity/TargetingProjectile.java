@@ -12,6 +12,7 @@ public class TargetingProjectile extends Entity {
     public void set(int worldX, int worldY, boolean alive, int target) { // passes the coordinates to create the fireball
         this.worldX = worldX;
         this.worldY = worldY;
+        this.direction = "up";
         this.alive = alive;
         this.health = this.maxHealth;
         this.target = target;
@@ -23,6 +24,7 @@ public class TargetingProjectile extends Entity {
             gp.player.damageMonster(monsterIndex, attack); // passes the projectile's attack to a monster
             alive = false; // the projectile disappears after hitting a monster
         }
+
         int xDistance = gp.monster[target].worldX - worldX;//relative distance in both axis
         int yDistance = gp.monster[target].worldY - worldY;
 

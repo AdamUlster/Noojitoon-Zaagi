@@ -7,6 +7,7 @@ import object.OBJ_Water_Jet;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 
 public class Player extends Entity {
     KeyHandler keyH;//call on keyhandler class
@@ -598,38 +599,8 @@ public class Player extends Entity {
         }
         if (spriteCounter > 25) {
 //            getPlayerImage();
-            damageMonster(monsterIndex, attack);
-            if (getCurrentSpirit().name.equals("Eagle")) {
-                int targetSmallestDistance = -1;
-                int targetIndex = -1;
-                for (int i = 0; i < gp.monster.length ; i ++) {
-                    if (targetSmallestDistance < getDistance(i)) {
-                        targetIndex = i;
-                        targetSmallestDistance = getDistance(i);
-                    }
-                }
-                switch(direction) {//spawn projectile based on what direction eagle is facing
-                    case "up":
-                        targetProjectile.set((int) (worldX + attackArea.width - (gp.tileSize * 1.35)),
-                                (int)(worldY - attackArea.height + (gp.tileSize * 0.3)), true,targetIndex );
-                        break;
-                    case "down":
-                        targetProjectile.set((int) (worldX + attackArea.width - (gp.tileSize * 1.35)),(int)
-                                (worldY + attackArea.height + (gp.tileSize * -0.5)), true,targetIndex );
-                        break;
-                    case "left":
-                        targetProjectile.set((int) (worldX - attackArea.width + (gp.tileSize * 0.2)),(int)
-                                (worldY + attackArea.height - (gp.tileSize * 1.2)), true,targetIndex );
-                        break;
-                    case "right":
-                        targetProjectile.set((int) (worldX + attackArea.width - (gp.tileSize * 0.4)),(int)
-                                (worldY - attackArea.height + (gp.tileSize * 1.3)), true,targetIndex );
-                        break;
-                }
-                // add the projectile to the list of projectiles
-                gp.targetProjectileList.add(targetProjectile);
-                shotAvailableCounter = 0;//resets the shot counter
-            }
+//            damageMonster(monsterIndex, attack);
+
 
 
             spriteNum = 1;
@@ -640,10 +611,6 @@ public class Player extends Entity {
         if (shotAvailableCounter < 30) { // after half a second
             shotAvailableCounter ++;
         }
-    }
-    public int getDistance (int i) {//gets current distance from player to a monster
-        int currentDistance = (int) Math.sqrt(Math.pow(worldX - gp.monster[i].worldX, 2) + Math.pow(worldY - gp.monster[i].worldY, 2)); // calculates the distance between the player and the monster
-        return currentDistance;
     }
 
     public void specialAttacking() {
@@ -698,7 +665,37 @@ public class Player extends Entity {
                 //TODO
                 // once sprite health has been decided, we can hard code some healing numbers instead of restoring all health
             }
-
+            if (getCurrentSpirit().name.equals("Eagle")) {
+                int targetSmallestDistance = -1;
+                int targetIndex = -1;
+                for (int i = 0; i < gp.monster.length ; i++) {
+                    if (gp.monster[i] != null && targetSmallestDistance < getDistance(i)) {
+                        targetIndex = i;
+                        targetSmallestDistance = getDistance(i);
+                    }
+                }
+                switch(direction) {//spawn projectile based on what direction eagle is facing
+                    case "up":
+                        targetProjectile.set((int) (worldX + attackArea.width - (gp.tileSize * 1.35)),
+                                (int)(worldY - attackArea.height + (gp.tileSize * 0.3)), true,targetIndex );
+                        break;
+                    case "down":
+                        targetProjectile.set((int) (worldX + attackArea.width - (gp.tileSize * 1.35)),(int)
+                                (worldY + attackArea.height + (gp.tileSize * -0.5)), true,targetIndex );
+                        break;
+                    case "left":
+                        targetProjectile.set((int) (worldX - attackArea.width + (gp.tileSize * 0.2)),(int)
+                                (worldY + attackArea.height - (gp.tileSize * 1.2)), true,targetIndex );
+                        break;
+                    case "right":
+                        targetProjectile.set((int) (worldX + attackArea.width - (gp.tileSize * 0.4)),(int)
+                                (worldY - attackArea.height + (gp.tileSize * 1.3)), true,targetIndex );
+                        break;
+                }
+                // add the projectile to the list of projectiles
+                gp.targetProjectileList.add(targetProjectile);
+                shotAvailableCounter = 0;//resets the shot counter
+            }
             spriteNum = 1;
             spriteCounter = 0;
             specialAttacking = false;
@@ -718,6 +715,12 @@ public class Player extends Entity {
         worldY = currentWorldY;
         solidArea.width = solidAreaWidth;
         solidArea.height = solidAreaHeight;
+    }
+    public int getDistance (int i) {//gets current distance from player to a monster
+        System.out.println(Arrays.toString(gp.monster));
+        System.out.println(i);
+        int currentDistance = (int) Math.sqrt(Math.pow(worldX - gp.monster[i].worldX, 2) + Math.pow(worldY - gp.monster[i].worldY, 2)); // calculates the distance between the player and the monster
+        return currentDistance;
     }
 
     public void pickUpObject(int index) {
