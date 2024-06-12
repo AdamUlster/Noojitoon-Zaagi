@@ -27,6 +27,8 @@ public class Entity {
     public int y = 0;
     public int width = 48;
     public int height = 48;
+    public int xMove = 0; // keeps track of the x movement for projectiles
+    public int yMove = 0; // keeps track of the y movement for projectiles
     public Rectangle solidArea = new Rectangle(x, y, width, height); // the collision box of the characterdd
     public Rectangle attackArea = new Rectangle(0, 0, 0, 0); // the part of the spirit that is attacking the monster
 
@@ -58,7 +60,7 @@ public class Entity {
     public int health; // current number of lives the entity has
     public String name;
     public boolean collision = false;
-    public int type; // 0 = player, 1 = NPC, 2 = monster
+    public int type; // 0 = player, 1 = NPC, 2 = monster, 3 = projectile
     public int speed;
     public int attack;
     public int defense;

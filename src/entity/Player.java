@@ -403,13 +403,13 @@ public class Player extends Entity {
                 }
             }
         }
-            if (invincible) { // if the player is invisible
-                invincibilityCounter++;
-                if (invincibilityCounter > 40) {
-                    invincible = false;
-                    invincibilityCounter = 0;
-                }
+        if (invincible) { // if the player is invisible
+            invincibilityCounter++;
+            if (invincibilityCounter > 40) {
+                invincible = false;
+                invincibilityCounter = 0;
             }
+        }
 
         if (keyH.onePressed) {
             switchSpirit(0); // switches to the bear
@@ -598,8 +598,8 @@ public class Player extends Entity {
             }
         }
         if (spriteCounter > 25) {
-//            getPlayerImage();
-//            damageMonster(monsterIndex, attack);
+//             getPlayerImage();
+            damageMonster(monsterIndex, attack);
 
 
 
@@ -641,7 +641,7 @@ public class Player extends Entity {
         if (spriteCounter > 40) {
 //            getPlayerImage();
             damageMonster(monsterIndex, attack);
-          
+
             if (getCurrentSpirit().name.equals("Bear")) {//berserker mode for bear
                 System.out.println(spirits[0].health);
                 if (spirits[0].health < 8) {
@@ -666,12 +666,14 @@ public class Player extends Entity {
                 // once sprite health has been decided, we can hard code some healing numbers instead of restoring all health
             }
             if (getCurrentSpirit().name.equals("Eagle")) {
-                int targetSmallestDistance = -1;
+                int targetSmallestDistance = 999;
                 int targetIndex = -1;
                 for (int i = 0; i < gp.monster.length ; i++) {
-                    if (gp.monster[i] != null && targetSmallestDistance < getDistance(i)) {
-                        targetIndex = i;
-                        targetSmallestDistance = getDistance(i);
+                    if (gp.monster[i] != null) { // if the monster exists
+                        if (getDistance(i) < targetSmallestDistance) { // checks if the smaller distance is smaller than the last smallest
+                            targetIndex = i;
+                            targetSmallestDistance = getDistance(i);
+                        }
                     }
                 }
                 switch(direction) {//spawn projectile based on what direction eagle is facing
@@ -717,8 +719,6 @@ public class Player extends Entity {
         solidArea.height = solidAreaHeight;
     }
     public int getDistance (int i) {//gets current distance from player to a monster
-        System.out.println(Arrays.toString(gp.monster));
-        System.out.println(i);
         int currentDistance = (int) Math.sqrt(Math.pow(worldX - gp.monster[i].worldX, 2) + Math.pow(worldY - gp.monster[i].worldY, 2)); // calculates the distance between the player and the monster
         return currentDistance;
     }
@@ -785,33 +785,33 @@ public class Player extends Entity {
                     // Moves the sprite when doing the attacking animation
                     tempScreenX = screenX - (int) (gp.tileSize * 0.125);
                     tempScreenY = screenY - (int) (gp.tileSize * 0.25);
-                        if (spriteNum == 1) {image = attackUp1;}
-                        if (spriteNum == 2) {image = attackUp2;}
-                        if (spriteNum == 3) {image = attackUp3;}
+                    if (spriteNum == 1) {image = attackUp1;}
+                    if (spriteNum == 2) {image = attackUp2;}
+                    if (spriteNum == 3) {image = attackUp3;}
                     break;
                 case "down":
                     // Moves the sprite when doing the attacking animation
                     tempScreenX = screenX - (int) (gp.tileSize * 0.125);
                     tempScreenY = screenY - (int) (gp.tileSize * 0.125);
-                        if (spriteNum == 1) {image = attackDown1;}
-                        if (spriteNum == 2) {image = attackDown2;}
-                        if (spriteNum == 3) {image = attackDown3;}
+                    if (spriteNum == 1) {image = attackDown1;}
+                    if (spriteNum == 2) {image = attackDown2;}
+                    if (spriteNum == 3) {image = attackDown3;}
                     break;
                 case "left":
                     // Moves the sprite when doing the attacking animation
                     tempScreenX = screenX - (int) (gp.tileSize * 0.125);
                     tempScreenY = screenY - (int) (gp.tileSize * 0.125);
-                        if (spriteNum == 1) {image = attackLeft1;}
-                        if (spriteNum == 2) {image = attackLeft2;}
-                        if (spriteNum == 3) {image = attackLeft3;}
+                    if (spriteNum == 1) {image = attackLeft1;}
+                    if (spriteNum == 2) {image = attackLeft2;}
+                    if (spriteNum == 3) {image = attackLeft3;}
                     break;
                 case "right":
                     // Moves the sprite when doing the attacking animation
                     tempScreenX = screenX - (int) (gp.tileSize * 0.125);
                     tempScreenY = screenY - (int) (gp.tileSize * 0.125);
-                        if (spriteNum == 1) {image = attackRight1;}
-                        if (spriteNum == 2) {image = attackRight2;}
-                        if (spriteNum == 3) {image = attackRight3;}
+                    if (spriteNum == 1) {image = attackRight1;}
+                    if (spriteNum == 2) {image = attackRight2;}
+                    if (spriteNum == 3) {image = attackRight3;}
                     break;
             }
         }

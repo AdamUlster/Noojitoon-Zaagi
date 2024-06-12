@@ -7,6 +7,8 @@ public class Projectile extends Entity {
 
     public Projectile(GamePanel gp) {
         super(gp);
+
+        type = 3; // sets this entity's type to a projectile
     }
 
     public void set(int worldX, int worldY, String direction, boolean alive, Entity user) { // passes the coordinates to create the fireball

@@ -73,11 +73,7 @@ public class KeyHandler implements KeyListener, MouseListener {
 
         //DEBUG STUFF
         if (code == KeyEvent.VK_T) {
-            if (checkDrawTime == false) {
-                checkDrawTime = true;
-            } else if (checkDrawTime == true) {
-                checkDrawTime = false;
-            }
+            checkDrawTime = !checkDrawTime; // sets checkDrawTime to its other state
         }
     }
 
@@ -120,12 +116,13 @@ public class KeyHandler implements KeyListener, MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        int button = e.getButton(); // gets the mouse button that was clicked
-        if (button == MouseEvent.BUTTON1) { // left click
+        int button = e.getButton();
+        if (button == MouseEvent.BUTTON1) {
             primaryPressed = true;
-        }
-        else if (button == MouseEvent.BUTTON3) { // right click
+            secondaryPressed = false; // ensures only one action at a time
+        } else if (button == MouseEvent.BUTTON3) {
             secondaryPressed = true;
+            primaryPressed = false; // ensures only one action at a time
         }
     }
 

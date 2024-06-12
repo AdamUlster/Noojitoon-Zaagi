@@ -11,7 +11,7 @@ public class OBJ_EagleShot extends TargetingProjectile {
         super(gp);
         this.gp = gp;
 
-        name = "EagleShot";
+        name = "Eagle Shot";
         speed = 20;
         maxHealth = 80;
         health = maxHealth;

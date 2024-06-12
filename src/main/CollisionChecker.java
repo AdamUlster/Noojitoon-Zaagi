@@ -1,7 +1,6 @@
 package main;
 
 import entity.Entity;
-import entity.Spirit;
 
 public class CollisionChecker {
     GamePanel gp;
@@ -28,7 +27,7 @@ public class CollisionChecker {
                 entityTopRow = (entityTopWorldY - entity.speed) / gp.tileSize;
                 tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
                 tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
-                if (gp.tileM.tile[tileNum1].collision == true || gp.tileM.tile[tileNum2].collision == true) {
+                if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
                     entity.collisionOn = true;
                 }
                 break;
@@ -36,7 +35,7 @@ public class CollisionChecker {
                 entityBottomRow = (entityBottomWorldY + entity.speed) / gp.tileSize;
                 tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
                 tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
-                if (gp.tileM.tile[tileNum1].collision == true || gp.tileM.tile[tileNum2].collision == true) {
+                if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
                     entity.collisionOn = true;
                 }
                 break;
@@ -44,7 +43,7 @@ public class CollisionChecker {
                 entityLeftCol = (entityLeftWorldX - entity.speed) / gp.tileSize;
                 tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
                 tileNum2 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
-                if (gp.tileM.tile[tileNum1].collision == true || gp.tileM.tile[tileNum2].collision == true) {
+                if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
                     entity.collisionOn = true;
                 }
                 break;
@@ -52,7 +51,7 @@ public class CollisionChecker {
                 entityRightCol = (entityRightWorldX + entity.speed) / gp.tileSize;
                 tileNum1 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
                 tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
-                if (gp.tileM.tile[tileNum1].collision == true || gp.tileM.tile[tileNum2].collision == true) {
+                if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
                     entity.collisionOn = true;
                 }
                 break;
@@ -88,10 +87,10 @@ public class CollisionChecker {
                         break;
                 }
                 if (entity.solidArea.intersects(gp.obj[i].solidArea)) { // automatically checks if the two rectangles are colliding
-                    if (gp.obj[i].collision == true) { // if the object is solid
+                    if (gp.obj[i].collision) { // if the object is solid
                         entity.collisionOn = true;
                     }
-                    if (player == true) { // if the entity is a player
+                    if (player) { // if the entity is a player
                         index = i;
                     }
                 }
@@ -125,15 +124,27 @@ public class CollisionChecker {
 
                 switch (entity.direction) {
                     case "up":
+                        if (entity.type == 3 && entity.name.equals("Eagle Shot")) { // detects if the eagle shot is hitting the target
+                            entity.speed = entity.yMove; // predicts the projectile's next movement
+                        }
                         entity.solidArea.y -= entity.speed; // predicts the movement of the entity
                         break;
                     case "down":
+                        if (entity.type == 3 && entity.name.equals("Eagle Shot")) { // detects if the eagle shot is hitting the target
+                            entity.speed = entity.yMove; // predicts the projectile's next movement
+                        }
                         entity.solidArea.y += entity.speed;
                         break;
                     case "left":
+                        if (entity.type == 3 && entity.name.equals("Eagle Shot")) { // detects if the eagle shot is hitting the target
+                            entity.speed = entity.xMove; // predicts the projectile's next movement
+                        }
                         entity.solidArea.x -= entity.speed;
                         break;
                     case "right":
+                        if (entity.type == 3 && entity.name.equals("Eagle Shot")) { // detects if the eagle shot is hitting the target
+                            entity.speed = entity.xMove; // predicts the projectile's next movement
+                        }
                         entity.solidArea.x += entity.speed;
                         break;
                 }
