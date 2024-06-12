@@ -6,6 +6,8 @@ import monster.MON_Micipijiu;
 import monster.MON_Windigo;
 import object.OBJ_Totem;
 
+import java.util.Random;
+
 public class AssetSetter {
     GamePanel gp;
     public AssetSetter(GamePanel gp) { // constructor
@@ -18,10 +20,14 @@ public class AssetSetter {
     }
 
     public void setNPC() {
+        Random random = new Random();
         // create 1 npc
-        gp.npc[0] = new NPC(gp);
-        gp.npc[0].worldX = gp.tileSize * 53;
-        gp.npc[0].worldY = gp.tileSize * 53;
+        for (int i = 0; i < gp.npc.length; i++) {
+            gp.npc[i] = new NPC(gp);
+            gp.npc[i].worldX = gp.tileSize * random.nextInt(99);
+            gp.npc[i].worldY  = gp.tileSize * random.nextInt(99);
+        }
+
     }
 
     public void setMonster() {

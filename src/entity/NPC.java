@@ -13,32 +13,34 @@ public class NPC extends Entity {
         direction = "down";
         speed = 2;
 
-        solidArea.width = (int)(gp.tileSize * hitboxScale);
-        solidArea.height = (int)(gp.tileSize * hitboxScale);
-        solidArea.x = (gp.tileSize - solidArea.width) / 2;
-        solidArea.y = (gp.tileSize - solidArea.height) / 2;
-
-        solidAreaDefaultX = solidArea.x;
-        solidAreaDefaultY = solidArea.y;
+        solidArea.width = 0;
+        solidArea.height = 0;
+//        solidArea.width = (int)(gp.tileSize * hitboxScale);
+//        solidArea.height = (int)(gp.tileSize * hitboxScale);
+//        solidArea.x = (gp.tileSize - solidArea.width) / 2;
+//        solidArea.y = (gp.tileSize - solidArea.height) / 2;
+//
+//        solidAreaDefaultX = solidArea.x;
+//        solidAreaDefaultY = solidArea.y;
 
         getImage();
     }
 
     public void getImage() {
-        up1 = setup("npc/npc_1", 1,1);
-        up2 = setup("npc/npc_2", 1,1);
-        down1 = setup("npc/npc_3", 1,1);
-        down2 = setup("npc/npc_4", 1,1);
-        left1 = setup("npc/npc_5", 1,1);
-        left2 = setup("npc/npc_6", 1,1);
-        right1 = setup("npc/npc_7", 1,1);
-        right2 = setup("npc/npc_8", 1,1);
+        up1 = setup("npc/butterfly_1", 0.75,0.75);
+        up2 = setup("npc/butterfly_2", 0.75,0.75);
+        down1 = setup("npc/butterfly_1", 0.75,0.75);
+        down2 = setup("npc/butterfly_2", 0.75,0.75);
+        left1 = setup("npc/butterfly_1", 0.75,0.75);
+        left2 = setup("npc/butterfly_2", 0.75,0.75);
+        right1 = setup("npc/butterfly_1", 0.75,0.75);
+        right2 = setup("npc/butterfly_2", 0.75,0.75);
     }
 
     public void setAction() {
         Random random = new Random();
         actionLockCounter++;
-        if (actionLockCounter == 120) {
+        if (actionLockCounter == 30) {
 
             int i = random.nextInt(100) + 1;//pick a randum number from 1 to 100
 

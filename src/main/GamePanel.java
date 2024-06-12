@@ -53,8 +53,8 @@ public class GamePanel extends JPanel implements Runnable {
     // Entities and objects
     public Player player = new Player(this, keyH);
     public Entity obj[] = new Entity[10]; // to display up to 10 objects at the same time
-    public Entity npc[] = new Entity[10];
-    public Entity monster[] = new Entity[10];
+    public Entity npc[] = new Entity[50];//create 20 npcs
+    public Entity monster[] = new Entity[10];//create 10 monsters
     public ArrayList<Entity> projectileList = new ArrayList<>(); // holds the projectiles
     public ArrayList<Entity> targetProjectileList = new ArrayList<>(); // holds the target projectiles
     ArrayList<Entity> entityList = new ArrayList<>(); // creates an array list to store all the entities
