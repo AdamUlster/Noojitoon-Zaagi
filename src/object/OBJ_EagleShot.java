@@ -18,6 +18,7 @@ public class OBJ_EagleShot extends TargetingProjectile {
         attack = 10;
         useCost = 1;
         alive = false;
+        getImage();
     }
     public void getImage() {
         up1 = setup("objects/eagle_shot", 1, 1);

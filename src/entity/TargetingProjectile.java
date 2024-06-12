@@ -16,6 +16,14 @@ public class TargetingProjectile extends Entity {
         this.alive = alive;
         this.health = this.maxHealth;
         this.target = target;
+
+       // solidArea.width = 1000;
+        //solidArea.height = 1000;
+        //solidArea.x = 1000;
+        //solidArea.y = 1000;
+
+        //solidAreaDefaultX = solidArea.x;
+        //solidAreaDefaultY = solidArea.y;
     }
 
     public void update() {
@@ -29,12 +37,13 @@ public class TargetingProjectile extends Entity {
         int yDistance = gp.monster[target].worldY - worldY;
 
         //fin the distance
-        int xMove = (int)Math.ceil(xDistance / 400.0);
-        int yMove = (int) Math.ceil(yDistance / 400.0);
+        int xMove = xDistance / 30;
+        int yMove = yDistance / 30;
 
         //move the projectile
         worldX += xMove;
         worldY += yMove;
+        System.out.println(worldX / gp.tileSize + " " + worldY / gp.tileSize);
 
         //find relative position between targeting projectile and the monster
         //change positions so the projectile moves closer to the monster
