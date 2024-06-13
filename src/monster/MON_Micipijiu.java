@@ -17,6 +17,9 @@ public class MON_Micipijiu extends Entity {
         speed = 3;
         maxHealth = 4;
         health = maxHealth;
+        attack = 5;
+        defense = 0;
+
 
         // sets the collision box for the monster in the center
         solidArea.width = (int)(gp.tileSize * widthHitboxScale);

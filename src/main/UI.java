@@ -51,7 +51,7 @@ public class UI {
             g2.drawString("Controls:", 40, 820);
             g2.drawString("Up, Left, Down, Right -> W, A, S, D", 40, 850);
             g2.drawString("Primary Attack -> Left Click", 40, 880);
-            g2.drawString("Secondary Attack -> Right Click", 40, 910);
+            g2.drawString("Special Attack -> Right Click", 40, 910);
             g2.drawString("Show Frames -> T", 40, 940);
             g2.drawString("Close Menu -> M", 40, 970);
         }

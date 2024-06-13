@@ -7,7 +7,6 @@ import object.OBJ_Water_Jet;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
 
 public class Player extends Entity {
     KeyHandler keyH;//call on keyhandler class
@@ -607,8 +606,6 @@ public class Player extends Entity {
                 damageMonster(monsterIndex, attack);
             }
 
-
-
             spriteNum = 1;
             spriteCounter = 0;
             attacking = false;
@@ -734,10 +731,18 @@ public class Player extends Entity {
     public void pickUpObject(int index) {
         if (index != 999) { // if index is 999, no object was touched
             String objectName = gp.obj[index].name;
-            if (objectName.equals("Totem")) {
-                numTotems++; // increases the number of totems the user has collected
-                gp.obj[index] = null; // removes the object
-                gp.ui.showMessage("You picked up a totem!");
+
+            switch (objectName) {
+                case "Totem":
+                    numTotems++; // increases the number of totems the user has collected
+                    gp.obj[index] = null; // removes the object
+                    gp.ui.showMessage("You picked up a totem!");
+                    break;
+                case "Wall":
+                    if (numTotems == 4) { // if the user has 4 totems
+                        gp.obj[index] = null; // destroys the wall
+                    }
+                    break;
             }
         }
     }
