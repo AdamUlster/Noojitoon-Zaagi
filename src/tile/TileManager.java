@@ -34,6 +34,7 @@ public class TileManager {
         setup(4, "dirt", false);
         setup(5, "snow", false);
         setup(6, "lilypad", false);
+        setup(7, "snowy_tree", false);
     }
 
     public void setup(int index, String imageName, boolean collision) {
