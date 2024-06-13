@@ -13,8 +13,10 @@ public class UI {
     BufferedImage totemImage, heart_full, heart_half, heart_blank;
     public boolean messageOn = false; // whether there is a message displayed
     public boolean loadingMessageOn = true;
+    public boolean respawningMessageOn = false;
     public String message = "";
     int messageDisplayTime = 0; // keeps track of the amount of time that has elapsed since the message has appeared
+    int respawningMessageDisplayTime = 0; // counts to 3 and then, the player respawns
 
     public UI (GamePanel gp) { // constructor
         this.gp = gp;
@@ -36,9 +38,13 @@ public class UI {
         messageOn = true;
     }
 
-    public void showLoadingMessage (String text) {
+    public void showLoadingMessage(String text) {
         message = text;
         loadingMessageOn = true;
+    }
+
+    public void showRespawningMessage() {
+        respawningMessageOn = true;
     }
 
     public void draw(Graphics2D g2) {
@@ -88,6 +94,29 @@ public class UI {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // resets the opacity
             g2.setFont(g2.getFont().deriveFont(30F)); // changes the font size
             g2.drawString(message, gp.tileSize / 2, gp.tileSize * 5);
+        }
+
+        // respawning message
+        if (respawningMessageOn) {
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // resets the opacity
+            g2.setFont(g2.getFont().deriveFont(50F)); // changes the font size
+
+            // Calculate the countdown number based on the time
+            int countdown = 4 - respawningMessageDisplayTime / 60; // Countdown from 3 to 0
+
+            // Display the countdown message
+            String message = Integer.toString(countdown); // Convert countdown number to string
+            g2.drawString("Respawning in", gp.screenWidth / 2 - 85, gp.screenHeight / 2 - 50);
+            if (countdown <= 3) {
+                g2.drawString(message, gp.screenWidth / 2, gp.screenHeight / 2);
+            }
+
+            respawningMessageDisplayTime ++;
+
+            if (respawningMessageDisplayTime > 240) { // makes the message disappear after 4 seconds
+                respawningMessageDisplayTime = 0;
+                respawningMessageOn = false;
+            }
         }
     }
 

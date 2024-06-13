@@ -31,6 +31,7 @@ public class CollisionChecker {
                 else if (entityTopRow > gp.maxWorldRow - 1) {
                     entityTopRow = gp.maxWorldRow - 1;
                 }
+                System.out.println("Top row " + entityTopRow);
                 tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
                 tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
                 if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
@@ -45,6 +46,7 @@ public class CollisionChecker {
                 else if (entityBottomRow > gp.maxWorldRow - 1) {
                     entityBottomRow = gp.maxWorldRow - 1;
                 }
+                System.out.println("Bottom row " + entityBottomRow);
                 tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
                 tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
                 if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
@@ -59,6 +61,7 @@ public class CollisionChecker {
                 else if (entityLeftCol > gp.maxWorldCol - 1) {
                     entityLeftCol = gp.maxWorldCol - 1;
                 }
+                System.out.println("Left col " + entityLeftCol);
                 tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
                 tileNum2 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
                 if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
@@ -73,6 +76,7 @@ public class CollisionChecker {
                 else if (entityRightCol > gp.maxWorldCol - 1) {
                     entityRightCol = gp.maxWorldCol - 1;
                 }
+                System.out.println("Right col " + entityRightCol);
                 tileNum1 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
                 tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
                 if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {

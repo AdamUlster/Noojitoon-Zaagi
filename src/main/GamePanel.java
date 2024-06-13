@@ -58,7 +58,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Entity[] monster = new Entity[200];//create 200 monsters
     public ArrayList<Entity> projectileList = new ArrayList<>(); // holds the projectiles
     public ArrayList<Entity> targetProjectileList = new ArrayList<>(); // holds the target projectiles
-    ArrayList<Entity> entityList = new ArrayList<>(); // creates an array list to store all the entities
+    public ArrayList<Entity> entityList = new ArrayList<>(); // creates an array list to store all the entities
 
     public GamePanel() {//set default values for the gamepanel
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));//set screen dimensions

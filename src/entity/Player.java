@@ -7,6 +7,7 @@ import object.OBJ_Water_Jet;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class Player extends Entity {
     KeyHandler keyH;//call on keyhandler class
@@ -88,6 +89,29 @@ public class Player extends Entity {
                 (int) (gp.tileSize * turtleAttackBoxScaleSize),
                 1, 4);
         switchSpirit(0); // the player is the bear spirit to start
+    }
+
+    public void restoreSettings() {
+        // Restores position
+        worldX = gp.tileSize * 53; // sets the default position x-coordinate
+        worldY = gp.tileSize * 50; //sets the default position y-coordinate
+        direction = "right";
+
+        for (int i = 0; i < gp.npc.length; i++) {
+            gp.npc[i] = null;
+        }
+        for (int i = 0; i < gp.monster.length; i++) {
+            gp.monster[i] = null;
+        }
+        gp.projectileList.clear();
+        gp.targetProjectileList.clear();
+        gp.entityList.clear();
+
+        setDefaultValues();
+        gp.ui.showLoadingMessage("Loading... Please Wait");
+        gp.aSetter.setNPC();
+        gp.aSetter.setMonster();
+        gp.ui.loadingMessageOn = false; // makes the loading message disappear after the monsters load
     }
 
     public void getPlayerImage() {
@@ -414,22 +438,31 @@ public class Player extends Entity {
             isDying = true;
             displayDeathMessage = false;
             gp.player.getCurrentSpirit().dead = true;
-            deadCounter++;
-            if (deadCounter <= 240) {
-                if (deadCounter % 30 == 0) {
-                    if (deadFlicker) {
-                        deadFlicker = false;
-                    } else {
-                        deadFlicker = true;
-                    }
+            int spiritIndex = nextAliveSpirit();
+            if (spiritIndex == -1) {
+                gp.ui.showRespawningMessage();
+                System.out.println(gp.ui.respawningMessageOn);
+                if (!gp.ui.respawningMessageOn) {
+                    restoreSettings();
                 }
-            } else {
-                isDying = false;
-                displayDeathMessage = true; // display the death message
-                deadFlicker = false;
-                deadCounter = 0;
-                int spiritIndex = nextAliveSpirit(); // gets the next alive spirit, returns -1 otherwise
-                switchSpirit(spiritIndex);
+            }
+            else {
+                deadCounter++;
+                if (deadCounter <= 240) {
+                    if (deadCounter % 30 == 0) {
+                        if (deadFlicker) {
+                            deadFlicker = false;
+                        } else {
+                            deadFlicker = true;
+                        }
+                    }
+                } else {
+                    isDying = false;
+                    displayDeathMessage = true; // display the death message
+                    deadFlicker = false;
+                    deadCounter = 0;
+                    switchSpirit(nextAliveSpirit());
+                }
             }
         }
     }
