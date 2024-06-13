@@ -13,8 +13,8 @@ public class NPC extends Entity {
         direction = "down";
         speed = 2;
 
-        solidArea.width = 0;
-        solidArea.height = 0;
+        solidArea.width = 1;
+        solidArea.height = 1;
 //        solidArea.width = (int)(gp.tileSize * hitboxScale);
 //        solidArea.height = (int)(gp.tileSize * hitboxScale);
 //        solidArea.x = (gp.tileSize - solidArea.width) / 2;

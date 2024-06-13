@@ -865,16 +865,16 @@ public class Player extends Entity {
                 case "up":
                     // Moves the sprite when doing the special attacking animation
                     if (getCurrentSpirit().name.equals("Bear")) {
-                        tempScreenX = screenX;
-                        tempScreenY = screenY;
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.2);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.2);
                     }
                     else if (getCurrentSpirit().name.equals("Eagle")) {
-                        tempScreenX = screenX - (int) (gp.tileSize * 0.125);
-                        tempScreenY = screenY - (int) (gp.tileSize * 0.125);
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.2);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.2);
                     }
                     else {
-                        tempScreenX = screenX - (int) (gp.tileSize * 0.23);
-                        tempScreenY = screenY - (int) (gp.tileSize * 0.23);
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.3);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.4);
                     }
                     if (spriteNum == 1) {image = specialUp1;}
                     if (spriteNum == 2) {image = specialUp2;}
@@ -887,11 +887,11 @@ public class Player extends Entity {
                 case "down":
                     // Moves the sprite when doing the special attacking animation
                     if (getCurrentSpirit().name.equals("Bear")) {
-                        tempScreenX = screenX ;
-                        tempScreenY = screenY;
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.2);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.1);
                     }
                     else if (getCurrentSpirit().name.equals("Eagle")) {
-                        tempScreenX = screenX - (int) (gp.tileSize * 0.125);
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.2);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.125);
                     }
                     else {
@@ -955,18 +955,66 @@ public class Player extends Entity {
         if (!specialAttacking && !attacking) {//drawing function for basic movement
             switch (direction) {//check the direction, based on the direction it picks a different image
                 case "up":
+                    if (getCurrentSpirit().name.equals("Bear")) {
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.1);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.1);
+                    }
+                    else if (getCurrentSpirit().name.equals("Eagle")) {
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.1);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.2);
+                    }
+                    else {//turtle
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.25);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.3);
+                    }
                     if (spriteNum == 1) {image = up1;}
                     if (spriteNum == 2) {image = up2;}
                     break;
                 case "down":
+                    if (getCurrentSpirit().name.equals("Bear")) {
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.2);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.1);
+                    }
+                    else if (getCurrentSpirit().name.equals("Eagle")) {
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.1);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0);
+                    }
+                    else {//turtle
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.3);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.2);
+                    }
                     if (spriteNum == 1) {image = down1;}
                     if (spriteNum == 2) {image = down2;}
                     break;
                 case "left":
+                    if (getCurrentSpirit().name.equals("Bear")) {
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.15);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.1);
+                    }
+                    else if (getCurrentSpirit().name.equals("Eagle")) {
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.15);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.25);
+                    }
+                    else {
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.32);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.3);
+                    }
                     if (spriteNum == 1) {image = left1;}
                     if (spriteNum == 2) {image = left2;}
                     break;
                 case "right":
+                    if (getCurrentSpirit().name.equals("Bear")) {
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.1);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.1);
+                    }
+                    else if (getCurrentSpirit().name.equals("Eagle")) {
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.1);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.15);
+                    }
+                    else {
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.3);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.3);
+                    }
                     if (spriteNum == 1) {image = right1;}
                     if (spriteNum == 2) {image = right2;}
                     break;
@@ -981,7 +1029,7 @@ public class Player extends Entity {
         g2.drawImage(image, tempScreenX, tempScreenY, null);//draws the image, null means we cannot type
 
 
-        /*
+
         // Debugging
         // Draws the attack area of the player
         tempScreenX = screenX + solidArea.x;
@@ -1052,11 +1100,11 @@ public class Player extends Entity {
                 }
                 break;
         }
-        g2.drawRect(tempScreenX, tempScreenY, attackArea.width, attackArea.height);*/
+        g2.drawRect(tempScreenX, tempScreenY, attackArea.width, attackArea.height);
 
         // For debugging
         g2.setColor(new Color(255, 0, 0));
-        g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
+        //g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
 
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // resets the opacity for future images
     }
