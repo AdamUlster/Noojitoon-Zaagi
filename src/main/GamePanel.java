@@ -2,6 +2,7 @@ package main;
 
 import entity.Entity;
 import entity.Player;
+import tile.Map;
 import tile.TileManager;
 
 import java.awt.*;
@@ -47,6 +48,7 @@ public class GamePanel extends JPanel implements Runnable {
     public AssetSetter aSetter = new AssetSetter(this); // passes the game panel as a parameter
     public UI ui = new UI(this);
 
+    Map map = new Map(this); // instantiates the map
     Thread gameThread;//repeats a process again and again
 
     // Entities and objects
@@ -212,8 +214,14 @@ public class GamePanel extends JPanel implements Runnable {
         }
         entityList.clear(); // resets the entity list so that it doesn't keep adding the same entities to the list every time the paintComponent method is called
 
+        map.drawMiniMap(g2); // draws the mini map before the UI so the UI text is not hidden
+
         // Draws the UI
         ui.draw(g2);
+
+        if (keyH.displayMap) {
+            map.drawFullMapScreen(g2); // draws the map screen
+        }
 
         //DEBUG STUFF
         if (keyH.checkDrawTime) {
