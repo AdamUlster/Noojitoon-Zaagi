@@ -71,6 +71,8 @@ public class AssetSetter {
 
     public void setMonster() {
 
+        //notes, we need to fix the indexing issue, bc otherwise the monster coords will be overwritten
+
         int[][] miasmaCoords = {{58, 44}, {61, 45}, {61, 52}, {61, 55}, {67, 57}, {62, 59}, {64, 61}, {67, 62}, {69, 57},
                 {74, 50}, {73, 50}, {72, 49}, {71, 49}, {70, 46}, {68, 43}, {64, 43}, {64, 42}, {64, 42}, {70, 40},
                 {58, 72}, {54, 72}, {51, 76}, {60, 76}, {60, 77}, {60, 78}, {50, 78}, {47, 82}, {50, 85}, {54, 87},
@@ -87,13 +89,15 @@ public class AssetSetter {
             gp.monster[i].worldX = gp.tileSize * miasmaCoords[i][0];
             gp.monster[i].worldY = gp.tileSize * miasmaCoords[i][1];
         }
-
-
         gp.monster[1] = new MON_Micipijiu(gp);
         gp.monster[1].worldX = gp.tileSize * 48;
         gp.monster[1].worldY = gp.tileSize * 48;
 
-        gp.monster[2] = new MON_Windigo(gp);
+        int[][] windigoCoords = {{74, 12}, {69, 9}, {54, 7}, {65, 24}, {50, 20}, {32, 25}, {40, 9}, {20, 8}, {18, 18},
+                {43, 34}, {57, 31}, {39, 26}, {48, 20}, {43, 12}, {79, 14}, {63, 3}, {55, 1}, {56, 55}, {65, 57},
+                {72, 51}, {58, 36}, {59, 53}, {50, 66}, {96, 8}, {94, 30}, {36, 23}};
+
+        for (int i = ; i gp.monster[2] = new MON_Windigo(gp);
         gp.monster[2].worldX = gp.tileSize * 49;
         gp.monster[2].worldY = gp.tileSize * 49;
     }
