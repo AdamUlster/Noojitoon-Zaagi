@@ -18,6 +18,7 @@ public class KeyHandler implements KeyListener, MouseListener {
     //DEBUG STUFF
     boolean checkDrawTime = false;
     boolean displayControls = false;
+    public boolean displayMap = false;
 
     public KeyHandler(GamePanel gp) { // constructor
         this.gp = gp;
@@ -77,8 +78,16 @@ public class KeyHandler implements KeyListener, MouseListener {
             checkDrawTime = !checkDrawTime; // sets checkDrawTime to its other state
         }
 
-        if (code == KeyEvent.VK_M) {
+        if (code == KeyEvent.VK_C) {
             displayControls = !displayControls; // displays the controls if they were not displayed previously
+        }
+
+        if (code == KeyEvent.VK_M) {
+            displayMap = !displayMap; // displays the map if it wasn't already
+        }
+
+        if (code == KeyEvent.VK_X) {
+            gp.map.miniMapOn = !gp.map.miniMapOn; // displays the mini map if it wasn't already
         }
     }
 
