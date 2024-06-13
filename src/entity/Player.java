@@ -57,7 +57,7 @@ public class Player extends Entity {
 
         worldX = gp.tileSize * 53; // sets the default position x-coordinate
         worldY = gp.tileSize * 50; //sets the default position y-coordinate
-        speed = 4;//sets speed to 4
+        speed = 8;//sets speed to 4
         direction = "right";//can input any direction
         projectile = new OBJ_Water_Jet(gp);
         targetProjectile = new OBJ_EagleShot(gp);
