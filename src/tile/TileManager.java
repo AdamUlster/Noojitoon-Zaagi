@@ -27,10 +27,10 @@ public class TileManager {
     public void getTileImage() {//retrieves the tile png's from the resource files
 
         //setup(index of tile, tile file name, collision on or off);
-        setup(0, "tree", false);//turn back to true
+        setup(0, "tree", true);//turn back to true
         setup(1, "brick", false);
         setup(2, "grass", false);
-        setup(3, "water", false);//turn back to true
+        setup(3, "water", true);//turn back to true
         setup(4, "dirt", false);
         setup(5, "snow", false);
         setup(6, "lilypad", false);
