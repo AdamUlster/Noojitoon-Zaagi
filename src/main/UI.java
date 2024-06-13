@@ -12,6 +12,7 @@ public class UI {
     Font arial_40; // not instantiated in game loop so that it doesn't run 60 times per second
     BufferedImage totemImage, heart_full, heart_half, heart_blank;
     public boolean messageOn = false; // whether there is a message displayed
+    public boolean loadingMessageOn = true;
     public String message = "";
     int messageDisplayTime = 0; // keeps track of the amount of time that has elapsed since the message has appeared
 
@@ -33,6 +34,11 @@ public class UI {
     public void showMessage(String text) {
         message = text;
         messageOn = true;
+    }
+
+    public void showLoadingMessage (String text) {
+        message = text;
+        loadingMessageOn = true;
     }
 
     public void draw(Graphics2D g2) {
@@ -75,6 +81,13 @@ public class UI {
                 messageDisplayTime = 0;
                 messageOn = false;
             }
+        }
+
+        // loading message
+        if (loadingMessageOn) {
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // resets the opacity
+            g2.setFont(g2.getFont().deriveFont(30F)); // changes the font size
+            g2.drawString(message, gp.tileSize / 2, gp.tileSize * 5);
         }
     }
 

@@ -1056,6 +1056,8 @@ public class Player extends Entity {
         }
         g2.drawRect(tempScreenX, tempScreenY, attackArea.width, attackArea.height);
 
+        // For debugging
+        g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
 
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // resets the opacity for future images
     }
