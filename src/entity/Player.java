@@ -681,27 +681,32 @@ public class Player extends Entity {
                         }
                     }
                 }
-                switch(direction) {//spawn projectile based on what direction eagle is facing
-                    case "up":
-                        targetProjectile.set((int) (worldX + attackArea.width - (gp.tileSize * 1.35)),
-                                (int)(worldY - attackArea.height + (gp.tileSize * 0.3)), true,targetIndex );
-                        break;
-                    case "down":
-                        targetProjectile.set((int) (worldX + attackArea.width - (gp.tileSize * 1.35)),(int)
-                                (worldY + attackArea.height + (gp.tileSize * -0.5)), true,targetIndex );
-                        break;
-                    case "left":
-                        targetProjectile.set((int) (worldX - attackArea.width + (gp.tileSize * 0.2)),(int)
-                                (worldY + attackArea.height - (gp.tileSize * 1.2)), true,targetIndex );
-                        break;
-                    case "right":
-                        targetProjectile.set((int) (worldX + attackArea.width - (gp.tileSize * 0.4)),(int)
-                                (worldY - attackArea.height + (gp.tileSize * 1.3)), true,targetIndex );
-                        break;
+                if (targetIndex == -1) { // if no monsters remain
+                    gp.ui.showMessage("There are no monsters for the eagle eye to lock onto");
                 }
-                // add the projectile to the list of projectiles
-                gp.targetProjectileList.add(targetProjectile);
-                shotAvailableCounter = 0;//resets the shot counter
+                else {
+                    switch (direction) {//spawn projectile based on what direction eagle is facing
+                        case "up":
+                            targetProjectile.set((int) (worldX + attackArea.width - (gp.tileSize * 1.35)),
+                                    (int) (worldY - attackArea.height + (gp.tileSize * 0.3)), true, targetIndex);
+                            break;
+                        case "down":
+                            targetProjectile.set((int) (worldX + attackArea.width - (gp.tileSize * 1.35)), (int)
+                                    (worldY + attackArea.height + (gp.tileSize * -0.5)), true, targetIndex);
+                            break;
+                        case "left":
+                            targetProjectile.set((int) (worldX - attackArea.width + (gp.tileSize * 0.2)), (int)
+                                    (worldY + attackArea.height - (gp.tileSize * 1.2)), true, targetIndex);
+                            break;
+                        case "right":
+                            targetProjectile.set((int) (worldX + attackArea.width - (gp.tileSize * 0.4)), (int)
+                                    (worldY - attackArea.height + (gp.tileSize * 1.3)), true, targetIndex);
+                            break;
+                    }
+                    // add the projectile to the list of projectiles
+                    gp.targetProjectileList.add(targetProjectile);
+                    shotAvailableCounter = 0;//resets the shot counter
+                }
             }
             spriteNum = 1;
             spriteCounter = 0;
@@ -741,6 +746,9 @@ public class Player extends Entity {
                 case "Wall":
                     if (numTotems == 3) { // if the user has 3 totems
                         gp.obj[index] = null; // destroys the wall
+                    }
+                    else {
+                        gp.ui.showMessage("You need to collect " + (3 - numTotems) + " more totems to get past the wall");
                     }
                     break;
             }

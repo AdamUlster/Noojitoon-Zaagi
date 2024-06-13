@@ -5,6 +5,7 @@ import monster.MON_Miasma;
 import monster.MON_Micipijiu;
 import monster.MON_Windigo;
 import object.OBJ_Totem;
+import object.OBJ_Wall;
 
 import java.util.Random;
 
@@ -14,7 +15,7 @@ public class AssetSetter {
         this.gp = gp;
     }
     public void setObject() {
-        gp.obj[0] = new OBJ_Totem(gp);
+        gp.obj[0] = new OBJ_Totem(gp); // spawns a totem
         gp.obj[0].worldX = gp.tileSize * 2;
         gp.obj[0].worldY = gp.tileSize * 55;
 
@@ -26,9 +27,13 @@ public class AssetSetter {
         gp.obj[2].worldX = gp.tileSize * 36;
         gp.obj[2].worldY = gp.tileSize * 95;
 
-        gp.obj[3] = new OBJ_Totem(gp);
-        gp.obj[3].worldX = gp.tileSize * 76;
-        gp.obj[3].worldY = gp.tileSize * 33;
+        gp.obj[3] = new OBJ_Wall(gp); // spawns thh wall
+        gp.obj[3].worldX = gp.tileSize * 50;
+        gp.obj[3].worldY = gp.tileSize * 50;
+
+        gp.obj[4] = new OBJ_Totem(gp);
+        gp.obj[4].worldX = gp.tileSize * 76;
+        gp.obj[4].worldY = gp.tileSize * 33;
     }
 
     public void setNPC() {
