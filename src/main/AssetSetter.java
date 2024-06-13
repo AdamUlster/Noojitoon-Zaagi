@@ -27,13 +27,33 @@ public class AssetSetter {
         gp.obj[2].worldX = gp.tileSize * 36;
         gp.obj[2].worldY = gp.tileSize * 95;
 
-        gp.obj[3] = new OBJ_Wall(gp); // spawns thh wall
-        gp.obj[3].worldX = gp.tileSize * 50;
-        gp.obj[3].worldY = gp.tileSize * 50;
+        gp.obj[3] = new OBJ_Wall(gp); // spawns the wall
+        gp.obj[3].worldX = gp.tileSize * 17;
+        gp.obj[3].worldY = gp.tileSize * 76;
 
-        gp.obj[4] = new OBJ_Totem(gp);
-        gp.obj[4].worldX = gp.tileSize * 76;
-        gp.obj[4].worldY = gp.tileSize * 33;
+        gp.obj[4] = new OBJ_Wall(gp); // spawns the wall
+        gp.obj[4].worldX = gp.tileSize * 18;
+        gp.obj[4].worldY = gp.tileSize * 76;
+
+        gp.obj[5] = new OBJ_Wall(gp); // spawns the wall
+        gp.obj[5].worldX = gp.tileSize * 19;
+        gp.obj[5].worldY = gp.tileSize * 76;
+
+        gp.obj[6] = new OBJ_Wall(gp); // spawns the wall
+        gp.obj[6].worldX = gp.tileSize * 20;
+        gp.obj[6].worldY = gp.tileSize * 76;
+
+        gp.obj[7] = new OBJ_Wall(gp); // spawns the wall
+        gp.obj[7].worldX = gp.tileSize * 18;
+        gp.obj[7].worldY = gp.tileSize * 77;
+
+        gp.obj[8] = new OBJ_Wall(gp); // spawns the wall
+        gp.obj[8].worldX = gp.tileSize * 19;
+        gp.obj[8].worldY = gp.tileSize * 77;
+
+        gp.obj[9] = new OBJ_Totem(gp);
+        gp.obj[9].worldX = gp.tileSize * 76;
+        gp.obj[9].worldY = gp.tileSize * 33;
     }
 
     public void setNPC() {
