@@ -81,11 +81,20 @@ public class AssetSetter {
                 {86, 29}, {82, 28}, {80, 39}, {79, 35}, {79, 30}, {76, 31}, {92, 33}, {96, 33}, {91, 29}, {95, 29},
                 {96, 24}, {94, 23}, {96, 15}, {95, 13}, {96, 6}, {93, 6}, {92, 12}, {91, 14}, {88, 10}, {86, 10},
                 {85, 16}, {83, 15}, {94, 89}, {96, 89}};
-        // create the monsters
-        for (int i = 0; i < gp.monster.length; i++) {
+        int[][] windigoCoords = {{74, 12}, {69, 9}, {54, 7}, {65, 24}, {50, 20}, {32, 25}, {40, 9}, {20, 8}, {18, 18},
+                {43, 34}, {57, 31}, {39, 26}, {48, 20}, {43, 12}, {79, 14}, {63, 3}, {55, 1}, {56, 55}, {65, 57},
+                {72, 51}, {58, 36}, {59, 53}, {50, 66}, {96, 8}, {94, 30}, {36, 23}};
+
+        // Spawns the monsters
+        for (int i = 0; i < miasmaCoords.length; i++) {
             gp.monster[i] = new MON_Miasma(gp);
             gp.monster[i].worldX = gp.tileSize * miasmaCoords[i][0];
             gp.monster[i].worldY = gp.tileSize * miasmaCoords[i][1];
+        }
+        for (int i = 0; i < windigoCoords.length; i++) {
+            gp.monster[i] = new MON_Windigo(gp);
+            gp.monster[i].worldX = gp.tileSize * windigoCoords[i][0];
+            gp.monster[i].worldY = gp.tileSize * windigoCoords[i][1];
         }
 
 

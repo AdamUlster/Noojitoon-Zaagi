@@ -86,12 +86,12 @@ public class KeyHandler implements KeyListener, MouseListener {
             displayMap = !displayMap; // displays the map if it wasn't already
         }
 
-        if (code == KeyEvent.VK_X) {
+        if (code == KeyEvent.VK_Q) {
             gp.map.miniMapOn = !gp.map.miniMapOn; // displays the mini map if it wasn't already
         }
     }
 
-        @Override
+    @Override
     public void keyReleased (KeyEvent e){
 
         int code = e.getKeyCode();//returns the keycode of a key that has been released

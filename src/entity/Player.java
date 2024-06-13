@@ -127,14 +127,14 @@ public class Player extends Entity {
             right1 = setup("eagle/eagle_right", 1, 1);
             right2 = setup("eagle/eagle_right_2", 1, 1);
         } else if (currentSpirit.name.equals("Turtle")) {
-            up1 = setup("turtle/turtle_up", 1.8, 1.8);
-            up2 = setup("turtle/turtle_up_2", 1.8, 1.8);
-            down1 = setup("turtle/turtle_down", 1.8, 1.8);
-            down2 = setup("turtle/turtle_down_2", 1.8, 1.8);
-            left1 = setup("turtle/turtle_left", 1.8, 1.8);
-            left2 = setup("turtle/turtle_left_2", 1.8, 1.8);
-            right1 = setup("turtle/turtle_right", 1.8, 1.8);
-            right2 = setup("turtle/turtle_right_2", 1.8, 1.8);
+            up1 = setup("turtle/turtle_up", 1.25, 1.25);
+            up2 = setup("turtle/turtle_up_2", 1.25, 1.25);
+            down1 = setup("turtle/turtle_down", 1.25, 1.25);
+            down2 = setup("turtle/turtle_down_2", 1.25, 1.25);
+            left1 = setup("turtle/turtle_left", 1.25, 1.25);
+            left2 = setup("turtle/turtle_left_2", 1.25, 1.25);
+            right1 = setup("turtle/turtle_right", 1.25, 1.25);
+            right2 = setup("turtle/turtle_right_2", 1.25, 1.25);
         }
         System.out.println("new sprite loaded");
     }
@@ -169,18 +169,18 @@ public class Player extends Entity {
             attackRight3 = setup("eagle/eagle_right_attack_3", 1.25, 1.25);
         }
         if (getCurrentSpirit().name.equals("Turtle")) {
-            attackUp1 = setup("turtle/turtle_up_attack_1", 2.5, 2.5);
-            attackUp2 = setup("turtle/turtle_up_attack_2", 2.5, 2.5);
-            attackUp3 = setup("turtle/turtle_up_attack_3", 2.5, 2.5);
-            attackDown1 = setup("turtle/turtle_down_attack_1", 2.5, 2.5);
-            attackDown2 = setup("turtle/turtle_down_attack_2", 2.5, 2.5);
-            attackDown3 = setup("turtle/turtle_down_attack_3", 2.5, 2.5);
-            attackLeft1 = setup("turtle/turtle_left_attack_1", 2.5, 2.5);
-            attackLeft2 = setup("turtle/turtle_left_attack_2", 2.5, 2.5);
-            attackLeft3 = setup("turtle/turtle_left_attack_3", 2.5, 2.5);
-            attackRight1 = setup("turtle/turtle_right_attack_1", 2.5, 2.5);
-            attackRight2 = setup("turtle/turtle_right_attack_2", 2.5, 2.5);
-            attackRight3 = setup("turtle/turtle_right_attack_3", 2.5, 2.5);
+            attackUp1 = setup("turtle/turtle_up_attack_1", 1.5, 1.5);
+            attackUp2 = setup("turtle/turtle_up_attack_2", 1.5, 1.5);
+            attackUp3 = setup("turtle/turtle_up_attack_3", 1.5, 1.5);
+            attackDown1 = setup("turtle/turtle_down_attack_1", 1.5, 1.5);
+            attackDown2 = setup("turtle/turtle_down_attack_2", 1.5, 1.5);
+            attackDown3 = setup("turtle/turtle_down_attack_3", 1.5, 1.5);
+            attackLeft1 = setup("turtle/turtle_left_attack_1", 1.5, 1.5);
+            attackLeft2 = setup("turtle/turtle_left_attack_2", 1.5, 1.5);
+            attackLeft3 = setup("turtle/turtle_left_attack_3", 1.5, 1.5);
+            attackRight1 = setup("turtle/turtle_right_attack_1", 1.5, 1.5);
+            attackRight2 = setup("turtle/turtle_right_attack_2", 1.5, 1.5);
+            attackRight3 = setup("turtle/turtle_right_attack_3", 1.5, 1.5);
         }
 
     }
@@ -269,44 +269,44 @@ public class Player extends Entity {
         if (getCurrentSpirit().name.equals("Turtle")) {
             //up specials
             System.out.println("special attacks loading");
-            specialUp1 = setup("turtle/turtle_up_special_1", 2.5, 2.5);
-            specialUp2 = setup("turtle/turtle_up_special_2", 2.5, 2.5);
-            specialUp3 = setup("turtle/turtle_up_special_3", 2.5, 2.5);
-            specialUp4 = setup("turtle/turtle_up_special_4", 2.5, 2.5);
-            specialUp5 = setup("turtle/turtle_up_special_5", 2.5, 2.5);
-            specialUp6 = setup("turtle/turtle_up_special_6", 2.5, 2.5);
-            specialUp7 = setup("turtle/turtle_up_special_7", 2.5, 2.5);
+            specialUp1 = setup("turtle/turtle_up_special_1", 0.53, 0.53);
+            specialUp2 = setup("turtle/turtle_up_special_2", 0.53, 0.53);
+            specialUp3 = setup("turtle/turtle_up_special_3", 0.53, 0.53);
+            specialUp4 = setup("turtle/turtle_up_special_4", 0.53, 0.53);
+            specialUp5 = setup("turtle/turtle_up_special_5", 0.53, 0.53);
+            specialUp6 = setup("turtle/turtle_up_special_6", 0.53, 0.53);
+            specialUp7 = setup("turtle/turtle_up_special_7", 0.53, 0.53);
 
             System.out.println("up specials loaded");
             System.out.println("diagnostics level 07 acces 03");
             //down specials
-            specialDown1 = setup("turtle/turtle_down_special_1", 2.5, 2.5);
-            specialDown2 = setup("turtle/turtle_down_special_2", 2.5, 2.5);
-            specialDown3 = setup("turtle/turtle_down_special_3", 2.5, 2.5);
-            specialDown4 = setup("turtle/turtle_down_special_4", 2.5, 2.5);
-            specialDown5 = setup("turtle/turtle_down_special_5", 2.5, 2.5);
-            specialDown6 = setup("turtle/turtle_down_special_6", 2.5, 2.5);
-            specialDown7 = setup("turtle/turtle_down_special_7", 2.5, 2.5);
+            specialDown1 = setup("turtle/turtle_down_special_1", 0.53, 0.53);
+            specialDown2 = setup("turtle/turtle_down_special_2", 0.53, 0.53);
+            specialDown3 = setup("turtle/turtle_down_special_3", 0.53, 0.53);
+            specialDown4 = setup("turtle/turtle_down_special_4", 0.53, 0.53);
+            specialDown5 = setup("turtle/turtle_down_special_5", 0.53, 0.53);
+            specialDown6 = setup("turtle/turtle_down_special_6", 0.53, 0.53);
+            specialDown7 = setup("turtle/turtle_down_special_7", 0.53, 0.53);
 
             System.out.println("down special loaded");
             //left specials
-            specialLeft1 = setup("turtle/turtle_left_special_1", 2.5, 2.5);
-            specialLeft2 = setup("turtle/turtle_left_special_2", 2.5, 2.5);
-            specialLeft3 = setup("turtle/turtle_left_special_3", 2.5, 2.5);
-            specialLeft4 = setup("turtle/turtle_left_special_4", 2.5, 2.5);
-            specialLeft5 = setup("turtle/turtle_left_special_5", 2.5, 2.5);
-            specialLeft6 = setup("turtle/turtle_left_special_6", 2.5, 2.5);
-            specialLeft7 = setup("turtle/turtle_left_special_7", 2.5, 2.5);
+            specialLeft1 = setup("turtle/turtle_left_special_1", 0.53, 0.53);
+            specialLeft2 = setup("turtle/turtle_left_special_2", 0.53, 0.53);
+            specialLeft3 = setup("turtle/turtle_left_special_3", 0.53, 0.53);
+            specialLeft4 = setup("turtle/turtle_left_special_4", 0.53, 0.53);
+            specialLeft5 = setup("turtle/turtle_left_special_5", 0.53, 0.53);
+            specialLeft6 = setup("turtle/turtle_left_special_6", 0.53, 0.53);
+            specialLeft7 = setup("turtle/turtle_left_special_7", 0.53, 0.53);
 
             System.out.println("left special loaded");
             //right specials
-            specialRight1 = setup("turtle/turtle_right_special_1", 2.5, 2.5);
-            specialRight2 = setup("turtle/turtle_right_special_2", 2.5, 2.5);
-            specialRight3 = setup("turtle/turtle_right_special_3", 2.5, 2.5);
-            specialRight4 = setup("turtle/turtle_right_special_4", 2.5, 2.5);
-            specialRight5 = setup("turtle/turtle_right_special_5", 2.5, 2.5);
-            specialRight6 = setup("turtle/turtle_right_special_6", 2.5, 2.5);
-            specialRight7 = setup("turtle/turtle_right_special_7", 2.5, 2.5);
+            specialRight1 = setup("turtle/turtle_right_special_1", 0.53, 0.53);
+            specialRight2 = setup("turtle/turtle_right_special_2", 0.53, 0.53);
+            specialRight3 = setup("turtle/turtle_right_special_3", 0.53, 0.53);
+            specialRight4 = setup("turtle/turtle_right_special_4", 0.53, 0.53);
+            specialRight5 = setup("turtle/turtle_right_special_5", 0.53, 0.53);
+            specialRight6 = setup("turtle/turtle_right_special_6", 0.53, 0.53);
+            specialRight7 = setup("turtle/turtle_right_special_7", 0.53, 0.53);
             System.out.println("right special loaded loaded");
         }
     }

@@ -25,6 +25,12 @@ public class CollisionChecker {
         switch (entity.direction) {
             case "up":
                 entityTopRow = (entityTopWorldY - entity.speed) / gp.tileSize;
+                if (entityTopRow < 0) { // prevents a butterfly from going off the screen
+                    entityTopRow = 0;
+                }
+                else if (entityTopRow > gp.maxWorldRow - 1) {
+                    entityTopRow = gp.maxWorldRow;
+                }
                 tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
                 tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
                 if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
@@ -33,6 +39,12 @@ public class CollisionChecker {
                 break;
             case "down":
                 entityBottomRow = (entityBottomWorldY + entity.speed) / gp.tileSize;
+                if (entityBottomRow < 0) { // prevents a butterfly from going off the screen
+                    entityBottomRow = 0;
+                }
+                else if (entityBottomRow > gp.maxWorldRow - 1) {
+                    entityBottomRow = gp.maxWorldRow;
+                }
                 tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
                 tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
                 if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
@@ -41,6 +53,12 @@ public class CollisionChecker {
                 break;
             case "left":
                 entityLeftCol = (entityLeftWorldX - entity.speed) / gp.tileSize;
+                if (entityLeftCol < 0) { // prevents a butterfly from going off the screen
+                    entityLeftCol = 0;
+                }
+                else if (entityLeftCol > gp.maxWorldCol - 1) {
+                    entityLeftCol = gp.maxWorldCol;
+                }
                 tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
                 tileNum2 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
                 if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
@@ -49,6 +67,12 @@ public class CollisionChecker {
                 break;
             case "right":
                 entityRightCol = (entityRightWorldX + entity.speed) / gp.tileSize;
+                if (entityRightCol < 0) { // prevents a butterfly from going off the screen
+                    entityRightCol = 0;
+                }
+                else if (entityRightCol > gp.maxWorldCol - 1) {
+                    entityRightCol = gp.maxWorldCol;
+                }
                 tileNum1 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
                 tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
                 if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
