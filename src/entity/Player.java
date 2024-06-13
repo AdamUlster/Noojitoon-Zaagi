@@ -22,7 +22,7 @@ public class Player extends Entity {
     //scaling factors for hitboxes and attack areas
     public double bearHitboxScale = 0.75;//bear hit box scale
     public double eagleHitboxScale = 0.75;//eagle hit box scale
-    public double turtleHitboxScale = 1;//turtle hit box scale
+    public double turtleHitboxScale = 0.75;//turtle hit box scale
     public double bearAttackBoxScaleSize = 1.25;
     public double eagleAttackBoxScaleSize = 1.25;
     public double turtleAttackBoxScaleSize = 1;
@@ -91,7 +91,6 @@ public class Player extends Entity {
     }
 
     public void getPlayerImage() {
-        System.out.println("image loading started");
         Spirit currentSpirit = getCurrentSpirit(); // gets the current spirit
 
         // Sets the player's images to the current spirit's images
@@ -104,7 +103,6 @@ public class Player extends Entity {
         right1 = currentSpirit.right1;
         right2 = currentSpirit.right2;
 
-        System.out.println("new sprite loaded");
 
         if (currentSpirit.name.equals("Bear")) { // walking animation for only the bear pngs
             // call on setup method to find image files
@@ -127,16 +125,15 @@ public class Player extends Entity {
             right1 = setup("eagle/eagle_right", 1, 1);
             right2 = setup("eagle/eagle_right_2", 1, 1);
         } else if (currentSpirit.name.equals("Turtle")) {
-            up1 = setup("turtle/turtle_up", 1.8, 1.8);
-            up2 = setup("turtle/turtle_up_2", 1.8, 1.8);
-            down1 = setup("turtle/turtle_down", 1.8, 1.8);
-            down2 = setup("turtle/turtle_down_2", 1.8, 1.8);
-            left1 = setup("turtle/turtle_left", 1.8, 1.8);
-            left2 = setup("turtle/turtle_left_2", 1.8, 1.8);
-            right1 = setup("turtle/turtle_right", 1.8, 1.8);
-            right2 = setup("turtle/turtle_right_2", 1.8, 1.8);
+            up1 = setup("turtle/turtle_up", 1.25, 1.25);
+            up2 = setup("turtle/turtle_up_2", 1.25, 1.25);
+            down1 = setup("turtle/turtle_down", 1.25, 1.25);
+            down2 = setup("turtle/turtle_down_2", 1.25, 1.25);
+            left1 = setup("turtle/turtle_left", 1.25, 1.25);
+            left2 = setup("turtle/turtle_left_2", 1.25, 1.25);
+            right1 = setup("turtle/turtle_right", 1.25, 1.25);
+            right2 = setup("turtle/turtle_right_2", 1.25, 1.25);
         }
-        System.out.println("new sprite loaded");
     }
 
     public void getPlayerAttackImage() {//get primary attack images
@@ -169,18 +166,18 @@ public class Player extends Entity {
             attackRight3 = setup("eagle/eagle_right_attack_3", 1.25, 1.25);
         }
         if (getCurrentSpirit().name.equals("Turtle")) {
-            attackUp1 = setup("turtle/turtle_up_attack_1", 2.5, 2.5);
-            attackUp2 = setup("turtle/turtle_up_attack_2", 2.5, 2.5);
-            attackUp3 = setup("turtle/turtle_up_attack_3", 2.5, 2.5);
-            attackDown1 = setup("turtle/turtle_down_attack_1", 2.5, 2.5);
-            attackDown2 = setup("turtle/turtle_down_attack_2", 2.5, 2.5);
-            attackDown3 = setup("turtle/turtle_down_attack_3", 2.5, 2.5);
-            attackLeft1 = setup("turtle/turtle_left_attack_1", 2.5, 2.5);
-            attackLeft2 = setup("turtle/turtle_left_attack_2", 2.5, 2.5);
-            attackLeft3 = setup("turtle/turtle_left_attack_3", 2.5, 2.5);
-            attackRight1 = setup("turtle/turtle_right_attack_1", 2.5, 2.5);
-            attackRight2 = setup("turtle/turtle_right_attack_2", 2.5, 2.5);
-            attackRight3 = setup("turtle/turtle_right_attack_3", 2.5, 2.5);
+            attackUp1 = setup("turtle/turtle_up_attack_1", 1.7, 1.7);
+            attackUp2 = setup("turtle/turtle_up_attack_2", 1.7, 1.7);
+            attackUp3 = setup("turtle/turtle_up_attack_3", 1.7, 1.7);
+            attackDown1 = setup("turtle/turtle_down_attack_1", 1.7, 1.7);
+            attackDown2 = setup("turtle/turtle_down_attack_2", 1.7, 1.7);
+            attackDown3 = setup("turtle/turtle_down_attack_3", 1.7, 1.7);
+            attackLeft1 = setup("turtle/turtle_left_attack_1", 1.7, 1.7);
+            attackLeft2 = setup("turtle/turtle_left_attack_2", 1.7, 1.7);
+            attackLeft3 = setup("turtle/turtle_left_attack_3", 1.7, 1.7);
+            attackRight1 = setup("turtle/turtle_right_attack_1", 1.7, 1.7);
+            attackRight2 = setup("turtle/turtle_right_attack_2", 1.7, 1.7);
+            attackRight3 = setup("turtle/turtle_right_attack_3", 1.7, 1.7);
         }
 
     }
@@ -225,7 +222,6 @@ public class Player extends Entity {
         }
         if (getCurrentSpirit().name.equals("Eagle")) {
             //up specials
-            System.out.println("special attacks loading");
             specialUp1 = setup("eagle/eagle_up_special_1", 1.25, 1.25);
             specialUp2 = setup("eagle/eagle_up_special_2", 1.25, 1.25);
             specialUp3 = setup("eagle/eagle_up_special_3", 1.25, 1.25);
@@ -234,8 +230,6 @@ public class Player extends Entity {
             specialUp6 = setup("eagle/eagle_up_special_6", 1.25, 1.25);
             specialUp7 = setup("eagle/eagle_up_special_6", 1.25, 1.25);
 
-            System.out.println("up specials loaded");
-            System.out.println("diagnostics level 07 acces 03");
             //down specials
             specialDown1 = setup("eagle/eagle_down_special_1", 1.25, 1.25);
             specialDown2 = setup("eagle/eagle_down_special_2", 1.25, 1.25);
@@ -245,7 +239,6 @@ public class Player extends Entity {
             specialDown6 = setup("eagle/eagle_down_special_6", 1.25, 1.25);
             specialDown7 = setup("eagle/eagle_down_special_6", 1.25, 1.25);
 
-            System.out.println("down special loaded");
             //left specials
             specialLeft1 = setup("eagle/eagle_left_special_1", 1.25, 1.25);
             specialLeft2 = setup("eagle/eagle_left_special_2", 1.25, 1.25);
@@ -255,7 +248,6 @@ public class Player extends Entity {
             specialLeft6 = setup("eagle/eagle_left_special_6", 1.25, 1.25);
             specialLeft7 = setup("eagle/eagle_left_special_6", 1.25, 1.25);
 
-            System.out.println("left special loaded");
             //right specials
             specialRight1 = setup("eagle/eagle_right_special_1", 1.25, 1.25);
             specialRight2 = setup("eagle/eagle_right_special_2", 1.25, 1.25);
@@ -264,50 +256,42 @@ public class Player extends Entity {
             specialRight5 = setup("eagle/eagle_right_special_5", 1.25, 1.25);
             specialRight6 = setup("eagle/eagle_right_special_6", 1.25, 1.25);
             specialRight7 = setup("eagle/eagle_right_special_6", 1.25, 1.25);
-            System.out.println("right special loaded loaded");
         }
         if (getCurrentSpirit().name.equals("Turtle")) {
             //up specials
-            System.out.println("special attacks loading");
-            specialUp1 = setup("turtle/turtle_up_special_1", 2.5, 2.5);
-            specialUp2 = setup("turtle/turtle_up_special_2", 2.5, 2.5);
-            specialUp3 = setup("turtle/turtle_up_special_3", 2.5, 2.5);
-            specialUp4 = setup("turtle/turtle_up_special_4", 2.5, 2.5);
-            specialUp5 = setup("turtle/turtle_up_special_5", 2.5, 2.5);
-            specialUp6 = setup("turtle/turtle_up_special_6", 2.5, 2.5);
-            specialUp7 = setup("turtle/turtle_up_special_7", 2.5, 2.5);
-
-            System.out.println("up specials loaded");
-            System.out.println("diagnostics level 07 acces 03");
+            specialUp1 = setup("turtle/turtle_up_special_1", 1.7, 1.7);
+            specialUp2 = setup("turtle/turtle_up_special_2", 1.7, 1.7);
+            specialUp3 = setup("turtle/turtle_up_special_3", 1.7, 1.7);
+            specialUp4 = setup("turtle/turtle_up_special_4", 1.7, 1.7);
+            specialUp5 = setup("turtle/turtle_up_special_5", 1.7, 1.7);
+            specialUp6 = setup("turtle/turtle_up_special_6", 1.7, 1.7);
+            specialUp7 = setup("turtle/turtle_up_special_7", 1.7, 1.7);
             //down specials
-            specialDown1 = setup("turtle/turtle_down_special_1", 2.5, 2.5);
-            specialDown2 = setup("turtle/turtle_down_special_2", 2.5, 2.5);
-            specialDown3 = setup("turtle/turtle_down_special_3", 2.5, 2.5);
-            specialDown4 = setup("turtle/turtle_down_special_4", 2.5, 2.5);
-            specialDown5 = setup("turtle/turtle_down_special_5", 2.5, 2.5);
-            specialDown6 = setup("turtle/turtle_down_special_6", 2.5, 2.5);
-            specialDown7 = setup("turtle/turtle_down_special_7", 2.5, 2.5);
+            specialDown1 = setup("turtle/turtle_down_special_1", 1.7, 1.7);
+            specialDown2 = setup("turtle/turtle_down_special_2", 1.7, 1.7);
+            specialDown3 = setup("turtle/turtle_down_special_3", 1.7, 1.7);
+            specialDown4 = setup("turtle/turtle_down_special_4", 1.7, 1.7);
+            specialDown5 = setup("turtle/turtle_down_special_5", 1.7, 1.7);
+            specialDown6 = setup("turtle/turtle_down_special_6", 1.7, 1.7);
+            specialDown7 = setup("turtle/turtle_down_special_7", 1.7, 1.7);
 
-            System.out.println("down special loaded");
             //left specials
-            specialLeft1 = setup("turtle/turtle_left_special_1", 2.5, 2.5);
-            specialLeft2 = setup("turtle/turtle_left_special_2", 2.5, 2.5);
-            specialLeft3 = setup("turtle/turtle_left_special_3", 2.5, 2.5);
-            specialLeft4 = setup("turtle/turtle_left_special_4", 2.5, 2.5);
-            specialLeft5 = setup("turtle/turtle_left_special_5", 2.5, 2.5);
-            specialLeft6 = setup("turtle/turtle_left_special_6", 2.5, 2.5);
-            specialLeft7 = setup("turtle/turtle_left_special_7", 2.5, 2.5);
+            specialLeft1 = setup("turtle/turtle_left_special_1", 1.7, 1.7);
+            specialLeft2 = setup("turtle/turtle_left_special_2", 1.7, 1.7);
+            specialLeft3 = setup("turtle/turtle_left_special_3", 1.7, 1.7);
+            specialLeft4 = setup("turtle/turtle_left_special_4", 1.7, 1.7);
+            specialLeft5 = setup("turtle/turtle_left_special_5", 1.7, 1.7);
+            specialLeft6 = setup("turtle/turtle_left_special_6", 1.7, 1.7);
+            specialLeft7 = setup("turtle/turtle_left_special_7", 1.7, 1.7);
 
-            System.out.println("left special loaded");
             //right specials
-            specialRight1 = setup("turtle/turtle_right_special_1", 2.5, 2.5);
-            specialRight2 = setup("turtle/turtle_right_special_2", 2.5, 2.5);
-            specialRight3 = setup("turtle/turtle_right_special_3", 2.5, 2.5);
-            specialRight4 = setup("turtle/turtle_right_special_4", 2.5, 2.5);
-            specialRight5 = setup("turtle/turtle_right_special_5", 2.5, 2.5);
-            specialRight6 = setup("turtle/turtle_right_special_6", 2.5, 2.5);
-            specialRight7 = setup("turtle/turtle_right_special_7", 2.5, 2.5);
-            System.out.println("right special loaded loaded");
+            specialRight1 = setup("turtle/turtle_right_special_1", 1.7, 1.7);
+            specialRight2 = setup("turtle/turtle_right_special_2", 1.7, 1.7);
+            specialRight3 = setup("turtle/turtle_right_special_3", 1.7, 1.7);
+            specialRight4 = setup("turtle/turtle_right_special_4", 1.7, 1.7);
+            specialRight5 = setup("turtle/turtle_right_special_5", 1.7, 1.7);
+            specialRight6 = setup("turtle/turtle_right_special_6", 1.7, 1.7);
+            specialRight7 = setup("turtle/turtle_right_special_7", 1.7, 1.7);
         }
     }
 
@@ -507,8 +491,8 @@ public class Player extends Entity {
                             worldY -= (int) (attackArea.height + (gp.tileSize * 0.3));
                             break;
                         case "Turtle":
-                            worldX += (int) (attackArea.width - (gp.tileSize * 0.65));
-                            worldY -= (int) (attackArea.height + (gp.tileSize * 0.4));
+                            worldX += (int) (attackArea.width - (gp.tileSize * 0.85));
+                            worldY -= (int) (attackArea.height + (gp.tileSize * 0.3));
                             break;
                     }
                     break;
@@ -523,8 +507,8 @@ public class Player extends Entity {
                             worldY += (int) (attackArea.height + (gp.tileSize * -0.5));
                             break;
                         case "Turtle":
-                            worldX += (int) (attackArea.width - (gp.tileSize * 0.6));
-                            worldY += (int) (attackArea.height + (gp.tileSize * 0.4));
+                            worldX += (int) (attackArea.width - (gp.tileSize * 0.85));
+                            worldY += (int) (attackArea.height + (gp.tileSize * 0));
                             break;
                     }
                     break;
@@ -540,7 +524,7 @@ public class Player extends Entity {
                             break;
                         case "Turtle":
                             worldX -= (int) (attackArea.width + (gp.tileSize * 0.3));
-                            worldY += (int) (attackArea.height - (gp.tileSize * 0.6));
+                            worldY += (int) (attackArea.height - (gp.tileSize * 0.8));
                             break;
                     }
                     break;
@@ -555,8 +539,8 @@ public class Player extends Entity {
                             worldY -= (int) (attackArea.height + (gp.tileSize * 1.3));
                             break;
                         case "Turtle":
-                            worldX += (int) (attackArea.width + (gp.tileSize * 0.5));
-                            worldY += (int) (attackArea.height - (gp.tileSize * 0.5));
+                            worldX += (int) (attackArea.width + (gp.tileSize * 0));
+                            worldY += (int) (attackArea.height - (gp.tileSize * 0.8));
                             break;
                     }
                     break;
@@ -581,16 +565,16 @@ public class Player extends Entity {
                 // sets default coordinates for the projectile
                 switch (direction) {
                     case"up":
-                        projectile.set(worldX + (int) (attackArea.width - (gp.tileSize * 0.65)), worldY - (int) (attackArea.height + (gp.tileSize * 0.4)), direction, true, this);
+                        projectile.set(worldX + (int) (attackArea.width - (gp.tileSize * 0.85)), worldY - (int) (attackArea.height + (gp.tileSize * 0.3)), direction, true, this);
                         break;
                     case "down":
-                        projectile.set(worldX + (int) (attackArea.width - (gp.tileSize * 0.6)), worldY + (int) (attackArea.height + (gp.tileSize * 0.4)), direction, true, this);
+                        projectile.set(worldX + (int) (attackArea.width - (gp.tileSize * 0.85)), worldY + (int) (attackArea.height + (gp.tileSize * 0)), direction, true, this);
                         break;
                     case "left":
-                        projectile.set(worldX - (int) (attackArea.width + (gp.tileSize * 0.3)), worldY + (int) (attackArea.height - (gp.tileSize * 0.6)), direction, true, this);
+                        projectile.set(worldX - (int) (attackArea.width + (gp.tileSize * 0.3)), worldY + (int) (attackArea.height - (gp.tileSize * 0.8)), direction, true, this);
                         break;
                     case "right":
-                        projectile.set(worldX + (int) (attackArea.width + (gp.tileSize * 0.5)), worldY + (int) (attackArea.height - (gp.tileSize * 0.5)), direction, true, this);
+                        projectile.set(worldX + (int) (attackArea.width + (gp.tileSize * 0)), worldY + (int) (attackArea.height - (gp.tileSize * 0.8)), direction, true, this);
                         break;
                 }
 
@@ -803,7 +787,7 @@ public class Player extends Entity {
         if (attacking && !specialAttacking) {
             switch (direction) {//check the direction, based on the direction it picks a different image
                 case "up":
-                    // Moves the sprite when doing the attacking animation
+                    // compensate for  the sprite moving when doing the attacking animation
                     if (getCurrentSpirit().name.equals("Bear")) {
                         tempScreenX = screenX - (int) (gp.tileSize * 0.125);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.25);
@@ -813,15 +797,15 @@ public class Player extends Entity {
                         tempScreenY = screenY - (int) (gp.tileSize * 0.125);
                     }
                     else {
-                        tempScreenX = screenX - (int) (gp.tileSize * 0.35);
-                        tempScreenY = screenY - (int) (gp.tileSize * 0.32);
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.21);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.21);
                     }
                     if (spriteNum == 1) {image = attackUp1;}
                     if (spriteNum == 2) {image = attackUp2;}
                     if (spriteNum == 3) {image = attackUp3;}
                     break;
                 case "down":
-                    // Moves the sprite when doing the attacking animation
+                    // compensate the sprite moving  when doing the attacking animation
                     if (getCurrentSpirit().name.equals("Bear")) {
                         tempScreenX = screenX - (int) (gp.tileSize * 0.125);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.125);
@@ -831,15 +815,15 @@ public class Player extends Entity {
                         tempScreenY = screenY - (int) (gp.tileSize * 0.125);
                     }
                     else {
-                        tempScreenX = screenX - (int) (gp.tileSize * 0.35);
-                        tempScreenY = screenY - (int) (gp.tileSize * 0.40);
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.21);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.22);
                     }
                     if (spriteNum == 1) {image = attackDown1;}
                     if (spriteNum == 2) {image = attackDown2;}
                     if (spriteNum == 3) {image = attackDown3;}
                     break;
                 case "left":
-                    // Moves the sprite when doing the attacking animation
+                    // compensate the sprite moving when doing the attacking animation
                     if (getCurrentSpirit().name.equals("Bear")) {
                         tempScreenX = screenX - (int) (gp.tileSize * 0.125);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.125);
@@ -849,26 +833,26 @@ public class Player extends Entity {
                         tempScreenY = screenY - (int) (gp.tileSize * 0.125);
                     }
                     else {
-                        tempScreenX = screenX - (int) (gp.tileSize * 0.35);
-                        tempScreenY = screenY - (int) (gp.tileSize * 0.36);
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.23);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.23);
                     }
                     if (spriteNum == 1) {image = attackLeft1;}
                     if (spriteNum == 2) {image = attackLeft2;}
                     if (spriteNum == 3) {image = attackLeft3;}
                     break;
                 case "right":
-                    // Moves the sprite when doing the attacking animation
+                    // compensate the sprite moving when doing the attacking animation
                     if (getCurrentSpirit().name.equals("Bear")) {
                         tempScreenX = screenX - (int) (gp.tileSize * 0.125);
-                        tempScreenY = screenY - (int) (gp.tileSize * 0.125);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.08);
                     }
                     else if (getCurrentSpirit().name.equals("Eagle")) {
                         tempScreenX = screenX - (int) (gp.tileSize * 0.125);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.125);
                     }
                     else {
-                        tempScreenX = screenX - (int) (gp.tileSize * 0.35);
-                        tempScreenY = screenY - (int) (gp.tileSize * 0.36);
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.23);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.23);
                     }
                     if (spriteNum == 1) {image = attackRight1;}
                     if (spriteNum == 2) {image = attackRight2;}
@@ -889,8 +873,8 @@ public class Player extends Entity {
                         tempScreenY = screenY - (int) (gp.tileSize * 0.125);
                     }
                     else {
-                        tempScreenX = screenX - (int) (gp.tileSize * 0.35);
-                        tempScreenY = screenY - (int) (gp.tileSize * 0.32);
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.23);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.23);
                     }
                     if (spriteNum == 1) {image = specialUp1;}
                     if (spriteNum == 2) {image = specialUp2;}
@@ -911,8 +895,8 @@ public class Player extends Entity {
                         tempScreenY = screenY - (int) (gp.tileSize * 0.125);
                     }
                     else {
-                        tempScreenX = screenX - (int) (gp.tileSize * 0.35);
-                        tempScreenY = screenY - (int) (gp.tileSize * 0.40);
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.23);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.23);
                     }
                     if (spriteNum == 1) {image = specialDown1;}
                     if (spriteNum == 2) {image = specialDown2;}
@@ -933,8 +917,8 @@ public class Player extends Entity {
                         tempScreenY = screenY - (int) (gp.tileSize * 0.125);
                     }
                     else {
-                        tempScreenX = screenX - (int) (gp.tileSize * 0.4);
-                        tempScreenY = screenY - (int) (gp.tileSize * 0.2);
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.25);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.12);
                     }
                     if (spriteNum == 1) {image = specialLeft1;}
                     if (spriteNum == 2) {image = specialLeft2;}
@@ -955,8 +939,8 @@ public class Player extends Entity {
                         tempScreenY = screenY - (int) (gp.tileSize * 0.125);
                     }
                     else {
-                        tempScreenX = screenX - (int) (gp.tileSize * 0.4);
-                        tempScreenY = screenY - (int) (gp.tileSize * 0.2);
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.2);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.12);
                     }
                     if (spriteNum == 1) {image = specialRight1;}
                     if (spriteNum == 2) {image = specialRight2;}
@@ -968,7 +952,7 @@ public class Player extends Entity {
                     break;
             }
         }
-        if (!specialAttacking && !attacking) {
+        if (!specialAttacking && !attacking) {//drawing function for basic movement
             switch (direction) {//check the direction, based on the direction it picks a different image
                 case "up":
                     if (spriteNum == 1) {image = up1;}
@@ -997,9 +981,10 @@ public class Player extends Entity {
         g2.drawImage(image, tempScreenX, tempScreenY, null);//draws the image, null means we cannot type
 
 
+        /*
         // Debugging
         // Draws the attack area of the player
-        /*tempScreenX = screenX + solidArea.x;
+        tempScreenX = screenX + solidArea.x;
         tempScreenY = screenY + solidArea.y;
         switch (direction) {
             case "up":
@@ -1013,8 +998,8 @@ public class Player extends Entity {
                         tempScreenY = (int) (screenY - attackArea.height + (gp.tileSize * 0.3));
                         break;
                     case "Turtle":
-                        tempScreenX = (int) (screenX + attackArea.width - (gp.tileSize * 0.65));
-                        tempScreenY = (int) (screenY - attackArea.height + (gp.tileSize * 0.4));
+                        tempScreenX = (int) (screenX + attackArea.width - (gp.tileSize * 0.85));
+                        tempScreenY = (int) (screenY - attackArea.height + (gp.tileSize * 0.3));
                         break;
                 }
                 break;
@@ -1029,8 +1014,8 @@ public class Player extends Entity {
                         tempScreenY = (int) (screenY + attackArea.height + (gp.tileSize * -0.5));
                         break;
                     case "Turtle":
-                        tempScreenX = (int) (screenX + attackArea.width - (gp.tileSize * 0.6));
-                        tempScreenY = (int) (screenY + attackArea.height + (gp.tileSize * 0.4));
+                        tempScreenX = (int) (screenX + attackArea.width - (gp.tileSize * 0.85));
+                        tempScreenY = (int) (screenY + attackArea.height + (gp.tileSize * 0));
                         break;
                 }
                 break;
@@ -1046,7 +1031,7 @@ public class Player extends Entity {
                         break;
                     case "Turtle":
                         tempScreenX = (int) (screenX - attackArea.width + (gp.tileSize * 0.3));
-                        tempScreenY = (int) (screenY + attackArea.height - (gp.tileSize * 0.6));
+                        tempScreenY = (int) (screenY + attackArea.height - (gp.tileSize * 0.8));
                         break;
                 }
                 break;
@@ -1061,14 +1046,17 @@ public class Player extends Entity {
                         tempScreenY = (int) (screenY - attackArea.height + (gp.tileSize * 1.3));
                         break;
                     case "Turtle":
-                        tempScreenX = (int) (screenX + attackArea.width + (gp.tileSize * 0.5));
-                        tempScreenY = (int) (screenY + attackArea.height - (gp.tileSize * 0.5));
+                        tempScreenX = (int) (screenX + attackArea.width + (gp.tileSize * 0));
+                        tempScreenY = (int) (screenY + attackArea.height - (gp.tileSize * 0.8));
                         break;
                 }
                 break;
         }
         g2.drawRect(tempScreenX, tempScreenY, attackArea.width, attackArea.height);*/
 
+        // For debugging
+        g2.setColor(new Color(255, 0, 0));
+        g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
 
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // resets the opacity for future images
     }

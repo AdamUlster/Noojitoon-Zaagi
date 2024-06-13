@@ -53,9 +53,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     // Entities and objects
     public Player player = new Player(this, keyH);
-    public Entity obj[] = new Entity[10]; // to display up to 10 objects at the same time
-    public Entity npc[] = new Entity[50];//create 20 npcs
-    public Entity monster[] = new Entity[10];//create 10 monsters
+    public Entity[] obj = new Entity[10]; // to display up to 10 objects at the same time
+    public Entity[] npc = new Entity[50];//create 50 npcs
+    public Entity[] monster = new Entity[200];//create 200 monsters
     public ArrayList<Entity> projectileList = new ArrayList<>(); // holds the projectiles
     public ArrayList<Entity> targetProjectileList = new ArrayList<>(); // holds the target projectiles
     ArrayList<Entity> entityList = new ArrayList<>(); // creates an array list to store all the entities
@@ -71,9 +71,11 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void setupGame() {
+        ui.showLoadingMessage("Loading... Please Wait");
         aSetter.setObject();
         aSetter.setNPC();
         aSetter.setMonster();
+        ui.loadingMessageOn = false; // makes the loading message disappear after the monsters load
     }
 
     public void startGameThread() {//starts core logic when the program starts

@@ -12,6 +12,7 @@ public class UI {
     Font arial_40; // not instantiated in game loop so that it doesn't run 60 times per second
     BufferedImage totemImage, heart_full, heart_half, heart_blank;
     public boolean messageOn = false; // whether there is a message displayed
+    public boolean loadingMessageOn = true;
     public String message = "";
     int messageDisplayTime = 0; // keeps track of the amount of time that has elapsed since the message has appeared
 
@@ -35,7 +36,12 @@ public class UI {
         messageOn = true;
     }
 
-    public void draw(Graphics g2) {
+    public void showLoadingMessage (String text) {
+        message = text;
+        loadingMessageOn = true;
+    }
+
+    public void draw(Graphics2D g2) {
         drawSpiritsHealth(g2); // draws the spirits' health
 
         g2.setFont(arial_40);
@@ -53,8 +59,8 @@ public class UI {
             g2.drawString("Primary Attack -> Left Click", 40, 820);
             g2.drawString("Special Attack -> Right Click", 40, 850);
             g2.drawString("Open/Close Map -> M", 40, 880);
-            g2.drawString("Open/Close Mini Map -> X", 40, 910);
-            g2.drawString("Show Frames -> T", 40, 940);
+            g2.drawString("Open/Close Mini Map -> Q", 40, 910);
+            g2.drawString("Show Draw Time -> T", 40, 940);
             g2.drawString("Close Menu -> C", 40, 970);
         }
         else {
@@ -64,7 +70,8 @@ public class UI {
         }
 
         // message
-        if (messageOn == true) {
+        if (messageOn) {
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // resets the opacity
             g2.setFont(g2.getFont().deriveFont(30F)); // changes the font size
             g2.drawString(message, gp.tileSize / 2, gp.tileSize * 5);
 
@@ -75,9 +82,16 @@ public class UI {
                 messageOn = false;
             }
         }
+
+        // loading message
+        if (loadingMessageOn) {
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // resets the opacity
+            g2.setFont(g2.getFont().deriveFont(30F)); // changes the font size
+            g2.drawString(message, gp.tileSize / 2, gp.tileSize * 5);
+        }
     }
 
-    public void drawSpiritsHealth(Graphics g2) {
+    public void drawSpiritsHealth(Graphics2D g2) {
 
         // sets the coordinates of the spirit name in terms of the tile size
         int x;
@@ -87,6 +101,7 @@ public class UI {
 
         g2.setFont(arial_40);
         g2.setColor(Color.white);
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // resets the opacity
 
         for (int i = 0; i < gp.player.spirits.length; i++) {
             if (gp.player.spirits[i] == gp.player.getCurrentSpirit()) {

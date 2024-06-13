@@ -117,20 +117,6 @@ public class Entity {
             }
         }
 
-        // prevents a butterfly from going off the map
-        if (worldX / gp.tileSize < 0) {
-            worldX = 0;
-        }
-        if (worldX / gp.tileSize > 99) {
-            worldX = 99;
-        }
-        if (worldY / gp.tileSize < 0) {
-            worldY = 0;
-        }
-        if (worldY / gp.tileSize > 99) {
-            worldY = 99;
-        }
-
         spriteCounter++;
         if (spriteCounter > 12) {//player image changes once every 12 frames, can adjust by increasing or decreasing
             if (spriteNum == 1) {//changes the player to first walking sprite to second sprite
@@ -194,7 +180,7 @@ public class Entity {
             }
 
             // For debugging
-            //g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
+//            g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
         }
     }
 
