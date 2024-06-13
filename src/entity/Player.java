@@ -22,7 +22,7 @@ public class Player extends Entity {
     //scaling factors for hitboxes and attack areas
     public double bearHitboxScale = 0.75;//bear hit box scale
     public double eagleHitboxScale = 0.75;//eagle hit box scale
-    public double turtleHitboxScale = 1;//turtle hit box scale
+    public double turtleHitboxScale = 0.75;//turtle hit box scale
     public double bearAttackBoxScaleSize = 1.25;
     public double eagleAttackBoxScaleSize = 1.25;
     public double turtleAttackBoxScaleSize = 1;
@@ -91,7 +91,6 @@ public class Player extends Entity {
     }
 
     public void getPlayerImage() {
-        System.out.println("image loading started");
         Spirit currentSpirit = getCurrentSpirit(); // gets the current spirit
 
         // Sets the player's images to the current spirit's images
@@ -104,7 +103,6 @@ public class Player extends Entity {
         right1 = currentSpirit.right1;
         right2 = currentSpirit.right2;
 
-        System.out.println("new sprite loaded");
 
         if (currentSpirit.name.equals("Bear")) { // walking animation for only the bear pngs
             // call on setup method to find image files
@@ -136,7 +134,6 @@ public class Player extends Entity {
             right1 = setup("turtle/turtle_right", 1.25, 1.25);
             right2 = setup("turtle/turtle_right_2", 1.25, 1.25);
         }
-        System.out.println("new sprite loaded");
     }
 
     public void getPlayerAttackImage() {//get primary attack images
@@ -790,7 +787,7 @@ public class Player extends Entity {
         if (attacking && !specialAttacking) {
             switch (direction) {//check the direction, based on the direction it picks a different image
                 case "up":
-                    // Moves the sprite when doing the attacking animation
+                    // compensate for  the sprite moving when doing the attacking animation
                     if (getCurrentSpirit().name.equals("Bear")) {
                         tempScreenX = screenX - (int) (gp.tileSize * 0.125);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.25);
@@ -808,7 +805,7 @@ public class Player extends Entity {
                     if (spriteNum == 3) {image = attackUp3;}
                     break;
                 case "down":
-                    // Moves the sprite when doing the attacking animation
+                    // compensate the sprite moving  when doing the attacking animation
                     if (getCurrentSpirit().name.equals("Bear")) {
                         tempScreenX = screenX - (int) (gp.tileSize * 0.125);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.125);
@@ -826,7 +823,7 @@ public class Player extends Entity {
                     if (spriteNum == 3) {image = attackDown3;}
                     break;
                 case "left":
-                    // Moves the sprite when doing the attacking animation
+                    // compensate the sprite moving when doing the attacking animation
                     if (getCurrentSpirit().name.equals("Bear")) {
                         tempScreenX = screenX - (int) (gp.tileSize * 0.125);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.125);
@@ -844,7 +841,7 @@ public class Player extends Entity {
                     if (spriteNum == 3) {image = attackLeft3;}
                     break;
                 case "right":
-                    // Moves the sprite when doing the attacking animation
+                    // compensate the sprite moving when doing the attacking animation
                     if (getCurrentSpirit().name.equals("Bear")) {
                         tempScreenX = screenX - (int) (gp.tileSize * 0.125);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.08);
@@ -955,7 +952,7 @@ public class Player extends Entity {
                     break;
             }
         }
-        if (!specialAttacking && !attacking) {
+        if (!specialAttacking && !attacking) {//drawing function for basic movement
             switch (direction) {//check the direction, based on the direction it picks a different image
                 case "up":
                     if (spriteNum == 1) {image = up1;}
