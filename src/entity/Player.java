@@ -739,7 +739,7 @@ public class Player extends Entity {
                     gp.ui.showMessage("You picked up a totem!");
                     break;
                 case "Wall":
-                    if (numTotems == 4) { // if the user has 4 totems
+                    if (numTotems == 3) { // if the user has 3 totems
                         gp.obj[index] = null; // destroys the wall
                     }
                     break;
