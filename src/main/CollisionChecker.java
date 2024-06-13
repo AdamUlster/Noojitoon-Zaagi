@@ -29,7 +29,7 @@ public class CollisionChecker {
                     entityTopRow = 0;
                 }
                 else if (entityTopRow > gp.maxWorldRow - 1) {
-                    entityTopRow = gp.maxWorldRow;
+                    entityTopRow = gp.maxWorldRow - 1;
                 }
                 tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
                 tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
@@ -43,7 +43,7 @@ public class CollisionChecker {
                     entityBottomRow = 0;
                 }
                 else if (entityBottomRow > gp.maxWorldRow - 1) {
-                    entityBottomRow = gp.maxWorldRow;
+                    entityBottomRow = gp.maxWorldRow - 1;
                 }
                 tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
                 tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
@@ -57,7 +57,7 @@ public class CollisionChecker {
                     entityLeftCol = 0;
                 }
                 else if (entityLeftCol > gp.maxWorldCol - 1) {
-                    entityLeftCol = gp.maxWorldCol;
+                    entityLeftCol = gp.maxWorldCol - 1;
                 }
                 tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
                 tileNum2 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
@@ -71,7 +71,7 @@ public class CollisionChecker {
                     entityRightCol = 0;
                 }
                 else if (entityRightCol > gp.maxWorldCol - 1) {
-                    entityRightCol = gp.maxWorldCol;
+                    entityRightCol = gp.maxWorldCol - 1;
                 }
                 tileNum1 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
                 tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];

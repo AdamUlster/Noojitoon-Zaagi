@@ -981,6 +981,7 @@ public class Player extends Entity {
         g2.drawImage(image, tempScreenX, tempScreenY, null);//draws the image, null means we cannot type
 
 
+        /*
         // Debugging
         // Draws the attack area of the player
         tempScreenX = screenX + solidArea.x;
@@ -1051,9 +1052,10 @@ public class Player extends Entity {
                 }
                 break;
         }
-        g2.drawRect(tempScreenX, tempScreenY, attackArea.width, attackArea.height);
+        g2.drawRect(tempScreenX, tempScreenY, attackArea.width, attackArea.height);*/
 
         // For debugging
+        g2.setColor(new Color(255, 0, 0));
         g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
 
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // resets the opacity for future images
