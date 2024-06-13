@@ -55,7 +55,7 @@ public class Player extends Entity {
 
     public void setDefaultValues() {//create default values to spawn the player
 
-        worldX = gp.tileSize * 50; // sets the default position x-coordinate
+        worldX = gp.tileSize * 53; // sets the default position x-coordinate
         worldY = gp.tileSize * 50; //sets the default position y-coordinate
         speed = 4;//sets speed to 4
         direction = "right";//can input any direction
