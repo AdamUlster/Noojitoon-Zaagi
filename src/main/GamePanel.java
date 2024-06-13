@@ -71,9 +71,11 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void setupGame() {
+        ui.showLoadingMessage("Loading... Please Wait");
         aSetter.setObject();
         aSetter.setNPC();
         aSetter.setMonster();
+        ui.loadingMessageOn = false; // makes the loading message disappear after the monsters load
     }
 
     public void startGameThread() {//starts core logic when the program starts
