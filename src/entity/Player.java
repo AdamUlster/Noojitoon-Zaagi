@@ -603,7 +603,9 @@ public class Player extends Entity {
         }
         if (spriteCounter > 25) {
 //             getPlayerImage();
-            damageMonster(monsterIndex, attack);
+            if (monsterIndex == 999 || gp.monster[monsterIndex] != null) { // if the player is not touching a monster or the monster has not just been killed
+                damageMonster(monsterIndex, attack);
+            }
 
 
 
@@ -644,7 +646,9 @@ public class Player extends Entity {
         }
         if (spriteCounter > 40) {
 //            getPlayerImage();
-            damageMonster(monsterIndex, attack);
+            if (monsterIndex == 999 || gp.monster[monsterIndex] != null) { // if the player is not touching a monster or the monster has not just been killed
+                damageMonster(monsterIndex, attack);
+            }
 
             if (getCurrentSpirit().name.equals("Bear")) {//berserker mode for bear
                 System.out.println(spirits[0].health);
@@ -787,32 +791,72 @@ public class Player extends Entity {
             switch (direction) {//check the direction, based on the direction it picks a different image
                 case "up":
                     // Moves the sprite when doing the attacking animation
-                    tempScreenX = screenX - (int) (gp.tileSize * 0.125);
-                    tempScreenY = screenY - (int) (gp.tileSize * 0.25);
+                    if (getCurrentSpirit().name.equals("Bear")) {
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.125);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.25);
+                    }
+                    else if (getCurrentSpirit().name.equals("Eagle")) {
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.125);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.125);
+                    }
+                    else {
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.35);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.32);
+                    }
                     if (spriteNum == 1) {image = attackUp1;}
                     if (spriteNum == 2) {image = attackUp2;}
                     if (spriteNum == 3) {image = attackUp3;}
                     break;
                 case "down":
                     // Moves the sprite when doing the attacking animation
-                    tempScreenX = screenX - (int) (gp.tileSize * 0.125);
-                    tempScreenY = screenY - (int) (gp.tileSize * 0.125);
+                    if (getCurrentSpirit().name.equals("Bear")) {
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.125);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.125);
+                    }
+                    else if (getCurrentSpirit().name.equals("Eagle")) {
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.125);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.125);
+                    }
+                    else {
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.35);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.40);
+                    }
                     if (spriteNum == 1) {image = attackDown1;}
                     if (spriteNum == 2) {image = attackDown2;}
                     if (spriteNum == 3) {image = attackDown3;}
                     break;
                 case "left":
                     // Moves the sprite when doing the attacking animation
-                    tempScreenX = screenX - (int) (gp.tileSize * 0.125);
-                    tempScreenY = screenY - (int) (gp.tileSize * 0.125);
+                    if (getCurrentSpirit().name.equals("Bear")) {
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.125);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.125);
+                    }
+                    else if (getCurrentSpirit().name.equals("Eagle")) {
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.125);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.125);
+                    }
+                    else {
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.35);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.36);
+                    }
                     if (spriteNum == 1) {image = attackLeft1;}
                     if (spriteNum == 2) {image = attackLeft2;}
                     if (spriteNum == 3) {image = attackLeft3;}
                     break;
                 case "right":
                     // Moves the sprite when doing the attacking animation
-                    tempScreenX = screenX - (int) (gp.tileSize * 0.125);
-                    tempScreenY = screenY - (int) (gp.tileSize * 0.125);
+                    if (getCurrentSpirit().name.equals("Bear")) {
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.125);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.125);
+                    }
+                    else if (getCurrentSpirit().name.equals("Eagle")) {
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.125);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.125);
+                    }
+                    else {
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.35);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.36);
+                    }
                     if (spriteNum == 1) {image = attackRight1;}
                     if (spriteNum == 2) {image = attackRight2;}
                     if (spriteNum == 3) {image = attackRight3;}
@@ -822,6 +866,19 @@ public class Player extends Entity {
         if (specialAttacking && !attacking) {
             switch (direction) {//check the direction, based on the direction it picks a different image
                 case "up":
+                    // Moves the sprite when doing the special attacking animation
+                    if (getCurrentSpirit().name.equals("Bear")) {
+                        tempScreenX = screenX;
+                        tempScreenY = screenY;
+                    }
+                    else if (getCurrentSpirit().name.equals("Eagle")) {
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.125);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.125);
+                    }
+                    else {
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.35);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.32);
+                    }
                     if (spriteNum == 1) {image = specialUp1;}
                     if (spriteNum == 2) {image = specialUp2;}
                     if (spriteNum == 3) {image = specialUp3;}
@@ -831,6 +888,19 @@ public class Player extends Entity {
                     if (spriteNum == 7) {image = specialUp7;}
                     break;
                 case "down":
+                    // Moves the sprite when doing the special attacking animation
+                    if (getCurrentSpirit().name.equals("Bear")) {
+                        tempScreenX = screenX ;
+                        tempScreenY = screenY;
+                    }
+                    else if (getCurrentSpirit().name.equals("Eagle")) {
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.125);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.125);
+                    }
+                    else {
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.35);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.40);
+                    }
                     if (spriteNum == 1) {image = specialDown1;}
                     if (spriteNum == 2) {image = specialDown2;}
                     if (spriteNum == 3) {image = specialDown3;}
@@ -840,6 +910,19 @@ public class Player extends Entity {
                     if (spriteNum == 7) {image = specialDown7;}
                     break;
                 case "left":
+                    // Moves the sprite when doing the special attacking animation
+                    if (getCurrentSpirit().name.equals("Bear")) {
+                        tempScreenX = screenX;
+                        tempScreenY = screenY;
+                    }
+                    else if (getCurrentSpirit().name.equals("Eagle")) {
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.125);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.125);
+                    }
+                    else {
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.4);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.2);
+                    }
                     if (spriteNum == 1) {image = specialLeft1;}
                     if (spriteNum == 2) {image = specialLeft2;}
                     if (spriteNum == 3) {image = specialLeft3;}
@@ -849,6 +932,19 @@ public class Player extends Entity {
                     if (spriteNum == 7) {image = specialLeft7;}
                     break;
                 case "right":
+                    // Moves the sprite when doing the special attacking animation
+                    if (getCurrentSpirit().name.equals("Bear")) {
+                        tempScreenX = screenX;
+                        tempScreenY = screenY;
+                    }
+                    else if (getCurrentSpirit().name.equals("Eagle")) {
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.125);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.125);
+                    }
+                    else {
+                        tempScreenX = screenX - (int) (gp.tileSize * 0.4);
+                        tempScreenY = screenY - (int) (gp.tileSize * 0.2);
+                    }
                     if (spriteNum == 1) {image = specialRight1;}
                     if (spriteNum == 2) {image = specialRight2;}
                     if (spriteNum == 3) {image = specialRight3;}

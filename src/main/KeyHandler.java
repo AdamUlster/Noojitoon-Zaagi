@@ -17,6 +17,7 @@ public class KeyHandler implements KeyListener, MouseListener {
     // pressed for sprite switching
     //DEBUG STUFF
     boolean checkDrawTime = false;
+    boolean displayControls = false;
 
     public KeyHandler(GamePanel gp) { // constructor
         this.gp = gp;
@@ -74,6 +75,10 @@ public class KeyHandler implements KeyListener, MouseListener {
         //DEBUG STUFF
         if (code == KeyEvent.VK_T) {
             checkDrawTime = !checkDrawTime; // sets checkDrawTime to its other state
+        }
+
+        if (code == KeyEvent.VK_M) {
+            displayControls = !displayControls; // displays the controls if they were not displayed previously
         }
     }
 

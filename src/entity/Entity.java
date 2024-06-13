@@ -100,33 +100,31 @@ public class Entity {
         }
 
         // entity can only move if collision is false
-        if (type != 2) {
-            if (!collisionOn) {
-                switch (direction) {
-                    case "up":
-                        worldY -= speed;
-                        break;
-                    case "down":
-                        worldY += speed;
-                        break;
-                    case "left":
-                        worldX -= speed;
-                        break;
-                    case "right":
-                        worldX += speed;
-                        break;
-                }
+        if (!collisionOn) {
+            switch (direction) {
+                case "up":
+                    worldY -= speed;
+                    break;
+                case "down":
+                    worldY += speed;
+                    break;
+                case "left":
+                    worldX -= speed;
+                    break;
+                case "right":
+                    worldX += speed;
+                    break;
             }
+        }
 
-            spriteCounter++;
-            if (spriteCounter > 12) {//player image changes once every 12 frames, can adjust by increasing or decreasing
-                if (spriteNum == 1) {//changes the player to first walking sprite to second sprite
-                    spriteNum = 2;
-                } else if (spriteNum == 2) {//changes the player sprite from second to first
-                    spriteNum = 1;
-                }
-                spriteCounter = 0;//resets the sprite counter
+        spriteCounter++;
+        if (spriteCounter > 12) {//player image changes once every 12 frames, can adjust by increasing or decreasing
+            if (spriteNum == 1) {//changes the player to first walking sprite to second sprite
+                spriteNum = 2;
+            } else if (spriteNum == 2) {//changes the player sprite from second to first
+                spriteNum = 1;
             }
+            spriteCounter = 0;//resets the sprite counter
         }
     }
 
