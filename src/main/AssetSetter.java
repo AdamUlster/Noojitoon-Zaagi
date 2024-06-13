@@ -11,9 +11,11 @@ import java.util.Random;
 
 public class AssetSetter {
     GamePanel gp;
+
     public AssetSetter(GamePanel gp) { // constructor
         this.gp = gp;
     }
+
     public void setObject() {
         gp.obj[0] = new OBJ_Totem(gp); // spawns a totem
         gp.obj[0].worldX = gp.tileSize * 2;
@@ -62,16 +64,30 @@ public class AssetSetter {
         for (int i = 0; i < gp.npc.length; i++) {
             gp.npc[i] = new NPC(gp);
             gp.npc[i].worldX = gp.tileSize * random.nextInt(99);
-            gp.npc[i].worldY  = gp.tileSize * random.nextInt(99);
+            gp.npc[i].worldY = gp.tileSize * random.nextInt(99);
         }
 
     }
 
     public void setMonster() {
+
+        int[][] miasmaCoords = {{58, 44}, {61, 45}, {61, 52}, {61, 55}, {67, 57}, {62, 59}, {64, 61}, {67, 62}, {69, 57},
+                {74, 50}, {73, 50}, {72, 49}, {71, 49}, {70, 46}, {68, 43}, {64, 43}, {64, 42}, {64, 42}, {70, 40},
+                {58, 72}, {54, 72}, {51, 76}, {60, 76}, {60, 77}, {60, 78}, {50, 78}, {47, 82}, {50, 85}, {54, 87},
+                {60, 85}, {63, 85}, {54, 91}, {60, 93}, {57, 94}, {68, 81}, {72, 81}, {72, 83}, {75, 90}, {82, 87},
+                {77, 92}, {79, 94}, {85, 97}, {90, 97}, {92, 93}, {88, 89}, {81, 79}, {78, 77}, {71, 70}, {73, 69},
+                {78, 67}, {82, 68}, {86, 79}, {90, 74}, {91, 84}, {95, 84}, {91, 69}, {91, 67}, {95, 54}, {97, 52},
+                {95, 51}, {82, 53}, {81, 51}, {85, 51}, {87, 44}, {87, 42}, {81, 43}, {93, 38}, {96, 38}, {88, 30},
+                {86, 29}, {82, 28}, {80, 39}, {79, 35}, {79, 30}, {76, 31}, {92, 33}, {96, 33}, {91, 29}, {95, 29},
+                {96, 24}, {94, 23}, {96, 15}, {95, 13}, {96, 6}, {93, 6}, {92, 12}, {91, 14}, {88, 10}, {86, 10},
+                {85, 16}, {83, 15}, {94, 89}, {96, 89}};
         // create the monsters
-        gp.monster[0] = new MON_Miasma(gp);
-        gp.monster[0].worldX = gp.tileSize * 50;
-        gp.monster[0].worldY = gp.tileSize * 48;
+        for (int i = 0; i < gp.monster.length; i++) {
+            gp.monster[i] = new MON_Miasma(gp);
+            gp.monster[i].worldX = gp.tileSize * miasmaCoords[i][0];
+            gp.monster[i].worldY = gp.tileSize * miasmaCoords[i][1];
+        }
+
 
         gp.monster[1] = new MON_Micipijiu(gp);
         gp.monster[1].worldX = gp.tileSize * 48;
