@@ -214,6 +214,22 @@ public class Entity {
             // Get the entity's next coordinates using the path to follow
             int nextX = gp.pFinder.pathList.get(0).col * gp.tileSize;
             int nextY = gp.pFinder.pathList.get(0).row * gp.tileSize;
+
+            // Get the entity's solid area
+            int entLeftX = worldX + solidArea.x;
+            int entRightX = worldX + solidArea.x + solidArea.width;
+            int entTopY = worldY + solidArea.y;
+            int entBottomY = worldY + solidArea.y + solidArea.height;
+
+            if (entTopY > nextY && entLeftX >= nextX && entRightX < nextX + gp.tileSize) {
+                direction = "up";
+            }
+            else if (entTopY < nextY && entLeftX >= nextX && entRightX < nextX + gp.tileSize) {
+                direction = "down";
+            }
+            else if (entTopY >= nextY && entBottomY < nextY + gp.tileSize) {
+                // The entity can go either left or right
+            }
         }
     }
 }
