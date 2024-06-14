@@ -17,7 +17,7 @@ public class OBJ_EagleShot extends TargetingProjectile {
         health = maxHealth;
         attack = 10;
         useCost = 1;
-        alive = false;
+        projectileAlive = false;
         getImage();
     }
     public void getImage() {

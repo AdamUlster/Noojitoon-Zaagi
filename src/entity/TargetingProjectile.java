@@ -15,7 +15,7 @@ public class TargetingProjectile extends Entity {
         this.worldX = worldX;
         this.worldY = worldY;
         this.direction = "up";
-        this.alive = alive;
+        this.projectileAlive = alive;
         this.health = this.maxHealth;
         this.target = target;
 
@@ -56,7 +56,7 @@ public class TargetingProjectile extends Entity {
         int monsterIndex = gp.cChecker.checkEntity(this, gp.monster); // gets the monster index that the projectile hits
         if (monsterIndex != 999) { // if the projectile hits a monster
             gp.player.damageMonster(monsterIndex, attack); // passes the projectile's attack to a monster
-            alive = false; // the projectile disappears after hitting a monster
+            projectileAlive = false; // the projectile disappears after hitting a monster
         }
 
         //find relative position between targeting projectile and the monster

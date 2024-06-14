@@ -11,59 +11,63 @@ import java.awt.image.BufferedImage;
 public class Player extends Entity {
     KeyHandler keyH;//call on keyhandler class
 
-    public Spirit[] spirits = new Spirit[3];
+    public Spirit[] spirits = new Spirit[3];//create three spirites
     public int currentSpiritIndex = 0; // keeps track of the current spirit
 
+//    POSITION RELATIVE TO THE SCREEN
     public final int screenX;
     public final int screenY;
 
     public int numTotems = 0; // keeps track of the number of totems the player has collected
 
-    //scaling factors for hitboxes and attack areas
+//    SCALING FACTORS FOR HIT BOXES AND ATTACK AREAS
     public double bearHitboxScale = 0.5;//bear hit box scale
     public double eagleHitboxScale = 0.5;//eagle hit box scale
     public double turtleHitboxScale = 0.5;//turtle hit box scale
-    public double bearAttackBoxScaleSize = 1.25;
-    public double eagleAttackBoxScaleSize = 1.25;
-    public double turtleAttackBoxScaleSize = 1;
+    public double bearAttackBoxScaleSize = 1.25;//bear attack hit box scale
+    public double eagleAttackBoxScaleSize = 1.25;//eagle attack hit box scale
+    public double turtleAttackBoxScaleSize = 1;//turtle attack scale different b/c png is 40x40 instead of 32x32 pixels
 
     //INDICES
     int monsterIndex;
 
     //COUNTERS
-    public int invincibilityCounter = 0;
+    public int invincibilityCounter = 0;//counts how long player is invisible for
     public int primaryICD = 0;//internal cooldown for attacks
     public int secondaryICD = 0;//internal cooldown for special/secondary moves
 
     public Player(GamePanel gp, KeyHandler keyH) { //create default attributes (constructor)
 
         super(gp); // call on Entity class
-        this.keyH = keyH;
+        this.keyH = keyH;//call on keyhandler class
 
-        screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
-        screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
+        screenX = gp.screenWidth / 2 - (gp.tileSize / 2);//ScreenX is in the center of the window
+        screenY = gp.screenHeight / 2 - (gp.tileSize / 2);//ScreenX is in the center of the window
 
         setDefaultValues();//sets default values for the player
-        getPlayerImage();
-        getPlayerAttackImage();
-        getPlayerSpecialAttackImage();
+        getPlayerImage();//call on player image depending on the spirit selected
+        getPlayerAttackImage();//call on player attack image depending on the spirit selected
+        getPlayerSpecialAttackImage();//call on player special attack image depending on the spirit selected
     }
 
+//    returns the  current spirit
     public Spirit getCurrentSpirit() { // gets the current spirit
         return spirits[currentSpiritIndex];
     }
 
-    public void setDefaultValues() {//create default values to spawn the player
+    public void setDefaultValues() {//create default values to spawn the player (default constructor)
 
         //53 50
         worldX = gp.tileSize * 53; // sets the default position x-coordinate
         worldY = gp.tileSize * 50; //sets the default position y-coordinate
-        speed = 8;//sets speed to 4
-        direction = "right";//can input any direction
-        projectile = new OBJ_Water_Jet(gp);
-        targetProjectile = new OBJ_EagleShot(gp);
+        speed = 6;//player moves at 6 pixels per frame, almost four tiles per second
+        direction = "right";//sets starting direction to right, but can be any direction
+        projectile = new OBJ_Water_Jet(gp);//create water projectile for turtle normal attack
+        targetProjectile = new OBJ_EagleShot(gp);//create targeting projectile for eagle special attack
 
-        // Initializes the spirits and their health values
+//        INITIALIZES THE SPIRITS AND THEIR HEALTH VALUES
+
+        //bear spirit
         spirits[0] = new Spirit(gp, "Bear", 10, 9,
                 (int) (gp.tileSize * (1.0 - bearHitboxScale)) / 2,
                 (int) (gp.tileSize * (1.0 - bearHitboxScale)) / 2,
@@ -72,6 +76,8 @@ public class Player extends Entity {
                 (int) (gp.tileSize * bearAttackBoxScaleSize),
                 (int) (gp.tileSize * bearAttackBoxScaleSize),
                 1, 4);
+
+        //eagle spirit
         spirits[1] = new Spirit(gp, "Eagle", 6, 5,
                 (int) (gp.tileSize * eagleHitboxScale) / 2,
                 (int) (gp.tileSize * eagleHitboxScale) / 2,
@@ -80,6 +86,8 @@ public class Player extends Entity {
                 (int) (gp.tileSize * eagleAttackBoxScaleSize),
                 (int) (gp.tileSize * eagleAttackBoxScaleSize),
                 1, 4);
+
+        //turtle spirit
         spirits[2] = new Spirit(gp, "Turtle", 8, 8,
                 (int) (gp.tileSize * (1.0 - turtleHitboxScale)) / 2,
                 (int) (gp.tileSize * (1.0 - turtleHitboxScale)) / 2,
@@ -88,9 +96,10 @@ public class Player extends Entity {
                 (int) (gp.tileSize * turtleAttackBoxScaleSize),
                 (int) (gp.tileSize * turtleAttackBoxScaleSize),
                 1, 4);
-        switchSpirit(0); // the player is the bear spirit to start
+        switchSpirit(0); // player starts as the bear spirit
     }
 
+//    RETURNS MOVEMENT IMAGE FOR EVERY SPIRIT
     public void getPlayerImage() {
         Spirit currentSpirit = getCurrentSpirit(); // gets the current spirit
 
@@ -105,8 +114,8 @@ public class Player extends Entity {
         right2 = currentSpirit.right2;
 
 
-        if (currentSpirit.name.equals("Bear")) { // walking animation for only the bear pngs
-            // call on setup method to find image files
+        if (currentSpirit.name.equals("Bear")) { // set up walking images if current spirit is bear spirit
+            // use setup method from entity class to find image files and scale them properly
             up1 = setup("bear/bear_up", 1, 1);
             up2 = setup("bear/bear_up_2", 1, 1);
             down1 = setup("bear/bear_down", 1, 1);
@@ -116,7 +125,8 @@ public class Player extends Entity {
             right1 = setup("bear/bear_right", 1, 1);
             right2 = setup("bear/bear_right_2", 1, 1);
 
-        } else if (currentSpirit.name.equals("Eagle")) { // walking animation for only the eagle pngs
+        } else if (currentSpirit.name.equals("Eagle")) { // set up walking images if current spirit is eagle spirit
+//            use setup method from entity class to find image files and scale them properly
             up1 = setup("eagle/eagle_up", 1, 1);
             up2 = setup("eagle/eagle_up_2", 1, 1);
             down1 = setup("eagle/eagle_down", 1, 1);
@@ -125,7 +135,9 @@ public class Player extends Entity {
             left2 = setup("eagle/eagle_left_2", 1, 1);
             right1 = setup("eagle/eagle_right", 1, 1);
             right2 = setup("eagle/eagle_right_2", 1, 1);
-        } else if (currentSpirit.name.equals("Turtle")) {
+
+        } else if (currentSpirit.name.equals("Turtle")) {// set up walking images if current spirit is turtle spirit
+//            use setup method from entity class to find image files and scale them properly
             up1 = setup("turtle/turtle_up", 1.25, 1.25);
             up2 = setup("turtle/turtle_up_2", 1.25, 1.25);
             down1 = setup("turtle/turtle_down", 1.25, 1.25);
@@ -137,8 +149,11 @@ public class Player extends Entity {
         }
     }
 
-    public void getPlayerAttackImage() {//get primary attack images
-        if (getCurrentSpirit().name.equals("Bear")) {
+//    SET UP IMAGES FOR PLAYER NORMAL ATTACK
+    public void getPlayerAttackImage() {
+
+        if (getCurrentSpirit().name.equals("Bear")) {//runs if current spirit is the bear spirit
+            //use set up method from entity class, scale it properly
             attackUp1 = setup("bear/bear_up_attack_1", 1.25, 1.25);
             attackUp2 = setup("bear/bear_up_attack_2", 1.25, 1.25);
             attackUp3 = setup("bear/bear_up_attack_3", 1.25, 1.25);
@@ -152,7 +167,8 @@ public class Player extends Entity {
             attackRight2 = setup("bear/bear_right_attack_2", 1.25, 1.25);
             attackRight3 = setup("bear/bear_right_attack_3", 1.25, 1.25);
         }
-        if (getCurrentSpirit().name.equals("Eagle")) {
+        if (getCurrentSpirit().name.equals("Eagle")) {//runs if the current spirit is the eagle spirit
+            //use set up method from entity class, scale it properly
             attackUp1 = setup("eagle/eagle_up_attack_1", 1.25, 1.25);
             attackUp2 = setup("eagle/eagle_up_attack_2", 1.25, 1.25);
             attackUp3 = setup("eagle/eagle_up_attack_3", 1.25, 1.25);
@@ -166,7 +182,8 @@ public class Player extends Entity {
             attackRight2 = setup("eagle/eagle_right_attack_2", 1.25, 1.25);
             attackRight3 = setup("eagle/eagle_right_attack_3", 1.25, 1.25);
         }
-        if (getCurrentSpirit().name.equals("Turtle")) {
+        if (getCurrentSpirit().name.equals("Turtle")) {// runs if the current spirit is the turtle spirit
+            //use set up method from entity class, scale it properly
             attackUp1 = setup("turtle/turtle_up_attack_1", 1.7, 1.7);
             attackUp2 = setup("turtle/turtle_up_attack_2", 1.7, 1.7);
             attackUp3 = setup("turtle/turtle_up_attack_3", 1.7, 1.7);
@@ -183,7 +200,8 @@ public class Player extends Entity {
 
     }
 
-    public void getPlayerSpecialAttackImage() {//get sprites for secondary attack
+//    GET IMAGES FOR SPECIAL ATTACKS
+    public void getPlayerSpecialAttackImage() {
         if (getCurrentSpirit().name.equals("Bear")) {
             //up specials
             specialUp1 = setup("bear/bear_up_special_1", 1, 1);
@@ -221,7 +239,7 @@ public class Player extends Entity {
             specialRight6 = setup("bear/bear_right_special_6", 1, 1);
             specialRight7 = setup("bear/bear_right_special_6", 1, 1);
         }
-        if (getCurrentSpirit().name.equals("Eagle")) {
+        if (getCurrentSpirit().name.equals("Eagle")) {//get special attack sprites for the eagle spirit
             //up specials
             specialUp1 = setup("eagle/eagle_up_special_1", 1.25, 1.25);
             specialUp2 = setup("eagle/eagle_up_special_2", 1.25, 1.25);
@@ -258,8 +276,8 @@ public class Player extends Entity {
             specialRight6 = setup("eagle/eagle_right_special_6", 1.25, 1.25);
             specialRight7 = setup("eagle/eagle_right_special_6", 1.25, 1.25);
         }
-        if (getCurrentSpirit().name.equals("Turtle")) {
-            //up specials
+        if (getCurrentSpirit().name.equals("Turtle")) {//get special attack sprites for the turtle
+            //up specials and scale them properly
             specialUp1 = setup("turtle/turtle_up_special_1", 1.7, 1.7);
             specialUp2 = setup("turtle/turtle_up_special_2", 1.7, 1.7);
             specialUp3 = setup("turtle/turtle_up_special_3", 1.7, 1.7);
@@ -296,18 +314,21 @@ public class Player extends Entity {
         }
     }
 
-
+//UPDATE METHOD THAT WILL BE CALLED WHILE THE GAME IS RUNNING
     public void update() {
-        secondaryICD++;
-        primaryICD++;//increase primary internal cooldown for every frame, after 30 frames, will be able to attack again
+        secondaryICD++;//increase secondary internal cooldown
+        primaryICD++;//increase primary internal cooldown for every frame
 
-        if (attacking && !specialAttacking) {//check if the player is attacking
+        if (attacking && !specialAttacking) {//make sure the player is attacking and not special attacking at the
+            // same time before running the attacking method
             attacking();
         }
-        if (specialAttacking && !attacking) {
+        if (specialAttacking && !attacking) {//make sure the player is special attacking and not attacking at the
+            // same time before running the special attacking method
             specialAttacking();
         }
 
+//
         if (keyH.primaryPressed || keyH.secondaryPressed) {
             if (keyH.primaryPressed && !keyH.secondaryPressed &&  !specialAttacking && primaryICD > 60) {//if left
                 // click, simulate an attack,
@@ -562,7 +583,7 @@ public class Player extends Entity {
         }
         if (spriteCounter > 15 && spriteCounter <= 25) {
             spriteNum = 3;
-            if (getCurrentSpirit().name.equals("Turtle") && !projectile.alive && shotAvailableCounter == 30) { // the player can only shoot one projectile at a time (and no quicker than half a second apart)
+            if (getCurrentSpirit().name.equals("Turtle") && !projectile.projectileAlive && shotAvailableCounter == 30) { // the player can only shoot one projectile at a time (and no quicker than half a second apart)
 
                 // sets default coordinates for the projectile
                 switch (direction) {

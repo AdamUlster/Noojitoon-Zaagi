@@ -130,10 +130,10 @@ public class GamePanel extends JPanel implements Runnable {
         // update projectile
         for (int i = 0; i < projectileList.size(); i++) {
             if (projectileList.get(i) != null) { // if the projectile exists
-                if (projectileList.get(i).alive) {
+                if (projectileList.get(i).projectileAlive) {
                     projectileList.get(i).update();
                 }
-                if (projectileList.get(i).alive == false) {
+                if (projectileList.get(i).projectileAlive == false) {
                     projectileList.remove(i); // removes the projectile if it is no longer alive
                 }
             }
@@ -142,11 +142,11 @@ public class GamePanel extends JPanel implements Runnable {
         // update target projectile
         for (int i = 0; i < targetProjectileList.size(); i++) {
             if (targetProjectileList.get(i) != null) { // if the projectile exists
-                if (targetProjectileList.get(i).alive) {
+                if (targetProjectileList.get(i).projectileAlive) {
                     System.out.println(targetProjectileList.get(i).toString() + " " + i);
                     targetProjectileList.get(i).update();
                 }
-                if (targetProjectileList.get(i).alive == false) {
+                if (targetProjectileList.get(i).projectileAlive == false) {
                     targetProjectileList.remove(i); // removes the projectile if it is no longer alive
                 }
             }

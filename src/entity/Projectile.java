@@ -15,7 +15,7 @@ public class Projectile extends Entity {
         this.worldX = worldX;
         this.worldY = worldY;
         this.direction = direction;
-        this.alive = alive;
+        this.projectileAlive = alive;
         this.user = user;
         this.health = this.maxHealth;
     }
@@ -24,7 +24,7 @@ public class Projectile extends Entity {
         int monsterIndex = gp.cChecker.checkEntity(this, gp.monster); // gets the monster index that the projectile hits
         if (monsterIndex != 999) { // if the projectile hits a monster
             gp.player.damageMonster(monsterIndex, attack); // passes the projectile's attack to a monster
-            alive = false; // the projectile disappears after hitting a monster
+            projectileAlive = false; // the projectile disappears after hitting a monster
         }
 
         switch (direction) { // allows for the projectile to be launched
@@ -43,7 +43,7 @@ public class Projectile extends Entity {
         }
         health --;
         if (health <= 0) {
-            alive = false; // the projectile disappears when it has no more health
+            projectileAlive = false; // the projectile disappears when it has no more health
         }
 
     }

@@ -16,7 +16,7 @@ public class OBJ_Water_Jet extends Projectile {
         health = maxHealth;
         attack = 2;
         useCost = 1;
-        alive = false;
+        projectileAlive = false;
         getImage();
     }
 
