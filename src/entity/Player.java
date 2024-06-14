@@ -104,7 +104,6 @@ public class Player extends Entity {
         gp.targetProjectileList.clear();
         gp.entityList.clear();
 
-        setDefaultValues();
         for (int i = 0; i < gp.player.spirits.length; i++) { // makes every spirit alive
             gp.player.spirits[i].dead = false;
         }
@@ -119,6 +118,8 @@ public class Player extends Entity {
         gp.map.miniMapOn = false;
         gp.player.onPath = false;
         gp.tileM.drawPath = false;
+
+        setDefaultValues(); // sets the default player values
     }
 
     public void getPlayerImage() {

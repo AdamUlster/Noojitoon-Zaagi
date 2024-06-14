@@ -145,6 +145,10 @@ public class UI {
             if (countdown <= 3) {
                 g2.drawString(message, gp.screenWidth / 2, gp.screenHeight / 2 - 65);
             }
+            if (countdown == 1) { // displays the loading message on the last part of the countdown
+                g2.setFont(g2.getFont().deriveFont(30F)); // changes the font size
+                g2.drawString("Loading... Please Wait", gp.tileSize / 2, gp.tileSize * 5);
+            }
         }
 
         // if the user beats the game
