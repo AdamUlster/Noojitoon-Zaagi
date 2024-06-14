@@ -485,64 +485,64 @@ public class Player extends Entity {
                 case "up":
                     switch(getCurrentSpirit().name) {
                         case "Bear":
-                            worldX = (int) (screenX + attackArea.width - (gp.tileSize * 1.6));
-                            worldY = (int) (screenY + attackArea.height - (gp.tileSize * 2.6));
+                            worldX += (int) (attackArea.width - (gp.tileSize * 1.6));
+                            worldY += (int) (attackArea.height - (gp.tileSize * 2.6));
                             break;
                         case "Eagle":
-                            worldX = (int) (screenX + attackArea.width - (gp.tileSize * 1.6));
-                            worldY = (int) (screenY + attackArea.height - (gp.tileSize * 2.6));
+                            worldX += (int) (attackArea.width - (gp.tileSize * 1.6));
+                            worldY += (int) (attackArea.height - (gp.tileSize * 2.6));
                             break;
                         case "Turtle":
-                            worldX = (int) (screenX + attackArea.width - (gp.tileSize * 1.2));
-                            worldY = (int) (screenY + attackArea.height - (gp.tileSize * 2.2));
+                            worldX += (int) (attackArea.width - (gp.tileSize * 1.2));
+                            worldY += (int) (attackArea.height - (gp.tileSize * 2.2));
                             break;
                     }
                     break;
                 case "down":
                     switch(getCurrentSpirit().name) {
                         case "Bear":
-                            worldX = (int) (screenX + attackArea.width - (gp.tileSize * 1.6));
-                            worldY = (int) (screenY + attackArea.height - (gp.tileSize * 0.7));
+                            worldX += (int) (attackArea.width - (gp.tileSize * 1.6));
+                            worldY += (int) (attackArea.height - (gp.tileSize * 0.7));
                             break;
                         case "Eagle":
-                            worldX = (int) (screenX + attackArea.width - (gp.tileSize * 1.6));
-                            worldY = (int) (screenY + attackArea.height - (gp.tileSize * 0.8));
+                            worldX += (int) (attackArea.width - (gp.tileSize * 1.6));
+                            worldY += (int) (attackArea.height - (gp.tileSize * 0.8));
                             break;
                         case "Turtle":
-                            worldX = (int) (screenX + attackArea.width - (gp.tileSize * 1.2));
-                            worldY = (int) (screenY + attackArea.height - (gp.tileSize * 0.5));
+                            worldX += (int) (attackArea.width - (gp.tileSize * 1.2));
+                            worldY += (int) (attackArea.height - (gp.tileSize * 0.5));
                             break;
                     }
                     break;
                 case "left":
                     switch(getCurrentSpirit().name) {
                         case "Bear":
-                            worldX = (int) (screenX + attackArea.width - (gp.tileSize * 2.6));
-                            worldY = (int) (screenY + attackArea.height - (gp.tileSize * 1.6));
+                            worldX += (int) (attackArea.width - (gp.tileSize * 2.6));
+                            worldY += (int) (attackArea.height - (gp.tileSize * 1.6));
                             break;
                         case "Eagle":
-                            worldX = (int) (screenX + attackArea.width - (gp.tileSize * 2.5));
-                            worldY = (int) (screenY + attackArea.height - (gp.tileSize * 1.6));
+                            worldX += (int) (attackArea.width - (gp.tileSize * 2.5));
+                            worldY += (int) (attackArea.height - (gp.tileSize * 1.6));
                             break;
                         case "Turtle":
-                            worldX = (int) (screenX + attackArea.width - (gp.tileSize * 2.1));
-                            worldY = (int) (screenY + attackArea.height - (gp.tileSize * 1.4));
+                            worldX += (int) (attackArea.width - (gp.tileSize * 2.1));
+                            worldY += (int) (attackArea.height - (gp.tileSize * 1.4));
                             break;
                     }
                     break;
                 case "right":
                     switch(getCurrentSpirit().name) {
                         case "Bear":
-                            worldX = (int) (screenX + attackArea.width - (gp.tileSize * 0.6));
-                            worldY = (int) (screenY + attackArea.height - (gp.tileSize * 1.7));
+                            worldX += (int) (attackArea.width - (gp.tileSize * 0.6));
+                            worldY += (int) (attackArea.height - (gp.tileSize * 1.7));
                             break;
                         case "Eagle":
-                            worldX = (int) (screenX + attackArea.width - (gp.tileSize * 0.6));
-                            worldY = (int) (screenY + attackArea.height - (gp.tileSize * 1.7));
+                            worldX += (int) (attackArea.width - (gp.tileSize * 0.6));
+                            worldY += (int) (attackArea.height - (gp.tileSize * 1.7));
                             break;
                         case "Turtle":
-                            worldX = (int) (screenX + attackArea.width - (gp.tileSize * 0.4));
-                            worldY = (int) (screenY + attackArea.height - (gp.tileSize * 1.3));
+                            worldX += (int) (attackArea.width - (gp.tileSize * 0.4));
+                            worldY += (int) (attackArea.height - (gp.tileSize * 1.3));
                             break;
                     }
                     break;
