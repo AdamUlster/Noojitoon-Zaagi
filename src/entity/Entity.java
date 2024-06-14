@@ -211,59 +211,6 @@ public class Entity {
 
         if (gp.pFinderToTotem.search()) { // a path has been found
 
-            // Get the entity's next coordinates using the path to follow
-            int nextX = gp.pFinderToTotem.pathList.get(0).col * gp.tileSize;
-            int nextY = gp.pFinderToTotem.pathList.get(0).row * gp.tileSize;
-
-            // Get the entity's solid area
-            int entLeftX = worldX + solidArea.x;
-            int entRightX = worldX + solidArea.x + solidArea.width;
-            int entTopY = worldY + solidArea.y;
-            int entBottomY = worldY + solidArea.y + solidArea.height;
-
-            if (entTopY > nextY && entLeftX >= nextX && entRightX < nextX + gp.tileSize) {
-                direction = "up";
-            }
-            else if (entTopY < nextY && entLeftX >= nextX && entRightX < nextX + gp.tileSize) {
-                direction = "down";
-            }
-            else if (entTopY >= nextY && entBottomY < nextY + gp.tileSize) { // the entity can go either left or right
-                if (entLeftX > nextX) {
-                    direction = "left";
-                }
-                if (entLeftX < nextX) {
-                    direction = "right";
-                }
-            }
-            else if (entTopY > nextY && entLeftX > nextX) { // the entity can go either up or left
-                direction = "up";
-                checkCollision();
-                if (collisionOn) {
-                    direction = "left";
-                }
-            }
-            else if (entTopY > nextY && entLeftX < nextX) { // the entity can go either up or right
-                direction = "up";
-                checkCollision();
-                if (collisionOn) {
-                    direction = "right";
-                }
-            }
-            else if (entTopY < nextY && entLeftX > nextX) { // the entity can go either down or left
-                direction = "down";
-                checkCollision();
-                if (collisionOn) {
-                    direction = "left";
-                }
-            }
-            else if (entTopY < nextY && entLeftX < nextX) { // the entity can go either down or right
-                direction = "down";
-                checkCollision();
-                if (collisionOn) {
-                    direction = "right";
-                }
-            }
-
             int nextCol = gp.pFinderToTotem.pathList.get(0).col;
             int nexRow = gp.pFinderToTotem.pathList.get(0).row;
             if (nextCol == goalCol && nexRow == goalRow) {
