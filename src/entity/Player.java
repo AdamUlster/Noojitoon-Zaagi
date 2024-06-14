@@ -110,6 +110,14 @@ public class Player extends Entity {
         gp.player.isDying = false; // makes it so the player is no longer dying
         gp.aSetter.setNPC();
         gp.aSetter.setMonster();
+
+        // resets the things displayed on the screen
+        keyH.checkDrawTime = false;
+        keyH.displayControls = false;
+        keyH.displayMap = false;
+        gp.map.miniMapOn = false;
+        gp.player.onPath = false;
+        gp.tileM.drawPath = false;
     }
 
     public void getPlayerImage() {
@@ -322,6 +330,13 @@ public class Player extends Entity {
 
 
     public void update() {
+        if (onPath) {
+            // sets the destination tile to the start of the maze
+            int goalCol = 18;
+            int goalRow = 75;
+            searchPathToTotem(goalCol, goalRow);
+        }
+
         secondaryICD++;
         primaryICD++;//increase primary internal cooldown for every frame, after 30 frames, will be able to attack again
 

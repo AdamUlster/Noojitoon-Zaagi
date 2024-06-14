@@ -71,12 +71,13 @@ public class UI {
         g2.setFont(g2.getFont().deriveFont(20F)); // changes the font size
         g2.setColor(new Color(135, 206, 235)); // light blue
         if (gp.keyH.displayControls) { // displays the controls if they should be displayed
-            g2.fillRect(40, 730, 330, 250);
+            g2.fillRect(40, 700, 330, 280);
             g2.setColor(new Color(255, 255, 255)); // white
-            g2.drawString("Controls:", 40, 760);
-            g2.drawString("Up, Left, Down, Right -> W, A, S, D", 40, 790);
-            g2.drawString("Primary Attack (Once Unlocked) -> Left Click", 40, 820);
-            g2.drawString("Special Attack -> Right Click", 40, 850);
+            g2.drawString("Controls:", 40, 730);
+            g2.drawString("Up, Left, Down, Right -> W, A, S, D", 40, 760);
+            g2.drawString("Primary Attack (Once Unlocked) -> Left Click", 40, 790);
+            g2.drawString("Special Attack -> Right Click", 40, 820);
+            g2.drawString("Hint -> H", 40, 850);
             g2.drawString("Open/Close Map -> M", 40, 880);
             g2.drawString("Open/Close Mini Map -> Q", 40, 910);
             g2.drawString("Show Draw Time -> T", 40, 940);

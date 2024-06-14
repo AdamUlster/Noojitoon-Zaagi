@@ -184,7 +184,7 @@ public class Entity {
             }
 
             // For debugging
-//            g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
+            g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
         }
     }
 
@@ -201,19 +201,19 @@ public class Entity {
         return image;
     }
 
-    public void searchPath(int goalCol, int goalRow) {
+    public void searchPathToTotem(int goalCol, int goalRow) {
 
         // gets the entity's current tile
         int startCol = (worldX + solidArea.x) / gp.tileSize;
         int startRow = (worldY + solidArea.y) / gp.tileSize;
 
-        gp.pFinder.setNodes(startCol, startRow, goalCol, goalRow);
+        gp.pFinderToTotem.setNodes(startCol, startRow, goalCol, goalRow);
 
-        if (gp.pFinder.search()) { // a path has been found
+        if (gp.pFinderToTotem.search()) { // a path has been found
 
             // Get the entity's next coordinates using the path to follow
-            int nextX = gp.pFinder.pathList.get(0).col * gp.tileSize;
-            int nextY = gp.pFinder.pathList.get(0).row * gp.tileSize;
+            int nextX = gp.pFinderToTotem.pathList.get(0).col * gp.tileSize;
+            int nextY = gp.pFinderToTotem.pathList.get(0).row * gp.tileSize;
 
             // Get the entity's solid area
             int entLeftX = worldX + solidArea.x;
@@ -227,8 +227,117 @@ public class Entity {
             else if (entTopY < nextY && entLeftX >= nextX && entRightX < nextX + gp.tileSize) {
                 direction = "down";
             }
-            else if (entTopY >= nextY && entBottomY < nextY + gp.tileSize) {
-                // The entity can go either left or right
+            else if (entTopY >= nextY && entBottomY < nextY + gp.tileSize) { // the entity can go either left or right
+                if (entLeftX > nextX) {
+                    direction = "left";
+                }
+                if (entLeftX < nextX) {
+                    direction = "right";
+                }
+            }
+            else if (entTopY > nextY && entLeftX > nextX) { // the entity can go either up or left
+                direction = "up";
+                checkCollision();
+                if (collisionOn) {
+                    direction = "left";
+                }
+            }
+            else if (entTopY > nextY && entLeftX < nextX) { // the entity can go either up or right
+                direction = "up";
+                checkCollision();
+                if (collisionOn) {
+                    direction = "right";
+                }
+            }
+            else if (entTopY < nextY && entLeftX > nextX) { // the entity can go either down or left
+                direction = "down";
+                checkCollision();
+                if (collisionOn) {
+                    direction = "left";
+                }
+            }
+            else if (entTopY < nextY && entLeftX < nextX) { // the entity can go either down or right
+                direction = "down";
+                checkCollision();
+                if (collisionOn) {
+                    direction = "right";
+                }
+            }
+
+            int nextCol = gp.pFinderToTotem.pathList.get(0).col;
+            int nexRow = gp.pFinderToTotem.pathList.get(0).row;
+            if (nextCol == goalCol && nexRow == goalRow) {
+                onPath = false; // stops the entity when it reaches its destination
+            }
+        }
+    }
+
+    public void searchPathToPlayer(int goalCol, int goalRow) {
+        // gets the entity's current tile
+        int startCol = (worldX + solidArea.x) / gp.tileSize;
+        int startRow = (worldY + solidArea.y) / gp.tileSize;
+
+        gp.pFinderToPlayer.setNodes(startCol, startRow, goalCol, goalRow);
+
+        if (gp.pFinderToPlayer.search()) { // a path has been found
+
+            // Get the entity's next coordinates using the path to follow
+            int nextX = gp.pFinderToPlayer.pathList.get(0).col * gp.tileSize;
+            int nextY = gp.pFinderToPlayer.pathList.get(0).row * gp.tileSize;
+
+            // Get the entity's solid area
+            int entLeftX = worldX + solidArea.x;
+            int entRightX = worldX + solidArea.x + solidArea.width;
+            int entTopY = worldY + solidArea.y;
+            int entBottomY = worldY + solidArea.y + solidArea.height;
+
+            if (entTopY > nextY && entLeftX >= nextX && entRightX < nextX + gp.tileSize) {
+                direction = "up";
+            }
+            else if (entTopY < nextY && entLeftX >= nextX && entRightX < nextX + gp.tileSize) {
+                direction = "down";
+            }
+            else if (entTopY >= nextY && entBottomY < nextY + gp.tileSize) { // the entity can go either left or right
+                if (entLeftX > nextX) {
+                    direction = "left";
+                }
+                if (entLeftX < nextX) {
+                    direction = "right";
+                }
+            }
+            else if (entTopY > nextY && entLeftX > nextX) { // the entity can go either up or left
+                direction = "up";
+                checkCollision();
+                if (collisionOn) {
+                    direction = "left";
+                }
+            }
+            else if (entTopY > nextY && entLeftX < nextX) { // the entity can go either up or right
+                direction = "up";
+                checkCollision();
+                if (collisionOn) {
+                    direction = "right";
+                }
+            }
+            else if (entTopY < nextY && entLeftX > nextX) { // the entity can go either down or left
+                direction = "down";
+                checkCollision();
+                if (collisionOn) {
+                    direction = "left";
+                }
+            }
+            else if (entTopY < nextY && entLeftX < nextX) { // the entity can go either down or right
+                direction = "down";
+                checkCollision();
+                if (collisionOn) {
+                    direction = "right";
+                }
+            }
+
+            int nextCol = gp.pFinderToPlayer.pathList.get(0).col;
+            int nexRow = gp.pFinderToPlayer.pathList.get(0).row;
+            if (nextCol == goalCol && nexRow == goalRow) {
+                onPath = false; // stops the entity when it reaches its destination
             }
         }
     }

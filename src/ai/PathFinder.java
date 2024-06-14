@@ -110,7 +110,7 @@ public class PathFinder {
     }
 
     public boolean search() {
-        while (!goalReached && step < 500) {
+        while (!goalReached && step < 100000) {
             int col = currentNode.col;
             int row = currentNode.row;
 
@@ -156,7 +156,7 @@ public class PathFinder {
                     }
                 }
             }
-            if (openList.size() == 0) { // if there is no node in openList
+            if (openList.isEmpty()) { // if there is no node in openList
                 break; // end the loop
             }
 
@@ -171,20 +171,20 @@ public class PathFinder {
         return goalReached;
     }
 
-    public void trackThePath() { // works backwards to get the path to travel
-        Node currentNode = goalNode; // starts at the ending node
-
-        while (currentNode != startNode) {
-            pathList.add(0, currentNode); // adds the current node to the front of the list to go in reverse order
-            currentNode = currentNode.parent;
-        }
-    }
-
     public void openNode(Node node) {
         if (!node.open && !node.checked && !node.solid) {
             node.open = true;
             node.parent = currentNode;
             openList.add(node);
+        }
+    }
+
+    public void trackThePath() { // works backwards to get the path to travel
+        Node current = goalNode; // starts at the ending node
+
+        while (current != startNode) {
+            pathList.add(0, current); // adds the current node to the front of the list to go in reverse order
+            current = current.parent;
         }
     }
 }

@@ -14,6 +14,7 @@ public class TileManager {
     public Tile[] tile;
     public int mapTileNum[][];//create a 2d array for each tile element in the map
 
+    public boolean drawPath = false;
     public TileManager(GamePanel gp) {//set default
 
         this.gp = gp;
@@ -111,6 +112,18 @@ public class TileManager {
             if (worldCol == gp.maxWorldCol) {//checks when draw method has reached the bottom of the column
                 worldCol = 0;//resets column and x position
                 worldRow++;//draw will now draw the column next to it
+            }
+        }
+
+        if (drawPath) { // if the path should be drawn
+            g2.setColor(new Color(255, 0, 0 ,70)); // red with a reduces opacity
+
+            for (int i = 0; i < gp.pFinderToTotem.pathList.size(); i++) {
+                int worldX = gp.pFinderToTotem.pathList.get(i).col * gp.tileSize;
+                int worldY = gp.pFinderToTotem.pathList.get(i).row * gp.tileSize;
+                int screenX = worldX - gp.player.worldX + gp.player.screenX;//tile position on the screen
+                int screenY = worldY - gp.player.worldY + gp.player.screenY;
+                g2.fillRect(screenX, screenY, gp.tileSize, gp.tileSize);
             }
         }
     }

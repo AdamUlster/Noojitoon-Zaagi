@@ -48,9 +48,10 @@ public class GamePanel extends JPanel implements Runnable {
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this); // passes the game panel as a parameter
     public UI ui = new UI(this);
-    public PathFinder pFinder = new PathFinder(this);
+    public PathFinder pFinderToTotem = new PathFinder(this);
+    public PathFinder pFinderToPlayer = new PathFinder(this);
 
-    Map map = new Map(this); // instantiates the map
+    public Map map = new Map(this); // instantiates the map
     Thread gameThread;//repeats a process again and again
 
     // Entities and objects
