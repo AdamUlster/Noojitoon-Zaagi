@@ -1,5 +1,6 @@
 package main;
 
+import ai.PathFinder;
 import entity.Entity;
 import entity.Player;
 import tile.Map;
@@ -42,13 +43,15 @@ public class GamePanel extends JPanel implements Runnable {
     int FPS = 60;
 
     // System
-    TileManager tileM = new TileManager(this); // passes the game panel
+    public TileManager tileM = new TileManager(this); // passes the game panel
     KeyHandler keyH = new KeyHandler(this);//call on the keyhandle class to create the keylistener
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this); // passes the game panel as a parameter
     public UI ui = new UI(this);
+    public PathFinder pFinderToTotem = new PathFinder(this);
+    public PathFinder pFinderToPlayer = new PathFinder(this);
 
-    Map map = new Map(this); // instantiates the map
+    public Map map = new Map(this); // instantiates the map
     Thread gameThread;//repeats a process again and again
 
     // Entities and objects
@@ -58,7 +61,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Entity[] monster = new Entity[200];//create 200 monsters
     public ArrayList<Entity> projectileList = new ArrayList<>(); // holds the projectiles
     public ArrayList<Entity> targetProjectileList = new ArrayList<>(); // holds the target projectiles
-    ArrayList<Entity> entityList = new ArrayList<>(); // creates an array list to store all the entities
+    public ArrayList<Entity> entityList = new ArrayList<>(); // creates an array list to store all the entities
 
     public GamePanel() {//set default values for the gamepanel
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));//set screen dimensions
@@ -230,6 +233,7 @@ public class GamePanel extends JPanel implements Runnable {
             long drawEnd = System.nanoTime();
             long passed = drawEnd - drawStart;
             g2.setColor(Color.white);
+            g2.setFont(g2.getFont().deriveFont(30F)); // changes the font size
             g2.drawString("Draw Time: " + passed, 10, 400);
             System.out.println("Draw Time: " + passed);
         }

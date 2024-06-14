@@ -16,8 +16,8 @@ public class KeyHandler implements KeyListener, MouseListener {
     public boolean primaryPressed, secondaryPressed;
     // pressed for sprite switching
     //DEBUG STUFF
-    boolean checkDrawTime = false;
-    boolean displayControls = false;
+    public boolean checkDrawTime = false;
+    public boolean displayControls = false;
     public boolean displayMap = false;
 
     public KeyHandler(GamePanel gp) { // constructor
@@ -87,7 +87,12 @@ public class KeyHandler implements KeyListener, MouseListener {
         }
 
         if (code == KeyEvent.VK_Q) {
-            gp.map.miniMapOn = !gp.map.miniMapOn; // displays the mini map if it wasn't already
+            gp.map.miniMapOn = !gp.map.miniMapOn; // displays the mini map if it wasn't already displayed
+        }
+
+        if (code == KeyEvent.VK_H) {
+            gp.player.onPath = !gp.player.onPath;
+            gp.tileM.drawPath = !gp.tileM.drawPath; // draws the path to the maze if it wasn't already shown
         }
     }
 

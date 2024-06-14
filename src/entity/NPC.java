@@ -41,7 +41,7 @@ public class NPC extends Entity {
 //        direction to travel in
         if (actionLockCounter == 30) {//change movements every 30 frames
 
-            int i = random.nextInt(100) + 1;//pick a randum number from 1 to 100
+            int i = random.nextInt(100) + 1;//pick a random number from 1 to 100
 
             if (i <= 25) {//travel up 1/4 of the time
                 direction = "up";
