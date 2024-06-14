@@ -15,10 +15,35 @@ public class CollisionChecker {
         int entityTopWorldY = entity.worldY;
         int entityBottomWorldY = entity.worldY + entity.solidArea.y + entity.solidArea.height;
 
+        // Makes sure the butterflies do not go out of bounds
         int entityLeftCol = entityLeftWorldX / gp.tileSize;
+        if (entityLeftCol < 0) { // prevents a butterfly from going off the screen
+            entityLeftCol = 0;
+        }
+        else if (entityLeftCol > gp.maxWorldCol - 1) {
+            entityLeftCol = gp.maxWorldCol - 1;
+        }
         int entityRightCol = entityRightWorldX / gp.tileSize;
+        if (entityRightCol < 0) { // prevents a butterfly from going off the screen
+            entityRightCol = 0;
+        }
+        else if (entityRightCol > gp.maxWorldCol - 1) {
+            entityRightCol = gp.maxWorldCol - 1;
+        }
         int entityTopRow = entityTopWorldY / gp.tileSize;
+        if (entityTopRow < 0) { // prevents a butterfly from going off the screen
+            entityTopRow = 0;
+        }
+        else if (entityTopRow > gp.maxWorldRow - 1) {
+            entityTopRow = gp.maxWorldRow - 1;
+        }
         int entityBottomRow = entityBottomWorldY / gp.tileSize;
+        if (entityBottomRow < 0) { // prevents a butterfly from going off the screen
+            entityBottomRow = 0;
+        }
+        else if (entityBottomRow > gp.maxWorldRow - 1) {
+            entityBottomRow = gp.maxWorldRow - 1;
+        }
 
         int tileNum1, tileNum2;
 

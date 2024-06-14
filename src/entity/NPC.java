@@ -42,7 +42,7 @@ public class NPC extends Entity {
         actionLockCounter++;
         if (actionLockCounter == 30) {
 
-            int i = random.nextInt(100) + 1;//pick a randum number from 1 to 100
+            int i = random.nextInt(100) + 1;//pick a random number from 1 to 100
 
             if (i <= 25) {
                 direction = "up";

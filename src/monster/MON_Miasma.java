@@ -27,8 +27,6 @@ public class MON_Miasma extends Entity {
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
-
-
         getImage();
     }
 
