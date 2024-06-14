@@ -41,29 +41,59 @@ public class MON_Miasma extends Entity {
         right2 = setup("monsters/miasma_2", 1,1);
     }
 
+    public void update() { // overwrites the parent class's update method
+        super.update(); // calls on the parent's class update method
+
+        int xDistance = Math.abs(worldX - gp.player.worldX);
+        int yDistance = Math.abs(worldY - gp.player.worldY);
+        int tileDistance = (xDistance + yDistance) / gp.tileSize;
+
+        if (!onPath && tileDistance < 5) { // if the monster is within 5 tiles of the player
+            int i = new Random().nextInt(100) + 1; // picks a random number from 1 to 100
+            if (i > 50) {
+                onPath = true; // half the time, it doesn't follow the player
+            }
+        }
+        if (onPath && tileDistance > 15) { // makes the monsters disappear once the player is a certain distance away
+            onPath = false;
+        }
+    }
+
     public void setAction() {
 
-        // random monster behaviour
-        Random random = new Random();
-        actionLockCounter++;
-        if (actionLockCounter == 120) {
-
-            int i = random.nextInt(100) + 1;//pick a random number from 1 to 100
-
-            if (i <= 25) {
-                direction = "up";
-            }
-            if (i > 25 && i <= 50) {
-                direction = "down";
-            }
-            if (i > 50 && i <= 75) {
-                direction = "left";
-            }
-            if (i > 75 && i < 100) {
-                direction = "right";
-            }
-            actionLockCounter = 0;
+        if (onPath) {
+            int goalCol = (gp.player.worldX + gp.player.solidArea.x) / gp.tileSize;
+            int goalRow = (gp.player.worldY + gp.player.solidArea.y) / gp.tileSize;
+            searchPathToPlayer(goalCol, goalRow);
         }
+        else {
 
+            // random monster behaviour
+            actionLockCounter++;
+            if (actionLockCounter == 120) {
+
+                Random random = new Random();
+                int i = random.nextInt(100) + 1;//pick a random number from 1 to 100
+
+                if (i <= 25) {
+                    direction = "up";
+                }
+                if (i > 25 && i <= 50) {
+                    direction = "down";
+                }
+                if (i > 50 && i <= 75) {
+                    direction = "left";
+                }
+                if (i > 75 && i < 100) {
+                    direction = "right";
+                }
+                actionLockCounter = 0;
+            }
+        }
+    }
+
+    public void damageReaction() {
+        actionLockCounter = 0;
+        onPath = true;
     }
 }
