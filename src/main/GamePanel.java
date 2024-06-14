@@ -42,7 +42,7 @@ public class GamePanel extends JPanel implements Runnable {
     int FPS = 60;
 
     // System
-    TileManager tileM = new TileManager(this); // passes the game panel
+    public TileManager tileM = new TileManager(this); // passes the game panel
     KeyHandler keyH = new KeyHandler(this);//call on the keyhandle class to create the keylistener
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this); // passes the game panel as a parameter
@@ -230,6 +230,7 @@ public class GamePanel extends JPanel implements Runnable {
             long drawEnd = System.nanoTime();
             long passed = drawEnd - drawStart;
             g2.setColor(Color.white);
+            g2.setFont(g2.getFont().deriveFont(30F)); // changes the font size
             g2.drawString("Draw Time: " + passed, 10, 400);
             System.out.println("Draw Time: " + passed);
         }

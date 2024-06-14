@@ -7,7 +7,7 @@ import object.OBJ_Water_Jet;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Player extends Entity {
     KeyHandler keyH;//call on keyhandler class
@@ -30,6 +30,11 @@ public class Player extends Entity {
 
     //INDICES
     int monsterIndex;
+
+    //CHECKERS
+    public boolean bearSpecialUnlocked = false;
+    public boolean eagleSpecialUnlocked = false;
+    public boolean turtleSpecialUnlocked = false;
 
     //COUNTERS
     public int invincibilityCounter = 0;
@@ -64,7 +69,7 @@ public class Player extends Entity {
         targetProjectile = new OBJ_EagleShot(gp);
 
         // Initializes the spirits and their health values
-        spirits[0] = new Spirit(gp, "Bear", 10, 9,
+        spirits[0] = new Spirit(gp, "Bear", 9, 9,
                 (int) (gp.tileSize * (1.0 - bearHitboxScale)) / 2,
                 (int) (gp.tileSize * (1.0 - bearHitboxScale)) / 2,
                 (int) (gp.tileSize * bearHitboxScale),
@@ -72,7 +77,7 @@ public class Player extends Entity {
                 (int) (gp.tileSize * bearAttackBoxScaleSize),
                 (int) (gp.tileSize * bearAttackBoxScaleSize),
                 1, 4);
-        spirits[1] = new Spirit(gp, "Eagle", 6, 5,
+        spirits[1] = new Spirit(gp, "Eagle", 5, 5,
                 (int) (gp.tileSize * eagleHitboxScale) / 2,
                 (int) (gp.tileSize * eagleHitboxScale) / 2,
                 (int) (gp.tileSize * eagleHitboxScale),
@@ -92,26 +97,19 @@ public class Player extends Entity {
     }
 
     public void restoreSettings() {
-        // Restores position
-        worldX = gp.tileSize * 53; // sets the default position x-coordinate
-        worldY = gp.tileSize * 50; //sets the default position y-coordinate
-        direction = "right";
-
-        for (int i = 0; i < gp.npc.length; i++) {
-            gp.npc[i] = null;
-        }
-        for (int i = 0; i < gp.monster.length; i++) {
-            gp.monster[i] = null;
-        }
+        Arrays.fill(gp.npc, null);
+        Arrays.fill(gp.monster, null);
         gp.projectileList.clear();
         gp.targetProjectileList.clear();
         gp.entityList.clear();
 
         setDefaultValues();
-        gp.ui.showLoadingMessage("Loading... Please Wait");
+        for (int i = 0; i < gp.player.spirits.length; i++) { // makes every spirit alive
+            gp.player.spirits[i].dead = false;
+        }
+        gp.player.isDying = false; // makes it so the player is no longer dying
         gp.aSetter.setNPC();
         gp.aSetter.setMonster();
-        gp.ui.loadingMessageOn = false; // makes the loading message disappear after the monsters load
     }
 
     public void getPlayerImage() {
@@ -434,27 +432,28 @@ public class Player extends Entity {
             switchSpirit(2);
         }
 
-        if (gp.player.getCurrentSpirit().health <= 0) {
+        if (gp.player.getCurrentSpirit().getHealth() <= 0) {
             isDying = true;
             displayDeathMessage = false;
             gp.player.getCurrentSpirit().dead = true;
             int spiritIndex = nextAliveSpirit();
             if (spiritIndex == -1) {
-                gp.ui.showRespawningMessage();
-                System.out.println(gp.ui.respawningMessageOn);
-                if (!gp.ui.respawningMessageOn) {
-                    restoreSettings();
+                if (!gp.ui.respawningMessageOn) { // display the respawning message if it has not been already displayed
+                    gp.ui.showRespawningMessage();
+                }
+
+                gp.ui.respawningMessageDisplayTime++;
+                if (gp.ui.respawningMessageDisplayTime >= 240) { // makes the message disappear after 4 seconds
+                    gp.ui.respawningMessageDisplayTime = 0;
+                    gp.ui.respawningMessageOn = false;
+                    gp.player.restoreSettings(); // restores the world as if it is a new game
                 }
             }
             else {
                 deadCounter++;
                 if (deadCounter <= 240) {
                     if (deadCounter % 30 == 0) {
-                        if (deadFlicker) {
-                            deadFlicker = false;
-                        } else {
-                            deadFlicker = true;
-                        }
+                        deadFlicker = !deadFlicker;
                     }
                 } else {
                     isDying = false;
@@ -668,64 +667,67 @@ public class Player extends Entity {
             }
 
             if (getCurrentSpirit().name.equals("Bear")) {//berserker mode for bear
-                System.out.println(spirits[0].health);
-                if (spirits[0].health < 8) {
-                    spirits[0].health += 3;
-                } else {
-                    spirits[0].health = spirits[0].maxHealth;
+                if (bearSpecialUnlocked) { // if the bear special ability is unlocked
+                    System.out.println(spirits[0].health);
+                    if (spirits[0].health < 8) {
+                        spirits[0].health += 3;
+                    } else {
+                        spirits[0].health = spirits[0].maxHealth;
+                    }
                 }
                 //TODO
                 // find a way to increase attack for 10 seconds or smth idk
             }
-            if (getCurrentSpirit().name.equals("Turtle")) {
-                if (spirits[0].health < spirits[0].maxHealth) {
-                    spirits[0].health = spirits[0].maxHealth;
-                }
-                if (spirits[1].health < spirits[0].maxHealth) {
-                    spirits[1].health = spirits[1].maxHealth;
-                }
-                if (spirits[2].health < spirits[0].maxHealth) {
-                    spirits[2].health = spirits[2].maxHealth;
+            if (getCurrentSpirit().name.equals("Turtle")) { // if the turtle special ability is unlocked
+                if (turtleSpecialUnlocked) {
+                    for (int i = 0; i < spirits.length; i++) { // sets every spirit's health to the maximum
+                        if (spirits[i].getHealth() < spirits[i].getMaxHealth()) {
+                            spirits[i].setHealth(spirits[i].getMaxHealth());
+                            spirits[i].dead = false;
+                        }
+                    }
                 }
                 //TODO
                 // once sprite health has been decided, we can hard code some healing numbers instead of restoring all health
             }
             if (getCurrentSpirit().name.equals("Eagle")) {
-                int targetSmallestDistance = 999;
-                int targetIndex = -1;
-                for (int i = 0; i < gp.monster.length ; i++) {
-                    if (gp.monster[i] != null) { // if the monster exists
-                        if (getDistance(i) < targetSmallestDistance) { // checks if the smaller distance is smaller than the last smallest
-                            targetIndex = i;
-                            targetSmallestDistance = getDistance(i);
+                if (eagleSpecialUnlocked) { // if the eagle special ability is unlocked
+                    int targetSmallestDistance = 999;
+                    int targetIndex = -1;
+                    for (int i = 0; i < gp.monster.length ; i++) {
+                        if (gp.monster[i] != null) { // if the monster exists
+                            if (getDistance(i) < targetSmallestDistance) { // checks if the smaller distance is smaller than the last smallest
+                                targetIndex = i;
+                                targetSmallestDistance = getDistance(i);
+                            }
                         }
                     }
-                }
-                if (targetIndex == -1) { // if no monsters remain
-                    gp.ui.showMessage("There are no monsters for the eagle eye to lock onto");
-                }
-                else {
-                    switch (direction) {//spawn projectile based on what direction eagle is facing
-                        case "up":
-                            targetProjectile.set((int) (worldX + attackArea.width - (gp.tileSize * 1.35)),
-                                    (int) (worldY - attackArea.height + (gp.tileSize * 0.3)), true, targetIndex);
-                            break;
-                        case "down":
-                            targetProjectile.set((int) (worldX + attackArea.width - (gp.tileSize * 1.35)), (int)
-                                    (worldY + attackArea.height + (gp.tileSize * -0.5)), true, targetIndex);
-                            break;
-                        case "left":
-                            targetProjectile.set((int) (worldX - attackArea.width + (gp.tileSize * 0.2)), (int)
-                                    (worldY + attackArea.height - (gp.tileSize * 1.2)), true, targetIndex);
-                            break;
-                        case "right":
-                            targetProjectile.set((int) (worldX + attackArea.width - (gp.tileSize * 0.4)), (int)
-                                    (worldY - attackArea.height + (gp.tileSize * 1.3)), true, targetIndex);
-                            break;
+                    if (targetIndex == -1) { // if no monsters remain
+                        gp.ui.showMessage("There are no monsters for the eagle eye to lock onto");
                     }
-                    // add the projectile to the list of projectiles
-                    gp.targetProjectileList.add(targetProjectile);
-                    shotAvailableCounter = 0;//resets the shot counter
+                    else {
+                        switch (direction) {//spawn projectile based on what direction eagle is facing
+                            case "up":
+                                targetProjectile.set((int) (worldX + attackArea.width - (gp.tileSize * 1.35)),
+                                        (int) (worldY - attackArea.height + (gp.tileSize * 0.3)), true, targetIndex);
+                                break;
+                            case "down":
+                                targetProjectile.set((int) (worldX + attackArea.width - (gp.tileSize * 1.35)), (int)
+                                        (worldY + attackArea.height + (gp.tileSize * -0.5)), true, targetIndex);
+                                break;
+                            case "left":
+                                targetProjectile.set((int) (worldX - attackArea.width + (gp.tileSize * 0.2)), (int)
+                                        (worldY + attackArea.height - (gp.tileSize * 1.2)), true, targetIndex);
+                                break;
+                            case "right":
+                                targetProjectile.set((int) (worldX + attackArea.width - (gp.tileSize * 0.4)), (int)
+                                        (worldY - attackArea.height + (gp.tileSize * 1.3)), true, targetIndex);
+                                break;
+                        }
+                        // add the projectile to the list of projectiles
+                        gp.targetProjectileList.add(targetProjectile);
+                        shotAvailableCounter = 0;//resets the shot counter
+                    }
                 }
             }
             spriteNum = 1;
@@ -761,7 +763,24 @@ public class Player extends Entity {
                 case "Totem":
                     numTotems++; // increases the number of totems the user has collected
                     gp.obj[index] = null; // removes the object
-                    gp.ui.showMessage("You picked up a totem!");
+                    if (index == 0) { // turtle totem collected
+                        turtleSpecialUnlocked = true;
+                    }
+                    else if (index == 1) { // eagle totem collected
+                        eagleSpecialUnlocked = true;
+                    }
+                    else { // bear totem collected
+                        bearSpecialUnlocked = true;
+                    }
+                    if (numTotems == 3) {
+                        gp.ui.showCollectionMessage("Congratulations, all three totems have been collected. I think I hear a door opening somewhere");
+                    }
+                    else if (numTotems == 4) {
+                        gp.ui.completionMessageOn = true;
+                    }
+                    else {
+                        gp.ui.showMessage("You picked up a totem!");
+                    }
                     break;
                 case "Wall":
                     if (numTotems == 3) { // if the user has 3 totems

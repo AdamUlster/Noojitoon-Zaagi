@@ -12,11 +12,13 @@ public class UI {
     Font arial_40; // not instantiated in game loop so that it doesn't run 60 times per second
     BufferedImage totemImage, heart_full, heart_half, heart_blank;
     public boolean messageOn = false; // whether there is a message displayed
-    public boolean loadingMessageOn = true;
-    public boolean respawningMessageOn = false;
+    public boolean loadingMessageOn = true; // loading sprites message
+    public boolean respawningMessageOn = false; // respawning message
+    public boolean collectionMessageOn = false; // totem collection message
+    public boolean completionMessageOn = false; // game over message
     public String message = "";
     int messageDisplayTime = 0; // keeps track of the amount of time that has elapsed since the message has appeared
-    int respawningMessageDisplayTime = 0; // counts to 3 and then, the player respawns
+    public int respawningMessageDisplayTime = 0; // counts to 3 and then, the player respawns
 
     public UI (GamePanel gp) { // constructor
         this.gp = gp;
@@ -43,6 +45,11 @@ public class UI {
         loadingMessageOn = true;
     }
 
+    public void showCollectionMessage(String text) {
+        message = text;
+        collectionMessageOn = true;
+    }
+
     public void showRespawningMessage() {
         respawningMessageOn = true;
     }
@@ -50,6 +57,12 @@ public class UI {
     public void draw(Graphics2D g2) {
         drawSpiritsHealth(g2); // draws the spirits' health
 
+        if (message.equals("There are no monsters for the eagle eye to lock onto")) { // make this font colour black
+            g2.setColor(Color.black);
+        }
+        else {
+            g2.setColor(Color.white);
+        }
         g2.setFont(arial_40);
         g2.setColor(Color.white);
         g2.drawImage(totemImage, gp.tileSize / 2, gp.tileSize / 2, gp.tileSize, gp.tileSize, null);
@@ -62,7 +75,7 @@ public class UI {
             g2.setColor(new Color(255, 255, 255)); // white
             g2.drawString("Controls:", 40, 760);
             g2.drawString("Up, Left, Down, Right -> W, A, S, D", 40, 790);
-            g2.drawString("Primary Attack -> Left Click", 40, 820);
+            g2.drawString("Primary Attack (Once Unlocked) -> Left Click", 40, 820);
             g2.drawString("Special Attack -> Right Click", 40, 850);
             g2.drawString("Open/Close Map -> M", 40, 880);
             g2.drawString("Open/Close Mini Map -> Q", 40, 910);
@@ -74,6 +87,13 @@ public class UI {
             g2.setColor(new Color(255, 255, 255)); // white
             g2.drawString("Open Controls Menu -> C", 40, 970);
         }
+
+        // Tells the user the goal of the game
+        g2.setFont(g2.getFont().deriveFont(20F)); // changes the font size
+        g2.setColor(new Color(135, 206, 235)); // light blue
+        g2.fillRect(540, 940, 850, 40);
+        g2.setColor(new Color(255, 255, 255)); // white
+        g2.drawString("Goal: Collect all of the totems to reunite the Indigenous spirit animals and protect the community", 540, 970);
 
         // message
         if (messageOn) {
@@ -96,6 +116,20 @@ public class UI {
             g2.drawString(message, gp.tileSize / 2, gp.tileSize * 5);
         }
 
+        // totem collection message
+        if (collectionMessageOn) {
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // resets the opacity
+            g2.setFont(g2.getFont().deriveFont(30F)); // changes the font size
+            g2.drawString(message, gp.tileSize / 2, gp.tileSize * 5);
+
+            messageDisplayTime ++;
+
+            if (messageDisplayTime > 240) { // makes the message disappear after 2 seconds
+                messageDisplayTime = 0;
+                collectionMessageOn = false;
+            }
+        }
+
         // respawning message
         if (respawningMessageOn) {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // resets the opacity
@@ -106,17 +140,24 @@ public class UI {
 
             // Display the countdown message
             String message = Integer.toString(countdown); // Convert countdown number to string
-            g2.drawString("Respawning in", gp.screenWidth / 2 - 85, gp.screenHeight / 2 - 50);
+            g2.drawString("Respawning in", gp.screenWidth / 2 - 115, gp.screenHeight / 2 - 150);
             if (countdown <= 3) {
-                g2.drawString(message, gp.screenWidth / 2, gp.screenHeight / 2);
+                g2.drawString(message, gp.screenWidth / 2, gp.screenHeight / 2 - 65);
             }
+        }
 
-            respawningMessageDisplayTime ++;
-
-            if (respawningMessageDisplayTime > 240) { // makes the message disappear after 4 seconds
-                respawningMessageDisplayTime = 0;
-                respawningMessageOn = false;
-            }
+        // if the user beats the game
+        if (completionMessageOn) {
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // resets the opacity
+            g2.setFont(g2.getFont().deriveFont(30F)); // changes the font size
+            g2.setColor(Color.MAGENTA); // text box colour
+            g2.fillRect(gp.tileSize / 2, (int) (gp.tileSize * 4.5), 950, 350);
+            g2.setColor(Color.black); // text colour
+            g2.drawString("Congratulations!", gp.tileSize / 2, gp.tileSize * 5);
+            g2.drawString("By collecting all four totems, you have just reunited the spirit animals!", gp.tileSize / 2, gp.tileSize * 6);
+            g2.drawString("The community is much safer with you in it! Good work!", gp.tileSize / 2, gp.tileSize * 7);
+            g2.drawString("Thank you for playing!", gp.tileSize / 2, gp.tileSize * 8);
+            System.exit(0); // Exits the program
         }
     }
 
@@ -146,7 +187,7 @@ public class UI {
             x += 150;
             y -= 60;
 
-            // Adjusts the drawing of the spirits if the spirit is a turtle to account for the differences in its drawig
+            // Adjusts the drawing of the spirits if the spirit is a turtle to account for the differences in its drawing
             if (gp.player.spirits[i].name.equals("Turtle")) {
                 x -= 25;
                 y -= 50;
