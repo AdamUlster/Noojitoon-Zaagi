@@ -781,23 +781,23 @@ public class Player extends Entity {
                 case "Totem":
                     numTotems++; // increases the number of totems the user has collected
                     gp.obj[index] = null; // removes the object
-                    if (index == 0) { // turtle totem collected
-                        turtleSpecialUnlocked = true;
+                    if (numTotems < 3) {
+                        if (index == 0) { // turtle totem collected
+                            turtleSpecialUnlocked = true;
+                            gp.ui.showMessage("Turtle Special Unlocked");
+                        } else if (index == 1) { // eagle totem collected
+                            eagleSpecialUnlocked = true;
+                            gp.ui.showMessage("Eagle Special Unlocked");
+                        } else { // bear totem collected
+                            bearSpecialUnlocked = true;
+                            gp.ui.showMessage("Bear Special Unlocked");
+                        }
                     }
-                    else if (index == 1) { // eagle totem collected
-                        eagleSpecialUnlocked = true;
-                    }
-                    else { // bear totem collected
-                        bearSpecialUnlocked = true;
-                    }
-                    if (numTotems == 3) {
+                    else if (numTotems == 3) {
                         gp.ui.showCollectionMessage("Congratulations, all three totems have been collected. I think I hear a door opening somewhere");
                     }
-                    else if (numTotems == 4) {
-                        gp.ui.completionMessageOn = true;
-                    }
                     else {
-                        gp.ui.showMessage("You picked up a totem!");
+                        gp.ui.completionMessageOn = true;
                     }
                     break;
                 case "Wall":
