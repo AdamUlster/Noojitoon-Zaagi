@@ -76,11 +76,80 @@ public class PathFinder {
 
         while (col < gp.maxWorldCol && row < gp.maxWorldRow) {
 
-            // Set solid node
+            // Set solid node by checking solid tiles
             int tileNum = gp.tileM.mapTileNum[col][row];
             if (gp.tileM.tile[tileNum].collision) {
                 node[col][row].solid = true;
             }
+        }
+
+        // Set cost
+        getCost(node[col][row]);
+
+        col++;
+        if (col == gp.maxWorldCol) { // moves on to the next row
+            col = 0;
+            row ++;
+        }
+    }
+
+    public void getCost(Node node) {
+
+        // G cost
+        int xDistance = Math.abs(node.col - startNode.col);
+        int yDistance = Math.abs(node.row - startNode.row);
+        node.gCost = xDistance + yDistance;
+
+        // H cost
+        xDistance = Math.abs(node.col - goalNode.col);
+        yDistance = Math.abs(node.row - goalNode.row);
+        node.hCost = xDistance + yDistance;
+
+        // F cost
+        node.fCost = node.gCost + node.hCost;
+    }
+
+    public boolean search() {
+        while (!goalReached && step < 500) {
+            int col = currentNode.col;
+            int row = currentNode.row;
+
+            // Check the current node
+            currentNode.checked = true;
+            openList.remove(currentNode);
+
+            // Open the up node
+            if (row - 1 >= 0) {
+                openNode(node[col][row - 1]);
+            }
+
+            // Open the left node
+            if (col - 1 >= 0) {
+                openNode[col - 1][row];
+            }
+
+            // Open the down node
+            if (row + 1 < gp.maxWorldRow) {
+                openNode(node[col][row + 1]);
+            }
+
+            // Open the up node
+            if (col + 1 < gp.maxWorldRow) {
+                openNode(node[col + 1][row]);
+            }
+
+            // Find the best node
+            for (int i = 0; i < openList.size(); i++) {
+                // Check if the current node's F cost is better than the best F cost
+            }
+        }
+    }
+
+    public void openNode(Node node) {
+        if (!node.open && !node.checked && !node.solid) {
+            node.open = true;
+            node.parent = currentNode;
+            openList.add(node);
         }
     }
 }
