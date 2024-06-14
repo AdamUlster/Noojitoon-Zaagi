@@ -1,5 +1,6 @@
 package main;
 
+import ai.PathFinder;
 import entity.Entity;
 import entity.Player;
 import tile.Map;
@@ -47,6 +48,7 @@ public class GamePanel extends JPanel implements Runnable {
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this); // passes the game panel as a parameter
     public UI ui = new UI(this);
+    public PathFinder pFinder = new PathFinder(this);
 
     Map map = new Map(this); // instantiates the map
     Thread gameThread;//repeats a process again and again

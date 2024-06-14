@@ -81,15 +81,15 @@ public class PathFinder {
             if (gp.tileM.tile[tileNum].collision) {
                 node[col][row].solid = true;
             }
-        }
 
-        // Set cost
-        getCost(node[col][row]);
+            // Set cost
+            getCost(node[col][row]);
 
-        col++;
-        if (col == gp.maxWorldCol) { // moves on to the next row
-            col = 0;
-            row ++;
+            col++;
+            if (col == gp.maxWorldCol) { // moves on to the next row
+                col = 0;
+                row++;
+            }
         }
     }
 
@@ -125,7 +125,7 @@ public class PathFinder {
 
             // Open the left node
             if (col - 1 >= 0) {
-                openNode[col - 1][row];
+                openNode(node[col - 1][row]);
             }
 
             // Open the down node
@@ -133,15 +133,50 @@ public class PathFinder {
                 openNode(node[col][row + 1]);
             }
 
-            // Open the up node
+            // Open the right node
             if (col + 1 < gp.maxWorldRow) {
                 openNode(node[col + 1][row]);
             }
 
             // Find the best node
+            int bestNodeIndex = 0;
+            int bestNodefCost = 999;
             for (int i = 0; i < openList.size(); i++) {
+
                 // Check if the current node's F cost is better than the best F cost
+                if (openList.get(i).fCost < bestNodefCost) {
+                    bestNodeIndex = i;
+                    bestNodefCost = openList.get(i).fCost;
+                }
+
+                // If the F cost is equal, check the G cost
+                else if (openList.get(i).fCost == bestNodefCost) {
+                    if (openList.get(i).gCost < openList.get(bestNodeIndex).gCost) {
+                        bestNodeIndex = i;
+                    }
+                }
             }
+            if (openList.size() == 0) { // if there is no node in openList
+                break; // end the loop
+            }
+
+            // After the loop, bestNodeIndex is the next node
+            currentNode = openList.get(bestNodeIndex);
+            if (currentNode == goalNode) {
+                goalReached = true;
+                trackThePath();
+            }
+            step ++;
+        }
+        return goalReached;
+    }
+
+    public void trackThePath() { // works backwards to get the path to travel
+        Node currentNode = goalNode; // starts at the ending node
+
+        while (currentNode != startNode) {
+            pathList.add(0, currentNode); // adds the current node to the front of the list to go in reverse order
+            currentNode = currentNode.parent;
         }
     }
 

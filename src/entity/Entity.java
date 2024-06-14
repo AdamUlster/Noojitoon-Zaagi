@@ -54,6 +54,7 @@ public class Entity {
     public boolean isDying = false; // sets whether the entity is dying
     public boolean deadFlicker = false; // sets whether the entity should be flickering dead
     public boolean healthBarOn = false; // whether the monster has a health bar above them
+    public boolean onPath = false; // keeps track of whether an entity should be following the best path to get to a certain location
 
     //CHARACTER ATTRIBUTES
     public int maxHealth; // maximum number of lives the entity has
@@ -79,9 +80,7 @@ public class Entity {
 
     public void damageReaction() {} // controls the monster's reaction to taking damage. This method is modified in the individual monster classes
 
-    public void update() {
-        setAction();
-
+    public void checkCollision() { // checks the entity collision with other tiles and other entities
         Spirit currentSpirit = gp.player.getCurrentSpirit(); // gets the current spirit
 
         collisionOn = false;
@@ -98,6 +97,11 @@ public class Entity {
                 gp.player.invincible = true; // the player is now invincible for a given period of time
             }
         }
+    }
+
+    public void update() {
+        setAction();
+        checkCollision();
 
         // entity can only move if collision is false
         if (!collisionOn) {
@@ -195,6 +199,21 @@ public class Entity {
             e.printStackTrace();
         }
         return image;
+    }
 
+    public void searchPath(int goalCol, int goalRow) {
+
+        // gets the entity's current tile
+        int startCol = (worldX + solidArea.x) / gp.tileSize;
+        int startRow = (worldY + solidArea.y) / gp.tileSize;
+
+        gp.pFinder.setNodes(startCol, startRow, goalCol, goalRow);
+
+        if (gp.pFinder.search()) { // a path has been found
+
+            // Get the entity's next coordinates using the path to follow
+            int nextX = gp.pFinder.pathList.get(0).col * gp.tileSize;
+            int nextY = gp.pFinder.pathList.get(0).row * gp.tileSize;
+        }
     }
 }
