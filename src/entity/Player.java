@@ -329,9 +329,30 @@ public class Player extends Entity {
 
     public void update() {
         if (onPath) {
-            // sets the destination tile to the start of the maze
-            int goalCol = 18;
-            int goalRow = 75;
+            int goalCol = 0;
+            int goalRow = 0;
+
+            // sets the destination tile to the next totem the player needs to collect
+            for (int i = 0; i < gp.obj.length; i++) {
+                if (gp.obj[i] == null) {
+                    if (i >= 3 && i <= 8) { // if the user just destroyed the brick, find the end of the maze
+                        goalCol = 76;
+                        goalRow = 33;
+                        break;
+                    }
+                } else if (gp.obj[i] != null) {
+                    if (numTotems < 3) { // find the next totem
+                        goalCol = gp.obj[i].worldX / gp.tileSize;
+                        goalRow = gp.obj[i].worldY / gp.tileSize;
+                    }
+                    else {
+                        // find the bricks to unlock the maze
+                        goalCol = 18;
+                        goalRow = 75;
+                    }
+                    break;
+                }
+            }
             searchPathToTotem(goalCol, goalRow);
         }
 
