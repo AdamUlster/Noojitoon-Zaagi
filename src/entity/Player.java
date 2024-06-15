@@ -738,10 +738,10 @@ public class Player extends Entity {
 //                CHECK IF THE TURTLE TOTEM HAS BEEN UNLOCKED IN ORDER TO HEAL, OTHERWISE JUST PLAYS THE ANIMATION
                 if (turtleSpecialUnlocked) {
 //                    ITERATE THROUGH EACH SPIRIT, HEAL THEM TO MAX HEALTH
-                    for (int i = 0; i < spirits.length; i++) {
-                        if (spirits[i].getHealth() < spirits[i].getMaxHealth()) {
-                            spirits[i].setHealth(spirits[i].getMaxHealth());
-                            spirits[i].dead = false;
+                    for (Spirit spirit : spirits) {
+                        if (spirit.getHealth() < spirit.getMaxHealth()) {
+                            spirit.setHealth(spirit.getMaxHealth());
+                            spirit.dead = false;
                         }
                     }
                 }
@@ -807,9 +807,6 @@ public class Player extends Entity {
         int solidAreaWidth = solidArea.width;
         int solidAreaHeight = solidArea.height;
 
-//        ATTACK AREA BECOMES SOLID AREA
-        solidArea.width = attackArea.width;
-        solidArea.height = attackArea.height;
 
 //        RESET THE WORLD COORDINATES AND THE SOLID AREA TO THE PREVIOUS COORDINATES
         worldX = currentWorldX;
@@ -820,9 +817,9 @@ public class Player extends Entity {
 
 //    METHOD TO CALCULATE THE DISTANCE BETWEEN THE PLAYER AND A MONSTER
     public int getDistance (int i) {
-//        USES PYTHAGOREAN THEOREM TO CALCULATE THE DISTANCE BETWEEN THE PLAYER COORDS AND THE MONSTER COORDS
-        int currentDistance = (int) Math.sqrt(Math.pow(worldX - gp.monster[i].worldX, 2) + Math.pow(worldY - gp.monster[i].worldY, 2));
-        return currentDistance;
+//        USES PYTHAGOREAN THEOREM TO RETURN THE DISTANCE BETWEEN THE PLAYER COORDS AND THE MONSTER COORDS
+        return (int) Math.sqrt(Math.pow(worldX - gp.monster[i].worldX, 2) + Math.pow(worldY - gp.monster[i].worldY, 2));
+
     }
 
 //    METHOD TO PICK UP TOTEM
@@ -1174,6 +1171,7 @@ public class Player extends Entity {
 
 //        DRAWS THE ATTACK AREA OF THE PLAYER ONTO THE SCREEN
 //        COMPENSATION VALUES ON THIS SECTION ARE THE SAME AS ABOVE
+        /*
         tempScreenX = screenX + solidArea.x;
         tempScreenY = screenY + solidArea.y;
         switch (direction) {
@@ -1244,9 +1242,13 @@ public class Player extends Entity {
         }
         g2.drawRect(tempScreenX, tempScreenY, attackArea.width, attackArea.height);
 
+         */
+
         // PRINTS THE COLLISION BOX OF THE PLAYER
+        /*
         g2.setColor(new Color(255, 0, 0));
         g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
+         */
 
 //        RESET THE OPACITY FOR FUTURE IMAGES
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
