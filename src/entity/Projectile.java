@@ -8,10 +8,11 @@ public class Projectile extends Entity {
     public Projectile(GamePanel gp) {
         super(gp);
 
-        type = 3; // sets this entity's type to a projectile
+        type = 3; // SET ENTITY TYPE TO PROJECTILE
     }
 
-    public void set(int worldX, int worldY, String direction, boolean alive, Entity user) { // passes the coordinates to create the fireball
+//    PASSES THE COORDINATES TO CREATE THE WATER JET
+    public void set(int worldX, int worldY, String direction, boolean alive, Entity user) {
         this.worldX = worldX;
         this.worldY = worldY;
         this.direction = direction;
@@ -20,14 +21,19 @@ public class Projectile extends Entity {
         this.health = this.maxHealth;
     }
 
+//    UPDATE METHOD TO MOVE THE WATER JET
     public void update() {
-        int monsterIndex = gp.cChecker.checkEntity(this, gp.monster); // gets the monster index that the projectile hits
+//        CHECK IF PROJECTILE HAS HIT A MONSTER, AND RETURN THE INDEX OF THE MONSTER IF IT DOES
+        int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+
+//        INDEX WILL BE 999 IF NO MONSTER HAS BEEN HIT
         if (monsterIndex != 999) { // if the projectile hits a monster
-            gp.player.damageMonster(monsterIndex, attack); // passes the projectile's attack to a monster
-            alive = false; // the projectile disappears after hitting a monster
+            gp.player.damageMonster(monsterIndex, attack); // DAMAGE MONSTER
+            alive = false; // PROJECTILE DISAPPEARS AFTER HITTING AMONSTER
         }
 
-        switch (direction) { // allows for the projectile to be launched
+//        MOVES PROJECTILE IN WHICH EVER DIRECTION THE PLAYER WAS FACING WHEN LAUNCHED
+        switch (direction) {
             case "up":
                 worldY -= speed;
                 break;
@@ -41,10 +47,12 @@ public class Projectile extends Entity {
                 worldX += speed;
                 break;
         }
+        //DECREASED WATER JET EXISTENCE COUNTER
         health --;
-        if (health <= 0) {
-            alive = false; // the projectile disappears when it has no more health
-        }
 
+//        PROJECTILE DISAPPEARS WHEN IT HAS NO MORE HEALTH
+        if (health <= 0) {
+            alive = false;
+        }
     }
 }
