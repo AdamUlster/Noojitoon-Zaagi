@@ -3,45 +3,45 @@ package main;
 import entity.Entity;
 
 public class CollisionChecker {
-    GamePanel gp;
+    GamePanel gp;// CALL ON GAMEPANEL CLASS
 
+    //    CONSTRUCTOR CLASS
     public CollisionChecker(GamePanel gp) {
         this.gp = gp;
     }
 
     public void checkTile(Entity entity) {
+//        CALCULATE BOUNDARIES OF ENTITY
         int entityLeftWorldX = entity.worldX + entity.solidArea.x;
         int entityRightWorldX = entity.worldX + entity.solidArea.x + entity.solidArea.width;
         int entityTopWorldY = entity.worldY;
         int entityBottomWorldY = entity.worldY + entity.solidArea.y + entity.solidArea.height;
 
-        // Makes sure the butterflies do not go out of bounds
+//        MAKE SURE NPC BUTTERFLIES DO NOT GO OUT OF BOUNDS
         int entityLeftCol = entityLeftWorldX / gp.tileSize;
         if (entityLeftCol < 0) { // prevents a butterfly from going off the screen
             entityLeftCol = 0;
-        }
-        else if (entityLeftCol > gp.maxWorldCol - 1) {
+        } else if (entityLeftCol > gp.maxWorldCol - 1) {
             entityLeftCol = gp.maxWorldCol - 1;
         }
         int entityRightCol = entityRightWorldX / gp.tileSize;
-        if (entityRightCol < 0) { // prevents a butterfly from going off the screen
+
+//        PREVENTS NPC BUTTERFLY FROM GOING OFF THE SCREEN
+        if (entityRightCol < 0) {
             entityRightCol = 0;
-        }
-        else if (entityRightCol > gp.maxWorldCol - 1) {
+        } else if (entityRightCol > gp.maxWorldCol - 1) {
             entityRightCol = gp.maxWorldCol - 1;
         }
         int entityTopRow = entityTopWorldY / gp.tileSize;
-        if (entityTopRow < 0) { // prevents a butterfly from going off the screen
+        if (entityTopRow < 0) {
             entityTopRow = 0;
-        }
-        else if (entityTopRow > gp.maxWorldRow - 1) {
+        } else if (entityTopRow > gp.maxWorldRow - 1) {
             entityTopRow = gp.maxWorldRow - 1;
         }
         int entityBottomRow = entityBottomWorldY / gp.tileSize;
-        if (entityBottomRow < 0) { // prevents a butterfly from going off the screen
+        if (entityBottomRow < 0) {
             entityBottomRow = 0;
-        }
-        else if (entityBottomRow > gp.maxWorldRow - 1) {
+        } else if (entityBottomRow > gp.maxWorldRow - 1) {
             entityBottomRow = gp.maxWorldRow - 1;
         }
 
@@ -50,10 +50,10 @@ public class CollisionChecker {
         switch (entity.direction) {
             case "up":
                 entityTopRow = (entityTopWorldY - entity.speed) / gp.tileSize;
+//                PREVENTS A BUTTERFLY NPC FROM GOING OFF THE SCREEN
                 if (entityTopRow < 0) { // prevents a butterfly from going off the screen
                     entityTopRow = 0;
-                }
-                else if (entityTopRow > gp.maxWorldRow - 1) {
+                } else if (entityTopRow > gp.maxWorldRow - 1) {
                     entityTopRow = gp.maxWorldRow - 1;
                 }
                 tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
@@ -66,8 +66,7 @@ public class CollisionChecker {
                 entityBottomRow = (entityBottomWorldY + entity.speed) / gp.tileSize;
                 if (entityBottomRow < 0) { // prevents a butterfly from going off the screen
                     entityBottomRow = 0;
-                }
-                else if (entityBottomRow > gp.maxWorldRow - 1) {
+                } else if (entityBottomRow > gp.maxWorldRow - 1) {
                     entityBottomRow = gp.maxWorldRow - 1;
                 }
                 tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
@@ -80,8 +79,7 @@ public class CollisionChecker {
                 entityLeftCol = (entityLeftWorldX - entity.speed) / gp.tileSize;
                 if (entityLeftCol < 0) { // prevents a butterfly from going off the screen
                     entityLeftCol = 0;
-                }
-                else if (entityLeftCol > gp.maxWorldCol - 1) {
+                } else if (entityLeftCol > gp.maxWorldCol - 1) {
                     entityLeftCol = gp.maxWorldCol - 1;
                 }
                 tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
@@ -94,8 +92,7 @@ public class CollisionChecker {
                 entityRightCol = (entityRightWorldX + entity.speed) / gp.tileSize;
                 if (entityRightCol < 0) { // prevents a butterfly from going off the screen
                     entityRightCol = 0;
-                }
-                else if (entityRightCol > gp.maxWorldCol - 1) {
+                } else if (entityRightCol > gp.maxWorldCol - 1) {
                     entityRightCol = gp.maxWorldCol - 1;
                 }
                 tileNum1 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
@@ -107,9 +104,11 @@ public class CollisionChecker {
         }
     }
 
-    public int checkObject(Entity entity, boolean player) { // if a player hits an object, return the index of the object that a player is hitting
+    //    IF A PLAYER HITS AN OBJECT, RETURN THE INDEX OF THE  OBJECT THE PLAYER IS HITTING
+    public int checkObject(Entity entity, boolean player) {
         int index = 999;
 
+//        ITERATE THROUGH ALL OBJECTS
         for (int i = 0; i < gp.obj.length; i++) {
             if (gp.obj[i] != null) {
 
@@ -121,6 +120,7 @@ public class CollisionChecker {
                 gp.obj[i].solidArea.x = gp.obj[i].worldX + gp.obj[i].solidArea.x;
                 gp.obj[i].solidArea.y = gp.obj[i].worldY + gp.obj[i].solidArea.y;
 
+//                PREDICTS THE MOVEMENT OF THE ENTITY
                 switch (entity.direction) {
                     case "up":
                         entity.solidArea.y -= entity.speed; // predicts the movement of the entity
@@ -135,16 +135,19 @@ public class CollisionChecker {
                         entity.solidArea.x += entity.speed;
                         break;
                 }
-                if (entity.solidArea.intersects(gp.obj[i].solidArea)) { // automatically checks if the two rectangles are colliding
-                    if (gp.obj[i].collision) { // if the object is solid
+//                AUTOMATICALLY CHECKS IF THE TWO RECTANGLES ARE COLLISING
+                if (entity.solidArea.intersects(gp.obj[i].solidArea)) {
+//                    CHECK IF THE OBJECT IS SOLID
+                    if (gp.obj[i].collision) {
                         entity.collisionOn = true;
                     }
-                    if (player) { // if the entity is a player
+//                    IF THE ENTITY IS A PLAYER
+                    if (player) {
                         index = i;
                     }
                 }
 
-                // resets the entity and the object's collision box
+//                RESETS THE ENTITY AND THE OBJECT'S COLLISION BOX
                 entity.solidArea.x = entity.solidAreaDefaultX;
                 entity.solidArea.y = entity.solidAreaDefaultY;
                 gp.obj[i].solidArea.x = gp.obj[i].solidAreaDefaultX;
@@ -163,74 +166,84 @@ public class CollisionChecker {
         for (int i = 0; i < target.length; i++) {
             if (target[i] != null) {
 
-                // Get entity's solid area position
+//                GET ENTITY'S SOLID AREA POSITION
                 entity.solidArea.x = entity.worldX + entity.solidArea.x;
                 entity.solidArea.y = entity.worldY + entity.solidArea.y;
 
-                // Get the object's solid area position
+//                GET THE OBJECT'S SOLID AREA POSITION
                 target[i].solidArea.x = target[i].worldX + target[i].solidArea.x;
                 target[i].solidArea.y = target[i].worldY + target[i].solidArea.y;
 
                 switch (entity.direction) {
                     case "up":
-                        if (entity.type == 3 && entity.name.equals("Eagle Shot")) { // detects if the eagle shot is hitting the target
-                            entity.speed = entity.yMove; // predicts the projectile's next movement
+//                        DETECTS IF THE EAGLE SHOT IS HITTING THE TARGET
+                        if (entity.type == 3 && entity.name.equals("Eagle Shot")) {
+//                            PREDICTS THE PROJECTILE'S NEXT MOVEMENT
+                            entity.speed = entity.yMove;
                         }
-                        entity.solidArea.y -= entity.speed; // predicts the movement of the entity
+//                        PREDICTS THE MOVEMENT OF THE ENTITY
+                        entity.solidArea.y -= entity.speed;
                         break;
                     case "down":
-                        if (entity.type == 3 && entity.name.equals("Eagle Shot")) { // detects if the eagle shot is hitting the target
-                            entity.speed = entity.yMove; // predicts the projectile's next movement
+//                        DETECTS IF THE EAGLE SHOT IS HITTING THE TARGET
+                        if (entity.type == 3 && entity.name.equals("Eagle Shot")) {
+//                            PREDICTS THE PROJECTILE'S NEXT MOVEMENT
+                            entity.speed = entity.yMove;
                         }
                         entity.solidArea.y += entity.speed;
                         break;
                     case "left":
+//                    DETECTS IF THE EAGLE SHOT IS HITTING THE TARGET
                         if (entity.type == 3 && entity.name.equals("Eagle Shot")) { // detects if the eagle shot is hitting the target
-                            entity.speed = entity.xMove; // predicts the projectile's next movement
+                            entity.speed = entity.xMove;
                         }
                         entity.solidArea.x -= entity.speed;
                         break;
                     case "right":
-                        if (entity.type == 3 && entity.name.equals("Eagle Shot")) { // detects if the eagle shot is hitting the target
-                            entity.speed = entity.xMove; // predicts the projectile's next movement
+//                        DETECTS IF THE EAGLE SHOT IS HITTING THE TARGET
+                        if (entity.type == 3 && entity.name.equals("Eagle Shot")) {
+                            entity.speed = entity.xMove;
                         }
                         entity.solidArea.x += entity.speed;
                         break;
                 }
-                if (entity.solidArea.intersects(target[i].solidArea)) { // automatically checks if the two rectangles are colliding
-                    if (target[i] != entity) { // makes sure the entity does not collide with itself
+//                AUTOMATICALLY CHECKS IF THE TWO RECTANGLES ARE COLLIDING
+                if (entity.solidArea.intersects(target[i].solidArea)) {
+//                    MAKES SURE THE ENTITY DOES NOT COLLIDE WITH ITSELF
+                    if (target[i] != entity) {
                         entity.collisionOn = true;
                         index = i;
                     }
                 }
 
-                // resets the entity and the object's collision box
+//                RESETS ENTITY AND THE OBJECT'S COLLISION BOX
                 entity.solidArea.x = entity.solidAreaDefaultX;
                 entity.solidArea.y = entity.solidAreaDefaultY;
                 target[i].solidArea.x = target[i].solidAreaDefaultX;
                 target[i].solidArea.y = target[i].solidAreaDefaultY;
             }
         }
-
-        return index;
+        return index;//RETURN THE INDEX OF THE ENTITY BEING TOUCHED
     }
 
     //CHECK IF NPC OR MONSTER IS HITTING THE PLAYER
     public boolean checkPlayer(Entity entity) {
 
-        boolean contactPlayer = false; // keeps track of whether another entity is making contact with the player
+//        BOOLEAN TO KEEP TRACK OF WHETHTER ANOTHER ENTITY IS MAKING CONTACT WITH THE PLAYER
+        boolean contactPlayer = false;// SET TO FALSE BY DEFAULT MEANING ENTITY IS NOT CONTACTING PLAYER
 
-        // Get entity's solid area position
+//        GET ENTITY'S SOLID AREA POSITION
         entity.solidArea.x = entity.worldX + entity.solidArea.x;
         entity.solidArea.y = entity.worldY + entity.solidArea.y;
 
-        // Get the object's solid area position
+//        GET OBJECT'S SOLID AREA POSITION
         gp.player.solidArea.x = gp.player.worldX + gp.player.solidArea.x;
         gp.player.solidArea.y = gp.player.worldY + gp.player.solidArea.y;
 
+//        PREDICT MOVEMENT OF THE ENTITY
         switch (entity.direction) {
             case "up":
-                entity.solidArea.y -= entity.speed; // predicts the movement of the entity
+                entity.solidArea.y -= entity.speed;
                 break;
             case "down":
                 entity.solidArea.y += entity.speed;
@@ -242,17 +255,18 @@ public class CollisionChecker {
                 entity.solidArea.x += entity.speed;
                 break;
         }
-        if (entity.solidArea.intersects(gp.player.solidArea)) { // automatically checks if the two rectangles are colliding
+//        AUTOMATICALLY CHECKS IF THE TWO COLLISION RECTANGLES ARE COLLIDING
+        if (entity.solidArea.intersects(gp.player.solidArea)) {
             entity.collisionOn = true;
-            contactPlayer = true; // the entity has made contact with the player
+            contactPlayer = true; // THE ENTITY HAS MADE CONTACT WITH THEY PLAYER HIT BOX
         }
 
-        // resets the entity and the object's collision box
+//        RESET THE ENTITY AND THE OBJECT'S COLLISION BOX
         entity.solidArea.x = entity.solidAreaDefaultX;
         entity.solidArea.y = entity.solidAreaDefaultY;
         gp.player.solidArea.x = gp.player.solidAreaDefaultX;
         gp.player.solidArea.y = gp.player.solidAreaDefaultY;
 
-        return contactPlayer;
+        return contactPlayer;//RETURN TRUE IF THE ENTITY IS IN CONTACT WITH THE PLAYER, RETURNS FALSE OTHERWISE
     }
 }
