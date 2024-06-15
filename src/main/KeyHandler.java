@@ -4,17 +4,21 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.security.Key;
 
-//handle keyboard inputs
+//HANDLE KEYBOARD INPUTS
 public class KeyHandler implements KeyListener, MouseListener {
 
-    public GamePanel gp;
-    public boolean upPressed, downPressed, leftPressed, rightPressed, shotKeyPressed;//boolean values that determine which keys are
-    // pressed and which are not
+    public GamePanel gp;//IMPORT GAME PANEL
+
+//    BOOLEAN VALUES THAT DETERMINE WHICH KEYS ARE PRESSED AND WHICH ARE NOT
+    public boolean upPressed, downPressed, leftPressed, rightPressed, shotKeyPressed;
+
+//    BOOLEAN VALUES THAT DETERMINE WHICH NUMBER KEYS HAVE BEEN PRESSED, USED FOR SPRITE SWITCHING
     public boolean onePressed, twoPressed, threePressed;//boolean values that determine which number keys have been
+
+//    BOOLEAN VALUES THAT DETERMINE LEFT CLICK OR RIGHT CLICK
     public boolean primaryPressed, secondaryPressed;
-    // pressed for sprite switching
+
     //DEBUG STUFF
     public boolean checkDrawTime = false;
     public boolean displayControls = false;
@@ -31,53 +35,52 @@ public class KeyHandler implements KeyListener, MouseListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        int code = e.getKeyCode();//returns the keycode of a key that has been pressed
+//        RETURNS THE KEYCODE OF THE KEY THAT HAS BEEN PRESSED
+        int code = e.getKeyCode();
 
-        if (code == KeyEvent.VK_W) {//if w key has been pressed
+        if (code == KeyEvent.VK_W) {//W KEY HAS BEEN PRESSED
             upPressed = true;
         }
-        if (code == KeyEvent.VK_S) {//if s key has been pressed
+        if (code == KeyEvent.VK_S) {// S KEY HAS BEEN PRESSED
             downPressed = true;
         }
-        if (code == KeyEvent.VK_A) {//if A key has been pressed
+        if (code == KeyEvent.VK_A) {// A KEY HAS BEEN PRESSED
             leftPressed = true;
         }
-        if (code == KeyEvent.VK_D) {//if D key has been pressed
+        if (code == KeyEvent.VK_D) {//D KEY HAD BEEN PRESSED
             rightPressed = true;
         }
-        if (!gp.player.isDying) { // runs if the player is not dying
-            if (code == KeyEvent.VK_1 && !gp.player.spirits[0].dead) {//if 1 key has been pressed and bear is not dead
+//        RUNS IF THE PLAYER IS NOT DYING
+        if (!gp.player.isDying) {
+            if (code == KeyEvent.VK_1 && !gp.player.spirits[0].dead) {// IF 1 KEY HAS BEEN PRESSED AND BEAR IS NOT DEAD
                 onePressed = true;
-            } else if (code == KeyEvent.VK_1 && gp.player.spirits[0].dead && gp.player.displayDeathMessage) { // if the spirit is dead and the death message should be displayed
+//                IF SPIRIT IS DEAD DISPLAY DEATH MESSAGE AND PREVENT PLAYER FROM SWITCHING BACK
+            } else if (code == KeyEvent.VK_1 && gp.player.spirits[0].dead && gp.player.displayDeathMessage) {
                 gp.ui.showMessage("You cannot switch to the bear since the bear is dead");
             }
-            if (code == KeyEvent.VK_2 && !gp.player.spirits[1].dead) {//if key 2 has been pressed and eagle is not dead
+
+//            SWITCH TO EAGLE
+            if (code == KeyEvent.VK_2 && !gp.player.spirits[1].dead) {
                 twoPressed = true;
-            } else if (code == KeyEvent.VK_2 && gp.player.spirits[1].dead && gp.player.displayDeathMessage) { // if the spirit is dead and the death message should be displayed
+            } else if (code == KeyEvent.VK_2 && gp.player.spirits[1].dead && gp.player.displayDeathMessage) {
                 gp.ui.showMessage("You cannot switch to the eagle since the eagle is dead");
             }
-            if (code == KeyEvent.VK_3 && !gp.player.spirits[2].dead) {//if key 3 has been pressed and turtle is not dead
+
+//            SWITCH TO TURTLE
+            if (code == KeyEvent.VK_3 && !gp.player.spirits[2].dead) {
                 threePressed = true;
-            } else if (code == KeyEvent.VK_3 && gp.player.spirits[2].dead && gp.player.displayDeathMessage) { // if the spirit is dead and the death message should be displayed
+            } else if (code == KeyEvent.VK_3 && gp.player.spirits[2].dead && gp.player.displayDeathMessage) {
                 gp.ui.showMessage("You cannot switch to the turtle since the turtle is dead");
             }
-            if (code == KeyEvent.VK_K) {//K key has been pressed
-                primaryPressed = true;
-            }
-            if (code == KeyEvent.VK_L) {//L key has been pressed
-                secondaryPressed = true;
-            }
-            //continue this chain for when more moves are added
-        }
-        if (code == KeyEvent.VK_F && gp.player.getCurrentSpirit().name.equals("Turtle")) { // only allow the projectile to be shot if the "F" key is pressed and the current spirit is a turtle
-            shotKeyPressed = true;
         }
 
-        //DEBUG STUFF
+        //DEBUGGING STUFF
+//        PRINTS DRAW TIME IF T KEY HAS BEEN PRESSED
         if (code == KeyEvent.VK_T) {
-            checkDrawTime = !checkDrawTime; // sets checkDrawTime to its other state
+            checkDrawTime = !checkDrawTime;
         }
 
+//        DISPLAY CONTROLS IF THEY WERE NOT DISPLAYED PREVIOUSLY
         if (code == KeyEvent.VK_C) {
             displayControls = !displayControls; // displays the controls if they were not displayed previously
         }
