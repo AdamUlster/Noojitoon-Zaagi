@@ -4,16 +4,19 @@ import main.GamePanel;
 
 import java.awt.*;
 
+//SPIRIT SUBCLASS WITHIN ENTITY
 public class Spirit extends Entity {
-    public Spirit(GamePanel gp, String name, int maxHealth, int health, int x, int y, int width, int height, int width2, int height2, int attack, int defense) {
-        super(gp);
-        this.name = name; // sets the spirit's name to the value passed to it
-        this.maxHealth = maxHealth;
-        this.health = health;
-        this.attack = attack;
-        this.defense = defense;
 
-        // gives each spirit its own image
+//    DEFAULT VALUES (CONSTRUCTOR)
+    public Spirit(GamePanel gp, String name, int maxHealth, int health, int x, int y, int width, int height, int width2, int height2, int attack, int defense) {
+        super(gp);//CALL ON GAME PANEL
+        this.name = name; // SPIRIT NAME
+        this.maxHealth = maxHealth;//SPIRIT MAX HEALTH
+        this.health = health;//SPIRIT CURRENT HEALTH
+        this.attack = attack;//SPIRIT ATTACK STRENGTH
+        this.defense = defense;//SPIRIT DEFENSE STRENGTH
+
+        // GIVES EACH SPRITE ITS OWN IMAGE
         if (name.equals("Bear")) {
             up1 = setup("bear/bear_up", 1, 1);
             up2 = setup("bear/bear_up_2", 1, 1);
@@ -45,31 +48,36 @@ public class Spirit extends Entity {
             right2 = setup("turtle/turtle_right_2", 1.8, 1.8);
         }
 
-        // Collision box
+        //COLLISION BOX
         this.solidArea = new Rectangle(x, y, width, height);
 
-        // Attack area
+        // ATTACK AREA DEFAULTS
         this.attackArea = new Rectangle(x, y, width2, height2);
     }
 
+//    RETURNS MAX HEALTH OF THE SPIRIT
     public int getMaxHealth() { // gets the spirit's max health
         return maxHealth;
     }
 
+//    RETURNS CURRENT HEALTH
     public int getHealth() { // gets the spirit's current health
         return health;
     }
 
+//    SETS HEALTH TO WHATEVER VALUE HAS BEEN INPUTTED
     public void setHealth(int health) { // sets the spirit's current health
         this.health = health;
     }
 
+//    CREATE DEFAULT HITBOX
     public void setHitBox (int width, int height) {
         solidArea = new Rectangle(8, 16, width, height);
-
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
-        System.out.println("hitbox established");
-    }
 
+        // DEBUGGING
+        //PRINT ONTO CONSOLE SO WE KNOW THE SPIRIT HAS A HITBOX
+        System.out.println("hit box established");
+    }
 }
