@@ -537,7 +537,7 @@ public class Player extends Entity {
 
 //    ATTACK METHOD, PLAYERS ATTACKING ANIMATION AND DAMAGES MONSTERS IN ATTACK BOX
     public void attacking() {
-        spriteCounter++;//UPDATE ANIMATIUON COUNTER
+        spriteCounter++;//UPDATE ANIMATION COUNTER
         if (spriteCounter <= 10) {//SHOW FIRST ANIMATION FRAME FOR THE FIRST 10 GAME TICKS
             spriteNum = 1;
         }
@@ -551,7 +551,7 @@ public class Player extends Entity {
             int solidAreaWidth = solidArea.width;
             int solidAreaHeight = solidArea.height;
 
-//      CREATES THE SPIRIT'S ATTACKING HITBOX DEPENDING ON WHICH SPIRIT IS ACTIVE AND WHICH DIRECTION IT IS FACING
+//      CREATES THE SPIRIT'S ATTACKING HIT BOX DEPENDING ON WHICH SPIRIT IS ACTIVE AND WHICH DIRECTION IT IS FACING
 //            MANUAL ADJUSTMENTS HAVE BEEN MADE SO THE ANIMATIONS ARE FLUSH WITH EACH OTHER AND THE HIT ATTACK BOX
             switch (direction) {
                 case "up":
@@ -633,11 +633,13 @@ public class Player extends Entity {
             solidArea.width = solidAreaWidth;
             solidArea.height = solidAreaHeight;
         }
-        if (spriteCounter > 15 && spriteCounter <= 25) {
+        if (spriteCounter > 15 && spriteCounter <= 25) {// THIRD ANIMATION FRAME
             spriteNum = 3;
-            if (getCurrentSpirit().name.equals("Turtle") && !projectile.alive && shotAvailableCounter == 30) { // the player can only shoot one projectile at a time (and no quicker than half a second apart)
+//            SHOOTS A PROJECTILE IF TURTLE SPIRIT IS CURRENTLY ACTIVE, AND IF PROJECTILE SHOT IS OFF COOLDOWN
+            if (getCurrentSpirit().name.equals("Turtle") && !projectile.alive && shotAvailableCounter == 25) {
 
-                // sets default coordinates for the projectile
+//                SETS DEFAULT COORDINATES FOR THE PROJECTILE, ADJUSTMENTS HAVE BEEN MADE SO PROJECTILE SPAWNS AT THE
+//                TURTLE ATTACK BOX
                 switch (direction) {
                     case"up":
                         projectile.set(worldX + (int) (attackArea.width - (gp.tileSize * 1.2)),
@@ -657,62 +659,71 @@ public class Player extends Entity {
                         break;
                 }
 
-                // add the projectile to the list of projectiles
+//                ADD PROJECTILE TO THE LIST OF PROJECTILES
                 gp.projectileList.add(projectile);
 
-                shotAvailableCounter = 0; // resets the counter
+                shotAvailableCounter = 0; // RESETS SHOT COUNTER
             }
         }
-        if (spriteCounter > 25) {
-//             getPlayerImage();
-            if (monsterIndex == 999 || gp.monster[monsterIndex] != null) { // if the player is not touching a monster or the monster has not just been killed
+        if (spriteCounter > 25) {//RESETS EVERYTHING AFTER 25 FRAMES
+
+//            DEAL DAMAGE TO MONSTER IF THE PLAYER IS TOUCHING A MONSTER OR THE MONSTER EXISTS AND IS ALIVE
+            if (monsterIndex == 999 || gp.monster[monsterIndex] != null) {
                 damageMonster(monsterIndex, attack);
             }
 
+//            RESET SPRITES BACK TO NORMAL WALKING SPRITES, TURN OFF ATTACKING
             spriteNum = 1;
             spriteCounter = 0;
             attacking = false;
         }
 
-        if (shotAvailableCounter < 30) { // after half a second
+//        INCREASE TURTLE PROJECTILE COOLDOWN COUNTER
+        if (shotAvailableCounter < 25) {
             shotAvailableCounter ++;
         }
     }
 
+//    SPECIAL ATTACKING METHOD
     public void specialAttacking() {
         spriteCounter++;
 
-        if (spriteCounter <= 10) {
+        if (spriteCounter <= 10) {//FIRST ANIMATION FRAME
             spriteNum = 1;
         }
-        if (spriteCounter > 10 && spriteCounter <= 15) {
-            monsterIndex = gp.cChecker.checkEntity(this, gp.monster); // gets the monster that the user is making contact with
+        if (spriteCounter > 10 && spriteCounter <= 15) {//SECOND ANIMATION FRAME
+//            IF A MONSTER IS TOUCHING THE PLAYER'S ATTACK HIT BOX, FIND THE INDEX OF THE MONSTER
+            monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
             spriteNum = 2;
         }
-        if (spriteCounter > 15 && spriteCounter <= 20) {
+        if (spriteCounter > 15 && spriteCounter <= 20) {// THIRD ANIMATION FRAME
             spriteNum = 3;
         }
-        if (spriteCounter > 20 && spriteCounter <= 25) {
+        if (spriteCounter > 20 && spriteCounter <= 25) {// FOURTH ANIMATION FRAME
             spriteNum = 4;
         }
-        if (spriteCounter > 25 && spriteCounter <= 30) {
+        if (spriteCounter > 25 && spriteCounter <= 30) {// FIFTH ANIMATION FRAME
             spriteNum = 5;
         }
-        if (spriteCounter > 30 && spriteCounter <= 35) {
+        if (spriteCounter > 30 && spriteCounter <= 35) {// SIXTH ANIMATION FRAME
             spriteNum = 6;
         }
-        if (spriteCounter > 35 && spriteCounter <= 40) {
+        if (spriteCounter > 35 && spriteCounter <= 40) {// SEVENTH ANIMATION FRAME
             spriteNum = 7;
         }
+//        DEAL DAMAGE, RESET FRAMES
         if (spriteCounter > 40) {
-//            getPlayerImage();
-            if (monsterIndex == 999 || gp.monster[monsterIndex] != null) { // if the player is not touching a monster or the monster has not just been killed
+//            DEAL DAMAGE TO MONSTER IF THE MONSTER IS TOUCHING THE PLAYER ATTACK BOX, OR IT HAS NOT JUST BEEN KILLED
+            if (monsterIndex == 999 || gp.monster[monsterIndex] != null) {
                 damageMonster(monsterIndex, attack);
             }
 
-            if (getCurrentSpirit().name.equals("Bear")) {//berserker mode for bear
-                if (bearSpecialUnlocked) { // if the bear special ability is unlocked
+//            BERSERKER MODE FOR BEAR
+            if (getCurrentSpirit().name.equals("Bear")) {
+//                CHECK IF THE BEAR TOTEM HAS BEEN UNLOCKED IN ORDER TO DEAL DAMAGE, OTHERWISE JUST PLAYS THE ANIMATION
+                if (bearSpecialUnlocked) {
                     System.out.println(spirits[0].health);
+//                    HEAL BEAR SPIRIT
                     if (spirits[0].health < 8) {
                         spirits[0].health += 3;
                     } else {
@@ -722,9 +733,12 @@ public class Player extends Entity {
                 //TODO
                 // find a way to increase attack for 10 seconds or smth idk
             }
-            if (getCurrentSpirit().name.equals("Turtle")) { // if the turtle special ability is unlocked
+//            TURTLE HEALING WAVE
+            if (getCurrentSpirit().name.equals("Turtle")) {
+//                CHECK IF THE TURTLE TOTEM HAS BEEN UNLOCKED IN ORDER TO HEAL, OTHERWISE JUST PLAYS THE ANIMATION
                 if (turtleSpecialUnlocked) {
-                    for (int i = 0; i < spirits.length; i++) { // sets every spirit's health to the maximum
+//                    ITERATE THROUGH EACH SPIRIT, HEAL THEM TO MAX HEALTH
+                    for (int i = 0; i < spirits.length; i++) {
                         if (spirits[i].getHealth() < spirits[i].getMaxHealth()) {
                             spirits[i].setHealth(spirits[i].getMaxHealth());
                             spirits[i].dead = false;
@@ -734,23 +748,30 @@ public class Player extends Entity {
                 //TODO
                 // once sprite health has been decided, we can hard code some healing numbers instead of restoring all health
             }
+//            EAGLE EYE SHOT
             if (getCurrentSpirit().name.equals("Eagle")) {
-                if (eagleSpecialUnlocked) { // if the eagle special ability is unlocked
+//                CHECK IF THE EAGLE TOTEM HAS BEEN UNLOCKED IN ORDER TO HEAL, OTHERWISE JUST PLAYS THE ANIMATION
+                if (eagleSpecialUnlocked) {
+
+//                    FIND INDEX OF THE CLOSEST MONSTER TO EAGLE
                     int targetSmallestDistance = 999;
                     int targetIndex = -1;
                     for (int i = 0; i < gp.monster.length ; i++) {
-                        if (gp.monster[i] != null) { // if the monster exists
-                            if (getDistance(i) < targetSmallestDistance) { // checks if the smaller distance is smaller than the last smallest
+                        if (gp.monster[i] != null) { // MAKE SURE MONSTER EXISTS
+                            if (getDistance(i) < targetSmallestDistance) { // CHECKS IF THE DISTANCE IS SMALLET THAN
+                                // THE SMALLEST DISTANCE
                                 targetIndex = i;
                                 targetSmallestDistance = getDistance(i);
                             }
                         }
                     }
-                    if (targetIndex == -1) { // if no monsters remain
-                        gp.ui.showMessage("There are no monsters for the eagle eye to lock onto");
+                    //IF THERE ARE NO MONSTERS NEARBY
+                    if (targetIndex == -1) {
+                        gp.ui.showMessage("There are no monsters nearby for the eagle eye to lock onto");
                     }
                     else {
-                        switch (direction) {//spawn projectile based on what direction eagle is facing
+//                        SPAWN EAGLE EYE PROJECTILES BASED ON WHAT DIRECTION EAGLE IS FACING
+                        switch (direction) {
                             case "up":
                                 targetProjectile.set((int) (worldX + attackArea.width - (gp.tileSize * 1.35)),
                                         (int) (worldY - attackArea.height + (gp.tileSize * 0.3)), true, targetIndex);
@@ -768,68 +789,84 @@ public class Player extends Entity {
                                         (worldY - attackArea.height + (gp.tileSize * 1.3)), true, targetIndex);
                                 break;
                         }
-                        // add the projectile to the list of projectiles
+//                        ADD PROJECTILE TO THE LIST OF PROJECTILES
                         gp.targetProjectileList.add(targetProjectile);
-                        shotAvailableCounter = 0;//resets the shot counter
+                        shotAvailableCounter = 0;//RESET SHOT COUNTER
                     }
                 }
             }
+            //RESET ANIMATION BACK TO WALKING SPRITES, TURN OFF SPECIAL ATTACKING
             spriteNum = 1;
             spriteCounter = 0;
             specialAttacking = false;
         }
 
+//        FIND THE CURRENT WORLD X AND GET THE SPIRITS ATTACK AREA WIDTH
         int currentWorldX = worldX;
         int currentWorldY = worldY;
         int solidAreaWidth = solidArea.width;
         int solidAreaHeight = solidArea.height;
 
-        // attack area becomes solid area
+//        ATTACK AREA BECOMES SOLID AREA
         solidArea.width = attackArea.width;
         solidArea.height = attackArea.height;
 
-        // Reset the world coordinates and solid area to the previous coordinates
+//        RESET THE WORLD COORDINATES AND THE SOLID AREA TO THE PREVIOUS COORDINATES
         worldX = currentWorldX;
         worldY = currentWorldY;
         solidArea.width = solidAreaWidth;
         solidArea.height = solidAreaHeight;
     }
-    public int getDistance (int i) {//gets current distance from player to a monster
-        int currentDistance = (int) Math.sqrt(Math.pow(worldX - gp.monster[i].worldX, 2) + Math.pow(worldY - gp.monster[i].worldY, 2)); // calculates the distance between the player and the monster
+
+//    METHOD TO CALCULATE THE DISTANCE BETWEEN THE PLAYER AND A MONSTER
+    public int getDistance (int i) {
+//        USES PYTHAGOREAN THEOREM TO CALCULATE THE DISTANCE BETWEEN THE PLAYER COORDS AND THE MONSTER COORDS
+        int currentDistance = (int) Math.sqrt(Math.pow(worldX - gp.monster[i].worldX, 2) + Math.pow(worldY - gp.monster[i].worldY, 2));
         return currentDistance;
     }
 
+//    METHOD TO PICK UP TOTEM
     public void pickUpObject(int index) {
-        if (index != 999) { // if index is 999, no object was touched
+//        CHECK IF AN OBJECT IS CURRENTLY BEING TOUCHED BY THE PLAYER, IF INDEX IS 999, NO OBJECT WAS TOUCHED
+        if (index != 999) {
             String objectName = gp.obj[index].name;
 
+//            FIND OUT WHICH OBJECT THE PLAYER IS TOUCHING, EITHER A TOTEM OR A WALL
             switch (objectName) {
-                case "Totem":
-                    numTotems++; // increases the number of totems the user has collected
-                    gp.obj[index] = null; // removes the object
-                    if (index == 0) { // turtle totem collected
+                case "Totem":// PLAYER IS TOUCHING A TOTEM OBJECT
+                    numTotems++; // INCREASE THE NUMBER OF TOTEMS THE PLAYER HAS COLLECTED
+                    gp.obj[index] = null; // REMOVES THE TOTEM
+                    if (index == 0) { // TURTLE TOTEM COLLECTED
                         turtleSpecialUnlocked = true;
                     }
-                    else if (index == 1) { // eagle totem collected
+                    else if (index == 1) { // EAGLE TOTEM COLLECTED
                         eagleSpecialUnlocked = true;
                     }
-                    else { // bear totem collected
+                    else { // BEAR TOTEM COLLECTED
                         bearSpecialUnlocked = true;
                     }
-                    if (numTotems == 3) {
+
+//                    TOTEM COLLECTION MESSAGES
+                    if (numTotems == 3) {// MESSAGE FOR WHEN THE PLAYER HAS COLLECTED THE THREE TOTEMS NEEDED TO
+                        // UNLOCK THE MAZE
                         gp.ui.showCollectionMessage("Congratulations, all three totems have been collected. I think I hear a door opening somewhere");
                     }
+//                    DISPLAY COMPLETION MESSAGE IF THE FOURTH TOTEM IN THE MAZE HAS BEEN COLLECTED
                     else if (numTotems == 4) {
                         gp.ui.completionMessageOn = true;
                     }
+//                    DISPLAY MESSAGE SAYING THE PLAYER HAS PICKED UP A TOTEM
                     else {
                         gp.ui.showMessage("You picked up a totem!");
                     }
                     break;
-                case "Wall":
-                    if (numTotems == 3) { // if the user has 3 totems
-                        gp.obj[index] = null; // destroys the wall
+                case "Wall":// PLAYER IS TOUCHING A WALL OBJECT AT THE MAZE
+
+//                    CHECK IF PLAYER HAS THREE TOTEMS
+                    if (numTotems == 3) {
+                        gp.obj[index] = null; // DESTROYES THE WALL
                     }
+//                    DISPLAY MESSAGE SAYING PLAYER NEEDS TO CONTINUE COLLECTING TOTEMS IN ORDER TO UNLOCK THE MAZE
                     else {
                         gp.ui.showMessage("You need to collect " + (3 - numTotems) + " more totems to get past the wall");
                     }
@@ -838,143 +875,153 @@ public class Player extends Entity {
         }
     }
 
+//    NPC INTERACTION METHOD
     public void interactNPC(int i) {
         if (i != 999) {
             System.out.println("you are hitting an npc");
         }
     }
 
-    public void contactMonster(int index) { // modifies the player's invincibility if they make contact with a monster
-        Spirit currentSpirit = gp.player.getCurrentSpirit(); // gets the current spirit
+//    MONSTER CONTACT METHOD
+//    MODIFIES THE PLAYER'S INVINCIBILITY IF THEY MAKE CONTACT WITH A MONSTER
+    public void contactMonster(int index) {
+        Spirit currentSpirit = gp.player.getCurrentSpirit(); // GET CURRENT SPIRIT
 
-        if (index != 999) { // if index is 999, no monster was touched
+//        CHECK IF A MONSTER IS TOUCHING A PLAYER, IF INDEX IS 999 NO MONSTER WAS TOUCHED
+        if (index != 999) {
+//            DEAL DAMAGE TO PLAYER IF PLAYER IS NOT INVINCIBLE
             if (!invincible) {
                 int damage = gp.monster[index].attack - defense;
                 if (damage < 0) { // so damage is not negative
                     damage = 0;
                 }
                 currentSpirit.setHealth(currentSpirit.getHealth() - damage);
-                invincible = true;
+                invincible = true;//TURN ON INVINCIBILITY NOW THAT PLAYER HAS BEEN DAMAGED
             }
         }
     }
 
-    public void damageMonster(int index, int attack) { // deals damage to the monster
+//    PLAYER DAMAGE MONSTER METHOD
+    public void damageMonster(int index, int attack) { // ACCEPTS THE MONSTER BEING ATTACKED AND THE SPIRIT'S ATTACK
+        // VALUE
 
-        if (index != 999) { // if index is 999, no monster was touched
+//        CHECK IF THE MONSTER IS BEING ATTACKED, IF INDEX RETURNS 999, NO MONSTER WAS TOUCHED
+        if (index != 999) {
             int damage = attack - gp.monster[index].defense;
-            if (damage < 0) { // so damage is not negative
+//            ENSURE DAMAGE IS NOT NEGATIVE IN CASE DEFENSE IS REALLY HIGH, OTHERWISE IT WOULD HEAL THE MONSTER
+            if (damage < 0) {
                 damage = 0;
             }
             gp.monster[index].health -= damage;
             gp.monster[index].damageReaction();
-            System.out.println("Hit"); // for debugging
 
-            if (gp.monster[index].health <= 0) { // if the monster dies, replace that slot in the array with a null value
+//            DEBUGGING
+            System.out.println("Hit"); // PRINT ON CONSOLE THAT HIT WAS REGISTERED
+
+//            IF MONSTER IS DEAD, REPLACE ITS INDEX WITHIN THE MONSTER ARRAY WITH A NULL VALUE
+            if (gp.monster[index].health <= 0) {
                 gp.monster[index] = null;
             }
         }
     }
 
+//DRAWING METHOD
     public void draw(Graphics2D g2) {
-        BufferedImage image = null;
+        BufferedImage image = null;//CALL ON BUFFERED IMAGE CLASS
 
-        // sets temporary screen variables to account for change in spirit position when attacking
+//        CREATE TEMPORARY SCREEN VARIABLES TO ACCOUNT FOR CHANGE IN SPIRIT POSITION WHEN ATTACKING
         int tempScreenX = screenX;
         int tempScreenY = screenY;
 
+//        DRAW SPRITES FOR ATTACKING, MAKE SURE SPECIAL ATTACKING ISN'T HAPPENING AT THE SAME TIME
         if (attacking && !specialAttacking) {
-            switch (direction) {//check the direction, based on the direction it picks a different image
+//            CHECK DIRECTION, AND PICK A DIFFERENT SET OF IMAGES DEPENDING ON DIRECTION PLAYER IS FACING
+//            ALL COORDINATES HAVE BEEN PAINSTAKINGLY COMPENSATED TO BE CENTERED WITH THE COLLISION BOX
+            switch (direction) {
                 case "up":
-                    // compensate for  the sprite moving when doing the attacking animation
-                    if (getCurrentSpirit().name.equals("Bear")) {
+                    if (getCurrentSpirit().name.equals("Bear")) {// BEAR SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.33);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.45);
-                    }
-                    else if (getCurrentSpirit().name.equals("Eagle")) {
+                    } else if (getCurrentSpirit().name.equals("Eagle")) {// EAGLE SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.33);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.38);
-                    }
-                    else {
+                    } else {// TURTLE SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.58);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.68);
                     }
+//                    SET THE SPRITE IMAGE DEPENDING ON WHAT ANIMATION FRAME
                     if (spriteNum == 1) {image = attackUp1;}
                     if (spriteNum == 2) {image = attackUp2;}
                     if (spriteNum == 3) {image = attackUp3;}
                     break;
                 case "down":
-                    // compensate the sprite moving  when doing the attacking animation
-                    if (getCurrentSpirit().name.equals("Bear")) {
+                    if (getCurrentSpirit().name.equals("Bear")) {// BEAR SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.4);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.25);
                     }
-                    else if (getCurrentSpirit().name.equals("Eagle")) {
+                    else if (getCurrentSpirit().name.equals("Eagle")) {//EAGLE SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.33);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.47);
-                    }
-                    else {
+                    } else {// TURTLE SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.58);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.62);
                     }
+//                    SET THE SPRITE IMAGE DEPENDING ON WHAT ANIMATION FRAME
                     if (spriteNum == 1) {image = attackDown1;}
                     if (spriteNum == 2) {image = attackDown2;}
                     if (spriteNum == 3) {image = attackDown3;}
                     break;
                 case "left":
-                    // compensate the sprite moving when doing the attacking animation
-                    if (getCurrentSpirit().name.equals("Bear")) {
+                    if (getCurrentSpirit().name.equals("Bear")) {// BEAR SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.38);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.38);
                     }
-                    else if (getCurrentSpirit().name.equals("Eagle")) {
+                    else if (getCurrentSpirit().name.equals("Eagle")) {// EAGLE SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.38);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.525);
-                    }
-                    else {
+                    } else {// TURTLE SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.58);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.68);
                     }
+//                    SET THE SPRITE IMAGE DEPENDING ON WHAT ANIMATION FRAME
                     if (spriteNum == 1) {image = attackLeft1;}
                     if (spriteNum == 2) {image = attackLeft2;}
                     if (spriteNum == 3) {image = attackLeft3;}
                     break;
                 case "right":
-                    // compensate the sprite moving when doing the attacking animation
-                    if (getCurrentSpirit().name.equals("Bear")) {
+                    if (getCurrentSpirit().name.equals("Bear")) {//TURTLE SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.33);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.31);
-                    }
-                    else if (getCurrentSpirit().name.equals("Eagle")) {
+                    } else if (getCurrentSpirit().name.equals("Eagle")) {// EAGLE SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.28);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.475);
-                    }
-                    else {
+                    } else {// TURTLE SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.57);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.68);
                     }
+//                    SET THE SPRITE IMAGE DEPENDING ON WHAT ANIMATION FRAME
                     if (spriteNum == 1) {image = attackRight1;}
                     if (spriteNum == 2) {image = attackRight2;}
                     if (spriteNum == 3) {image = attackRight3;}
                     break;
             }
         }
+
+//        DRAW SPRITES FOR SPECIAL ATTACKING, MAKE SURE NOT ALSO ATTACKING AT THE SAME TIME
         if (specialAttacking && !attacking) {
-            switch (direction) {//check the direction, based on the direction it picks a different image
+            switch (direction) {
                 case "up":
-                    // Moves the sprite when doing the special attacking animation
-                    if (getCurrentSpirit().name.equals("Bear")) {
+                    if (getCurrentSpirit().name.equals("Bear")) {//BEAR SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.2);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.2);
-                    }
-                    else if (getCurrentSpirit().name.equals("Eagle")) {
+                    } else if (getCurrentSpirit().name.equals("Eagle")) {// EAGLE SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.323);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.38);
-                    }
-                    else {//turtle
+                    } else {// TURTLE SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.567);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.677);
                     }
+//                    SET THE SPRITE IMAGE DEPENDING ON WHAT ANIMATION FRAME
                     if (spriteNum == 1) {image = specialUp1;}
                     if (spriteNum == 2) {image = specialUp2;}
                     if (spriteNum == 3) {image = specialUp3;}
@@ -984,19 +1031,17 @@ public class Player extends Entity {
                     if (spriteNum == 7) {image = specialUp7;}
                     break;
                 case "down":
-                    // Moves the sprite when doing the special attacking animation
-                    if (getCurrentSpirit().name.equals("Bear")) {
+                    if (getCurrentSpirit().name.equals("Bear")) {//BEAR SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.25);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.18);
-                    }
-                    else if (getCurrentSpirit().name.equals("Eagle")) {
+                    } else if (getCurrentSpirit().name.equals("Eagle")) {//EAGLE SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.325);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.469);
-                    }
-                    else {
+                    } else {// TURTLE SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.58);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.62);
                     }
+//                    SET THE SPRITE IMAGE DEPENDING ON WHAT ANIMATION FRAME
                     if (spriteNum == 1) {image = specialDown1;}
                     if (spriteNum == 2) {image = specialDown2;}
                     if (spriteNum == 3) {image = specialDown3;}
@@ -1006,19 +1051,17 @@ public class Player extends Entity {
                     if (spriteNum == 7) {image = specialDown7;}
                     break;
                 case "left":
-                    // Moves the sprite when doing the special attacking animation
-                    if (getCurrentSpirit().name.equals("Bear")) {
+                    if (getCurrentSpirit().name.equals("Bear")) {// BEAR SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.259);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.252);
-                    }
-                    else if (getCurrentSpirit().name.equals("Eagle")) {
+                    } else if (getCurrentSpirit().name.equals("Eagle")) {// EAGLE SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.378);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.53);
-                    }
-                    else {
+                    } else {// TURTLE SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.6);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.57);
                     }
+//                    SET THE SPRITE IMAGE DEPENDING ON WHAT ANIMATION FRAME
                     if (spriteNum == 1) {image = specialLeft1;}
                     if (spriteNum == 2) {image = specialLeft2;}
                     if (spriteNum == 3) {image = specialLeft3;}
@@ -1028,19 +1071,17 @@ public class Player extends Entity {
                     if (spriteNum == 7) {image = specialLeft7;}
                     break;
                 case "right":
-                    // Moves the sprite when doing the special attacking animation
-                    if (getCurrentSpirit().name.equals("Bear")) {
+                    if (getCurrentSpirit().name.equals("Bear")) {// BEAR SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.205);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.25);
-                    }
-                    else if (getCurrentSpirit().name.equals("Eagle")) {
+                    } else if (getCurrentSpirit().name.equals("Eagle")) {// EAGLE SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.28);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.47);
-                    }
-                    else {
+                    } else {//TURTLE SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.55);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.58);
                     }
+//                    SET THE SPRITE IMAGE DEPENDING ON WHAT ANIMATION FRAME
                     if (spriteNum == 1) {image = specialRight1;}
                     if (spriteNum == 2) {image = specialRight2;}
                     if (spriteNum == 3) {image = specialRight3;}
@@ -1051,86 +1092,88 @@ public class Player extends Entity {
                     break;
             }
         }
-        if (!specialAttacking && !attacking) {//drawing function for basic movement
-            switch (direction) {//check the direction, based on the direction it picks a different image
+
+//        DRAW SPRITES FOR REGULAR MOVEMENT
+        if (!specialAttacking && !attacking) {
+            switch (direction) {
                 case "up":
-                    if (getCurrentSpirit().name.equals("Bear")) {
+                    if (getCurrentSpirit().name.equals("Bear")) {// BEAR SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.2);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.2);
-                    }
-                    else if (getCurrentSpirit().name.equals("Eagle")) {
+                    } else if (getCurrentSpirit().name.equals("Eagle")) {// EAGLE SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.2);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.25);
-                    }
-                    else {//turtle
+                    } else {// TURTLE SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.35);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.45);
                     }
+//                    SET THE SPRITE IMAGE DEPENDING ON WHAT ANIMATION FRAME
                     if (spriteNum == 1) {image = up1;}
                     if (spriteNum == 2) {image = up2;}
                     break;
                 case "down":
-                    if (getCurrentSpirit().name.equals("Bear")) {
+                    if (getCurrentSpirit().name.equals("Bear")) {// BEAR SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.25);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.15);
-                    }
-                    else if (getCurrentSpirit().name.equals("Eagle")) {
+                    } else if (getCurrentSpirit().name.equals("Eagle")) {// EAGLE SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.2);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.35);
-                    }
-                    else {//turtle
+                    } else {//TURTLE SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.35);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.4);
                     }
+//                    SET THE SPRITE IMAGE DEPENDING ON WHAT ANIMATION FRAME
                     if (spriteNum == 1) {image = down1;}
                     if (spriteNum == 2) {image = down2;}
                     break;
                 case "left":
-                    if (getCurrentSpirit().name.equals("Bear")) {
+                    if (getCurrentSpirit().name.equals("Bear")) {// BEAR SPRIETE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.25);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.25);
-                    }
-                    else if (getCurrentSpirit().name.equals("Eagle")) {
+                    } else if (getCurrentSpirit().name.equals("Eagle")) {// EAGLE SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.25);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.4);
-                    }
-                    else {
+                    } else {// TURTLE SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.35);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.45);
                     }
+//                    SET THE SPRITE IMAGE DEPENDING ON WHAT ANIMATION FRAME
                     if (spriteNum == 1) {image = left1;}
                     if (spriteNum == 2) {image = left2;}
                     break;
                 case "right":
-                    if (getCurrentSpirit().name.equals("Bear")) {
+                    if (getCurrentSpirit().name.equals("Bear")) {// BEAR SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.2);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.25);
-                    }
-                    else if (getCurrentSpirit().name.equals("Eagle")) {
+                    } else if (getCurrentSpirit().name.equals("Eagle")) {// EAGLE SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.15);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.35);
-                    }
-                    else {
+                    } else {// TURTLE SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.35);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.45);
                     }
+//                    SET THE SPRITE IMAGE DEPENDING ON WHAT ANIMATION FRAME
                     if (spriteNum == 1) {image = right1;}
                     if (spriteNum == 2) {image = right2;}
                     break;
             }
         }
+//        REDUCES OPACITY OF THE IMAGE TO SHOW WHEN THE PLAYER IS INVINCIBLE
         if ((invincible && !gp.player.getCurrentSpirit().dead) || deadFlicker) {
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f)); // reduces the opacity to 70% to show when the player is invincible
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
         } else {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         }
 
+//        DRAW THE IMAGE, NULL MEANS WE CANNOT TYPE ON THE IMAGE
         g2.drawImage(image, tempScreenX, tempScreenY, null);//draws the image, null means we cannot type
 
 
 
-        // Debugging
-        // Draws the attack area of the player
+        // DEBUGGING
+
+//        DRAWS THE ATTACK AREA OF THE PLAYER ONTO THE SCREEN
+//        COMPENSATION VALUES ON THIS SECTION ARE THE SAME AS ABOVE
         tempScreenX = screenX + solidArea.x;
         tempScreenY = screenY + solidArea.y;
         switch (direction) {
@@ -1201,10 +1244,11 @@ public class Player extends Entity {
         }
         g2.drawRect(tempScreenX, tempScreenY, attackArea.width, attackArea.height);
 
-        // For debugging
+        // PRINTS THE COLLISION BOX OF THE PLAYER
         g2.setColor(new Color(255, 0, 0));
         g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
 
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // resets the opacity for future images
+//        RESET THE OPACITY FOR FUTURE IMAGES
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
     }
 }
