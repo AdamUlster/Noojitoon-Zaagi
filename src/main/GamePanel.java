@@ -15,53 +15,50 @@ import javax.swing.JPanel;
 public class GamePanel extends JPanel implements Runnable {
 
     //screen settings
-    public final int originalTileSize = 32;
+    private final int originalTileSize = 32;
     //32 x 32 means the game operates with objects of 32 pixel tiles, so objects, sprites etc.
-    public final int scale = 3;//DO NOT CHANGE, WILL SCREW EVERYTHING UP
+    private final int scale = 3;//DO NOT CHANGE, WILL SCREW EVERYTHING UP
     //all the characters we create will be as if they are 32x32 but will be scaled up threefold
 
-    public final int tileSize = originalTileSize * scale;//48x48 actual tile size that will be displayed
+    private final int tileSize = originalTileSize * scale;//48x48 actual tile size that will be displayed
 
     //determine the size of the screen in terms of ties
     //changeable values
-    final int maxScreenCol = 16;//16 tiles across
-    final int maxScreenRow = 12;//12 tiles vertically
+    private final int maxScreenCol = 16;//16 tiles across
+    private final int maxScreenRow = 12;//12 tiles vertically
 
     //how big in pixels will the screen be as represented by the size of the tile and the number of tiles
-    public final int screenWidth = tileSize * maxScreenCol;//768 pixels horizontally
-    public final int screenHeight = tileSize * maxScreenRow;//576 pixels vertically
+    private final int screenWidth = tileSize * maxScreenCol;//768 pixels horizontally
+    private final int screenHeight = tileSize * maxScreenRow;//576 pixels vertically
 
     //world map settings
     //change these values to change the map size
-    public final int maxWorldCol = 100;//sets the borders of the world in terms of tiles
-    public final int maxWorldRow = 100;//sets the border of the world in terms of tiles
-
-    public final int worldWidth = tileSize * maxWorldCol;//sets the border of the world in pixels
-    public final int worldHeight = tileSize * maxWorldRow;
+    private final int maxWorldCol = 100;//sets the borders of the world in terms of tiles
+    private final int maxWorldRow = 100;//sets the border of the world in terms of tiles
 
     //FPS
-    int FPS = 60;
+    private int FPS = 60;
 
     // System
-    public TileManager tileM = new TileManager(this); // passes the game panel
-    KeyHandler keyH = new KeyHandler(this);//call on the keyhandle class to create the keylistener
-    public CollisionChecker cChecker = new CollisionChecker(this);
-    public AssetSetter aSetter = new AssetSetter(this); // passes the game panel as a parameter
-    public UI ui = new UI(this);
-    public PathFinder pFinderToTotem = new PathFinder(this);
-    public PathFinder pFinderToPlayer = new PathFinder(this);
+    private TileManager tileM = new TileManager(this); // passes the game panel
+    private KeyHandler keyH = new KeyHandler(this);//call on the keyhandle class to create the keylistener
+    private CollisionChecker cChecker = new CollisionChecker(this);
+    private AssetSetter aSetter = new AssetSetter(this); // passes the game panel as a parameter
+    private UI ui = new UI(this);
+    private PathFinder pFinderToTotem = new PathFinder(this);
+    private PathFinder pFinderToPlayer = new PathFinder(this);
 
-    public Map map = new Map(this); // instantiates the map
-    Thread gameThread;//repeats a process again and again
+    private Map map = new Map(this); // instantiates the map
+    private Thread gameThread;//repeats a process again and again
 
     // Entities and objects
-    public Player player = new Player(this, keyH);
-    public Entity[] obj = new Entity[10]; // to display up to 10 objects at the same time
-    public Entity[] npc = new Entity[50];//create 50 npcs
-    public Entity[] monster = new Entity[200];//create 200 monsters
-    public ArrayList<Entity> projectileList = new ArrayList<>(); // holds the projectiles
-    public ArrayList<Entity> targetProjectileList = new ArrayList<>(); // holds the target projectiles
-    public ArrayList<Entity> entityList = new ArrayList<>(); // creates an array list to store all the entities
+    private Player player = new Player(this, keyH);
+    private Entity[] obj = new Entity[10]; // to display up to 10 objects at the same time
+    private Entity[] npc = new Entity[50];//create 50 npcs
+    private Entity[] monster = new Entity[200];//create 200 monsters
+    private ArrayList<Entity> projectileList = new ArrayList<>(); // holds the projectiles
+    private ArrayList<Entity> targetProjectileList = new ArrayList<>(); // holds the target projectiles
+    private ArrayList<Entity> entityList = new ArrayList<>(); // creates an array list to store all the entities
 
     public GamePanel() {//set default values for the gamepanel
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));//set screen dimensions
@@ -73,7 +70,7 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);//changes the focus of the gamepanel to the key inputs
     }
 
-    public void setupGame() {
+    private void setupGame() {
         ui.showLoadingMessage("Loading... Please Wait");
         aSetter.setObject();
         aSetter.setNPC();
@@ -81,7 +78,7 @@ public class GamePanel extends JPanel implements Runnable {
         ui.loadingMessageOn = false; // makes the loading message disappear after the monsters load
     }
 
-    public void startGameThread() {//starts core logic when the program starts
+    private void startGameThread() {//starts core logic when the program starts
         gameThread = new Thread(this);//create the thread that will run
         gameThread.start();
     }
@@ -239,5 +236,118 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
         g2.dispose();//saves processing power
+    }
+
+    // Get and set methods
+    public int getOriginalTileSize() {
+        return originalTileSize;
+    }
+
+    public int getScale() {
+        return scale;
+    }
+
+    public int getTileSize() {
+        return tileSize;
+    }
+
+    public int getMaxScreenCol() {
+        return maxScreenCol;
+    }
+
+    public int getMaxScreenRow() {
+        return maxScreenRow;
+    }
+
+    public int getScreenWidth() {
+        return screenWidth;
+    }
+
+    public int getScreenHeight() {
+        return screenHeight;
+    }
+
+    public int getMaxWorldCol() {
+        return maxWorldCol;
+    }
+
+    public int getMaxWorldRow() {
+        return maxWorldRow;
+    }
+
+    public int getFPS() {
+        return FPS;
+    }
+
+    public void setFPS(int FPS) {
+        this.FPS = FPS;
+    }
+
+    public TileManager getTileM() {
+        return tileM;
+    }
+
+    public KeyHandler getKeyH() {
+        return keyH;
+    }
+
+    public CollisionChecker getCChecker() {
+        return cChecker;
+    }
+
+    public AssetSetter getASetter() {
+        return aSetter;
+    }
+
+    public UI getUi() {
+        return ui;
+    }
+
+    public PathFinder getPFinderToTotem() {
+        return pFinderToTotem;
+    }
+
+    public PathFinder getPFinderToPlayer() {
+        return pFinderToPlayer;
+    }
+
+    public Map getMap() {
+        return map;
+    }
+
+    public Thread getGameThread() {
+        return gameThread;
+    }
+
+    public void setGameThread(Thread gameThread) {
+        this.gameThread = gameThread;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public Entity[] getObj() {
+        return obj;
+    }
+
+    public Entity[] getNpc() {
+        return npc;
+    }
+
+    public Entity[] getMonster() {
+        return monster;
+    }
+
+    public ArrayList<Entity> getProjectileList() {
+        return projectileList;
+    }
+
+    public ArrayList<Entity> getTargetProjectileList() {
+        return targetProjectileList;
+    }
+
+    public ArrayList<Entity> getEntityList() {
+        return entityList;
     }
 }

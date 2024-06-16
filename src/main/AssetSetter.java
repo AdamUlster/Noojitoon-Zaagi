@@ -10,13 +10,13 @@ import object.OBJ_Wall;
 import java.util.Random;
 
 public class AssetSetter {
-    GamePanel gp;
+    private GamePanel gp;
 
     public AssetSetter(GamePanel gp) { // constructor
         this.gp = gp;
     }
 
-    public void setObject() {
+    private void setObject() {
         gp.obj[0] = new OBJ_Totem(gp);
         gp.obj[0].worldX = gp.tileSize * 36;
         gp.obj[0].worldY = gp.tileSize * 95;
@@ -58,7 +58,7 @@ public class AssetSetter {
         gp.obj[9].worldY = gp.tileSize * 33;
     }
 
-    public void setNPC() {
+    private void setNPC() {
         Random random = new Random();
         // create 1 npc
         for (int i = 0; i < gp.npc.length; i++) {
@@ -69,7 +69,7 @@ public class AssetSetter {
 
     }
 
-    public void setMonster() {
+    private void setMonster() {
 
         int[][] miasmaCoords = {{58, 44}, {61, 45}, {61, 52}, {61, 55}, {67, 57}, {62, 59}, {64, 61}, {67, 62}, {69, 57},
                 {74, 50}, {73, 50}, {72, 49}, {71, 49}, {70, 46}, {68, 43}, {64, 43}, {64, 42}, {64, 42}, {70, 40},

@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class MON_Windigo extends Entity {
 
-    public double hitboxScale = 0.75;//scaling factor for hitbox
+    private double hitboxScale = 0.75;//scaling factor for hitbox
 
     public MON_Windigo(GamePanel gp) {
         super(gp);
@@ -32,7 +32,7 @@ public class MON_Windigo extends Entity {
         getImage();
     }
 
-    public void getImage() {
+    private void getImage() {
         up1 = setup("monsters/windigo", 1,1);
         up2 = setup("monsters/windigo", 1,1);
         down1 = setup("monsters/windigo", 1,1);

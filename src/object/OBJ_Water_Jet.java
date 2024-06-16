@@ -4,7 +4,7 @@ import entity.Projectile;
 import main.GamePanel;
 
 public class OBJ_Water_Jet extends Projectile {
-    GamePanel gp;
+    private GamePanel gp;
 
     public OBJ_Water_Jet(GamePanel gp) {
         super(gp);

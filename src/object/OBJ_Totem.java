@@ -4,7 +4,7 @@ import entity.Entity;
 import main.GamePanel;
 
 public class OBJ_Totem extends Entity {
-    public double hitboxScale = 0.80;//scaling factor for hitbox
+    private double hitboxScale = 0.80;//scaling factor for hitbox
     public OBJ_Totem(GamePanel gp) { // constructor
         super(gp); // calls the entity class
 

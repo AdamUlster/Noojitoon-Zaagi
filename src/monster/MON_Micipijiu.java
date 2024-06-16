@@ -7,8 +7,8 @@ import java.util.Random;
 
 public class MON_Micipijiu extends Entity {
 
-    public double widthHitboxScale = 0.70;//scaling factor for the hitbox width
-    public double heightHitboxScale = 0.35;//scaling factor for the hitbox height
+    private double widthHitboxScale = 0.70;//scaling factor for the hitbox width
+    private double heightHitboxScale = 0.35;//scaling factor for the hitbox height
     public MON_Micipijiu(GamePanel gp) {
         super(gp);
 
@@ -35,7 +35,7 @@ public class MON_Micipijiu extends Entity {
         getImage();
     }
 
-    public void getImage() {
+    private void getImage() {
         up1 = setup("monsters/micipijiu_right", 1,1);
         up2 = setup("monsters/micipijiu_right", 1,1);
         down1 = setup("monsters/micipijiu_right", 1,1);

@@ -10,44 +10,44 @@ import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
 public class Player extends Entity {
-    KeyHandler keyH;//call on keyhandler class
+    private KeyHandler keyH;//call on keyhandler class
 
-    public Spirit[] spirits = new Spirit[3];
-    public int currentSpiritIndex = 0; // keeps track of the current spirit
+    private Spirit[] spirits = new Spirit[3];
+    private int currentSpiritIndex = 0; // keeps track of the current spirit
 
-    public final int screenX;
-    public final int screenY;
+    private final int screenX;
+    private final int screenY;
 
-    public int numTotems = 0; // keeps track of the number of totems the player has collected
+    private int numTotems = 0; // keeps track of the number of totems the player has collected
 
     //scaling factors for hitboxes and attack areas
-    public double bearHitboxScale = 0.5;//bear hit box scale
-    public double eagleHitboxScale = 0.5;//eagle hit box scale
-    public double turtleHitboxScale = 0.5;//turtle hit box scale
-    public double bearAttackBoxScaleSize = 1.25;
-    public double eagleAttackBoxScaleSize = 1.25;
-    public double turtleAttackBoxScaleSize = 1;
+    private double bearHitboxScale = 0.5;//bear hit box scale
+    private double eagleHitboxScale = 0.5;//eagle hit box scale
+    private double turtleHitboxScale = 0.5;//turtle hit box scale
+    private double bearAttackBoxScaleSize = 1.25;
+    private double eagleAttackBoxScaleSize = 1.25;
+    private double turtleAttackBoxScaleSize = 1;
 
     //INDICES
-    int monsterIndex;
+    private int monsterIndex;
 
     //CHECKERS
-    public boolean bearSpecialUnlocked = false;
-    public boolean eagleSpecialUnlocked = false;
-    public boolean turtleSpecialUnlocked = false;
+    private boolean bearSpecialUnlocked = false;
+    private boolean eagleSpecialUnlocked = false;
+    private boolean turtleSpecialUnlocked = false;
 
     //COUNTERS
-    public int invincibilityCounter = 0;
-    public int primaryICD = 0;//internal cooldown for attacks
-    public int secondaryICD = 0;//internal cooldown for special/secondary moves
+    private int invincibilityCounter = 0;
+    private int primaryICD = 0;//internal cooldown for attacks
+    private int secondaryICD = 0;//internal cooldown for special/secondary moves
 
     public Player(GamePanel gp, KeyHandler keyH) { //create default attributes (constructor)
 
         super(gp); // call on Entity class
         this.keyH = keyH;
 
-        screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
-        screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
+        screenX = gp.getScreenWidth() / 2 - (gp.getTileSize() / 2);
+        screenY = gp.getScreenHeight() / 2 - (gp.getTileSize() / 2);
 
         setDefaultValues();//sets default values for the player
         getPlayerImage();
@@ -59,55 +59,55 @@ public class Player extends Entity {
         return spirits[currentSpiritIndex];
     }
 
-    public void setDefaultValues() {//create default values to spawn the player
+    private void setDefaultValues() {//create default values to spawn the player
 
         //53 50
-        worldX = gp.tileSize * 53; // sets the default position x-coordinate
-        worldY = gp.tileSize * 50; //sets the default position y-coordinate
-        speed = 8;//sets speed to 4
-        direction = "right";//can input any direction
-        projectile = new OBJ_Water_Jet(gp);
-        targetProjectile = new OBJ_EagleShot(gp);
+        setWorldX(gp.getTileSize() * 53); // sets the default position x-coordinate
+        setWorldY(gp.getTileSize() * 50); //sets the default position y-coordinate
+        setSpeed(8);//sets speed to 4
+        setDirection("right");//can input any direction
+        setProjectile(new OBJ_Water_Jet(gp));
+        setTargetProjectile(new OBJ_EagleShot(gp));
 
         // Initializes the spirits and their health values
         spirits[0] = new Spirit(gp, "Bear", 9, 9,
-                (int) (gp.tileSize * (1.0 - bearHitboxScale)) / 2,
-                (int) (gp.tileSize * (1.0 - bearHitboxScale)) / 2,
-                (int) (gp.tileSize * bearHitboxScale),
-                (int) (gp.tileSize * bearHitboxScale),
-                (int) (gp.tileSize * bearAttackBoxScaleSize),
-                (int) (gp.tileSize * bearAttackBoxScaleSize),
+                (int) (gp.getTileSize() * (1.0 - bearHitboxScale)) / 2,
+                (int) (gp.getTileSize() * (1.0 - bearHitboxScale)) / 2,
+                (int) (gp.getTileSize() * bearHitboxScale),
+                (int) (gp.getTileSize() * bearHitboxScale),
+                (int) (gp.getTileSize() * bearAttackBoxScaleSize),
+                (int) (gp.getTileSize() * bearAttackBoxScaleSize),
                 1, 4);
         spirits[1] = new Spirit(gp, "Eagle", 5, 5,
-                (int) (gp.tileSize * eagleHitboxScale) / 2,
-                (int) (gp.tileSize * eagleHitboxScale) / 2,
-                (int) (gp.tileSize * eagleHitboxScale),
-                (int) (gp.tileSize * eagleHitboxScale),
-                (int) (gp.tileSize * eagleAttackBoxScaleSize),
-                (int) (gp.tileSize * eagleAttackBoxScaleSize),
+                (int) (gp.getTileSize() * eagleHitboxScale) / 2,
+                (int) (gp.getTileSize() * eagleHitboxScale) / 2,
+                (int) (gp.getTileSize() * eagleHitboxScale),
+                (int) (gp.getTileSize() * eagleHitboxScale),
+                (int) (gp.getTileSize() * eagleAttackBoxScaleSize),
+                (int) (gp.getTileSize() * eagleAttackBoxScaleSize),
                 1, 4);
         spirits[2] = new Spirit(gp, "Turtle", 8, 8,
-                (int) (gp.tileSize * (1.0 - turtleHitboxScale)) / 2,
-                (int) (gp.tileSize * (1.0 - turtleHitboxScale)) / 2,
-                (int) (gp.tileSize * turtleHitboxScale),
-                (int) (gp.tileSize * turtleHitboxScale),
-                (int) (gp.tileSize * turtleAttackBoxScaleSize),
-                (int) (gp.tileSize * turtleAttackBoxScaleSize),
+                (int) (gp.getTileSize() * (1.0 - turtleHitboxScale)) / 2,
+                (int) (gp.getTileSize() * (1.0 - turtleHitboxScale)) / 2,
+                (int) (gp.getTileSize() * turtleHitboxScale),
+                (int) (gp.getTileSize() * turtleHitboxScale),
+                (int) (gp.getTileSize() * turtleAttackBoxScaleSize),
+                (int) (gp.getTileSize() * turtleAttackBoxScaleSize),
                 1, 4);
         switchSpirit(0); // the player is the bear spirit to start
     }
 
-    public void restoreSettings() {
-        Arrays.fill(gp.npc, null);
-        Arrays.fill(gp.monster, null);
-        gp.projectileList.clear();
-        gp.targetProjectileList.clear();
-        gp.entityList.clear();
+    private void restoreSettings() {
+        Arrays.fill(gp.getNpc(), null);
+        Arrays.fill(gp.getMonster(), null);
+        gp.getProjectileList().clear();
+        gp.getTargetProjectileList().clear();
+        gp.getEntityList().clear();
 
-        for (int i = 0; i < gp.player.spirits.length; i++) { // makes every spirit alive
-            gp.player.spirits[i].dead = false;
+        for (int i = 0; i < gp.getPlayer().spirits.length; i++) { // makes every spirit alive
+            gp.getPlayer().spirits[i].dead = false;
         }
-        gp.player.isDying = false; // makes it so the player is no longer dying
+        gp.getPlayer().isDying = false; // makes it so the player is no longer dying
         gp.aSetter.setNPC();
         gp.aSetter.setMonster();
 
@@ -122,7 +122,7 @@ public class Player extends Entity {
         setDefaultValues(); // sets the default player values
     }
 
-    public void getPlayerImage() {
+    private void getPlayerImage() {
         Spirit currentSpirit = getCurrentSpirit(); // gets the current spirit
 
         // Sets the player's images to the current spirit's images
@@ -168,7 +168,7 @@ public class Player extends Entity {
         }
     }
 
-    public void getPlayerAttackImage() {//get primary attack images
+    private void getPlayerAttackImage() {//get primary attack images
         if (getCurrentSpirit().name.equals("Bear")) {
             attackUp1 = setup("bear/bear_up_attack_1", 1.25, 1.25);
             attackUp2 = setup("bear/bear_up_attack_2", 1.25, 1.25);
@@ -214,7 +214,7 @@ public class Player extends Entity {
 
     }
 
-    public void getPlayerSpecialAttackImage() {//get sprites for secondary attack
+    private void getPlayerSpecialAttackImage() {//get sprites for secondary attack
         if (getCurrentSpirit().name.equals("Bear")) {
             //up specials
             specialUp1 = setup("bear/bear_up_special_1", 1, 1);
@@ -501,7 +501,7 @@ public class Player extends Entity {
         }
     }
 
-    public void switchSpirit(int spiritIndex) {
+    private void switchSpirit(int spiritIndex) {
         currentSpiritIndex = spiritIndex; // sets the current spirit index to the spirit index
         getPlayerImage(); // reset the image pulls via getPlayerImage method
         getPlayerSpecialAttackImage();
@@ -524,7 +524,7 @@ public class Player extends Entity {
         this.defense = getCurrentSpirit().defense;
     }
 
-    public int nextAliveSpirit() {
+    private int nextAliveSpirit() {
         for (int i = currentSpiritIndex + 1; i < currentSpiritIndex + gp.player.spirits.length; i++) {
             int loopIndex = i % gp.player.spirits.length; // Calculates the loop index
             if (!gp.player.spirits[loopIndex].dead) {
@@ -534,7 +534,7 @@ public class Player extends Entity {
         return -1; // returns -1 if every spirit is dead
     }
 
-    public void attacking() {
+    private void attacking() {
         spriteCounter++;
         if (spriteCounter <= 10) {
             spriteNum = 1;
@@ -675,7 +675,7 @@ public class Player extends Entity {
         }
     }
 
-    public void specialAttacking() {
+    private void specialAttacking() {
         spriteCounter++;
 
         if (spriteCounter <= 10) {
@@ -790,12 +790,12 @@ public class Player extends Entity {
         solidArea.width = solidAreaWidth;
         solidArea.height = solidAreaHeight;
     }
-    public int getDistance (int i) {//gets current distance from player to a monster
+    private int getDistance (int i) {//gets current distance from player to a monster
         int currentDistance = (int) Math.sqrt(Math.pow(worldX - gp.monster[i].worldX, 2) + Math.pow(worldY - gp.monster[i].worldY, 2)); // calculates the distance between the player and the monster
         return currentDistance;
     }
 
-    public void pickUpObject(int index) {
+    private void pickUpObject(int index) {
         if (index != 999) { // if index is 999, no object was touched
             String objectName = gp.obj[index].name;
 
@@ -834,13 +834,13 @@ public class Player extends Entity {
         }
     }
 
-    public void interactNPC(int i) {
+    private void interactNPC(int i) {
         if (i != 999) {
             System.out.println("you are hitting an npc");
         }
     }
 
-    public void contactMonster(int index) { // modifies the player's invincibility if they make contact with a monster
+    private void contactMonster(int index) { // modifies the player's invincibility if they make contact with a monster
         Spirit currentSpirit = gp.player.getCurrentSpirit(); // gets the current spirit
 
         if (index != 999) { // if index is 999, no monster was touched
@@ -855,7 +855,7 @@ public class Player extends Entity {
         }
     }
 
-    public void damageMonster(int index, int attack) { // deals damage to the monster
+    private void damageMonster(int index, int attack) { // deals damage to the monster
 
         if (index != 999) { // if index is 999, no monster was touched
             int damage = attack - gp.monster[index].defense;
@@ -1202,5 +1202,150 @@ public class Player extends Entity {
         g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
 
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // resets the opacity for future images
+    }
+
+    // Get and set methods
+    public KeyHandler getKeyH() {
+        return keyH;
+    }
+
+    public void setKeyH(KeyHandler keyH) {
+        this.keyH = keyH;
+    }
+
+    public Spirit[] getSpirits() {
+        return spirits;
+    }
+
+    public void setSpirits(Spirit[] spirits) {
+        this.spirits = spirits;
+    }
+
+    public int getCurrentSpiritIndex() {
+        return currentSpiritIndex;
+    }
+
+    public void setCurrentSpiritIndex(int currentSpiritIndex) {
+        this.currentSpiritIndex = currentSpiritIndex;
+    }
+
+    public int getScreenX() {
+        return screenX;
+    }
+
+    public int getScreenY() {
+        return screenY;
+    }
+
+    public int getNumTotems() {
+        return numTotems;
+    }
+
+    public void setNumTotems(int numTotems) {
+        this.numTotems = numTotems;
+    }
+
+    public double getBearHitboxScale() {
+        return bearHitboxScale;
+    }
+
+    public void setBearHitboxScale(double bearHitboxScale) {
+        this.bearHitboxScale = bearHitboxScale;
+    }
+
+    public double getEagleHitboxScale() {
+        return eagleHitboxScale;
+    }
+
+    public void setEagleHitboxScale(double eagleHitboxScale) {
+        this.eagleHitboxScale = eagleHitboxScale;
+    }
+
+    public double getTurtleHitboxScale() {
+        return turtleHitboxScale;
+    }
+
+    public void setTurtleHitboxScale(double turtleHitboxScale) {
+        this.turtleHitboxScale = turtleHitboxScale;
+    }
+
+    public double getBearAttackBoxScaleSize() {
+        return bearAttackBoxScaleSize;
+    }
+
+    public void setBearAttackBoxScaleSize(double bearAttackBoxScaleSize) {
+        this.bearAttackBoxScaleSize = bearAttackBoxScaleSize;
+    }
+
+    public double getEagleAttackBoxScaleSize() {
+        return eagleAttackBoxScaleSize;
+    }
+
+    public void setEagleAttackBoxScaleSize(double eagleAttackBoxScaleSize) {
+        this.eagleAttackBoxScaleSize = eagleAttackBoxScaleSize;
+    }
+
+    public double getTurtleAttackBoxScaleSize() {
+        return turtleAttackBoxScaleSize;
+    }
+
+    public void setTurtleAttackBoxScaleSize(double turtleAttackBoxScaleSize) {
+        this.turtleAttackBoxScaleSize = turtleAttackBoxScaleSize;
+    }
+
+    public int getMonsterIndex() {
+        return monsterIndex;
+    }
+
+    public void setMonsterIndex(int monsterIndex) {
+        this.monsterIndex = monsterIndex;
+    }
+
+    public boolean isBearSpecialUnlocked() {
+        return bearSpecialUnlocked;
+    }
+
+    public void setBearSpecialUnlocked(boolean bearSpecialUnlocked) {
+        this.bearSpecialUnlocked = bearSpecialUnlocked;
+    }
+
+    public boolean isEagleSpecialUnlocked() {
+        return eagleSpecialUnlocked;
+    }
+
+    public void setEagleSpecialUnlocked(boolean eagleSpecialUnlocked) {
+        this.eagleSpecialUnlocked = eagleSpecialUnlocked;
+    }
+
+    public boolean isTurtleSpecialUnlocked() {
+        return turtleSpecialUnlocked;
+    }
+
+    public void setTurtleSpecialUnlocked(boolean turtleSpecialUnlocked) {
+        this.turtleSpecialUnlocked = turtleSpecialUnlocked;
+    }
+
+    public int getInvincibilityCounter() {
+        return invincibilityCounter;
+    }
+
+    public void setInvincibilityCounter(int invincibilityCounter) {
+        this.invincibilityCounter = invincibilityCounter;
+    }
+
+    public int getPrimaryICD() {
+        return primaryICD;
+    }
+
+    public void setPrimaryICD(int primaryICD) {
+        this.primaryICD = primaryICD;
+    }
+
+    public int getSecondaryICD() {
+        return secondaryICD;
+    }
+
+    public void setSecondaryICD(int secondaryICD) {
+        this.secondaryICD = secondaryICD;
     }
 }

@@ -3,105 +3,105 @@ package main;
 import entity.Entity;
 
 public class CollisionChecker {
-    GamePanel gp;
+    private GamePanel gp;
 
     public CollisionChecker(GamePanel gp) {
         this.gp = gp;
     }
 
     public void checkTile(Entity entity) {
-        int entityLeftWorldX = entity.worldX + entity.solidArea.x;
-        int entityRightWorldX = entity.worldX + entity.solidArea.x + entity.solidArea.width;
-        int entityTopWorldY = entity.worldY;
-        int entityBottomWorldY = entity.worldY + entity.solidArea.y + entity.solidArea.height;
+        int entityLeftWorldX = entity.getWorldX() + entity.getSolidArea().x;
+        int entityRightWorldX = entity.getWorldX() + entity.getSolidArea().x + entity.getSolidArea().width;
+        int entityTopWorldY = entity.getWorldY();
+        int entityBottomWorldY = entity.getWorldY() + entity.getSolidArea().y + entity.getSolidArea().height;
 
         // Makes sure the butterflies do not go out of bounds
-        int entityLeftCol = entityLeftWorldX / gp.tileSize;
+        int entityLeftCol = entityLeftWorldX / gp.getTileSize();
         if (entityLeftCol < 0) { // prevents a butterfly from going off the screen
             entityLeftCol = 0;
         }
-        else if (entityLeftCol > gp.maxWorldCol - 1) {
-            entityLeftCol = gp.maxWorldCol - 1;
+        else if (entityLeftCol > gp.getMaxWorldCol() - 1) {
+            entityLeftCol = gp.getMaxWorldCol() - 1;
         }
-        int entityRightCol = entityRightWorldX / gp.tileSize;
+        int entityRightCol = entityRightWorldX / gp.getTileSize();
         if (entityRightCol < 0) { // prevents a butterfly from going off the screen
             entityRightCol = 0;
         }
-        else if (entityRightCol > gp.maxWorldCol - 1) {
-            entityRightCol = gp.maxWorldCol - 1;
+        else if (entityRightCol > gp.getMaxWorldCol() - 1) {
+            entityRightCol = gp.getMaxWorldCol() - 1;
         }
-        int entityTopRow = entityTopWorldY / gp.tileSize;
+        int entityTopRow = entityTopWorldY / gp.getTileSize();
         if (entityTopRow < 0) { // prevents a butterfly from going off the screen
             entityTopRow = 0;
         }
-        else if (entityTopRow > gp.maxWorldRow - 1) {
-            entityTopRow = gp.maxWorldRow - 1;
+        else if (entityTopRow > gp.getMaxWorldRow() - 1) {
+            entityTopRow = gp.getMaxWorldRow() - 1;
         }
-        int entityBottomRow = entityBottomWorldY / gp.tileSize;
+        int entityBottomRow = entityBottomWorldY / gp.getTileSize();
         if (entityBottomRow < 0) { // prevents a butterfly from going off the screen
             entityBottomRow = 0;
         }
-        else if (entityBottomRow > gp.maxWorldRow - 1) {
-            entityBottomRow = gp.maxWorldRow - 1;
+        else if (entityBottomRow > gp.getMaxWorldRow() - 1) {
+            entityBottomRow = gp.getMaxWorldRow() - 1;
         }
 
         int tileNum1, tileNum2;
 
-        switch (entity.direction) {
+        switch (entity.getDirection()) {
             case "up":
-                entityTopRow = (entityTopWorldY - entity.speed) / gp.tileSize;
+                entityTopRow = (entityTopWorldY - entity.getSpeed()) / gp.getTileSize();
                 if (entityTopRow < 0) { // prevents a butterfly from going off the screen
                     entityTopRow = 0;
                 }
-                else if (entityTopRow > gp.maxWorldRow - 1) {
-                    entityTopRow = gp.maxWorldRow - 1;
+                else if (entityTopRow > gp.getMaxWorldRow() - 1) {
+                    entityTopRow = gp.getMaxWorldRow() - 1;
                 }
-                tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
-                tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
-                if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
-                    entity.collisionOn = true;
+                tileNum1 = gp.getTileM().getMapTileNum()[entityLeftCol][entityTopRow];
+                tileNum2 = gp.getTileM().getMapTileNum()[entityRightCol][entityTopRow];
+                if (gp.getTileM().getTile()[tileNum1].collision || gp.getTileM().getTile()[tileNum2].collision) {
+                    entity.setCollisionOn(true);
                 }
                 break;
             case "down":
-                entityBottomRow = (entityBottomWorldY + entity.speed) / gp.tileSize;
+                entityBottomRow = (entityBottomWorldY + entity.getSpeed()) / gp.getTileSize();
                 if (entityBottomRow < 0) { // prevents a butterfly from going off the screen
                     entityBottomRow = 0;
                 }
-                else if (entityBottomRow > gp.maxWorldRow - 1) {
-                    entityBottomRow = gp.maxWorldRow - 1;
+                else if (entityBottomRow > gp.getMaxWorldRow() - 1) {
+                    entityBottomRow = gp.getMaxWorldRow() - 1;
                 }
-                tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
-                tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
-                if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
-                    entity.collisionOn = true;
+                tileNum1 = gp.getTileM().getMapTileNum()[entityLeftCol][entityBottomRow];
+                tileNum2 = gp.getTileM().getMapTileNum()[entityRightCol][entityBottomRow];
+                if (gp.getTileM().getTile()[tileNum1].collision || gp.getTileM().getTile()[tileNum2].collision) {
+                    entity.setCollisionOn(true);
                 }
                 break;
             case "left":
-                entityLeftCol = (entityLeftWorldX - entity.speed) / gp.tileSize;
+                entityLeftCol = (entityLeftWorldX - entity.getSpeed()) / gp.getTileSize();
                 if (entityLeftCol < 0) { // prevents a butterfly from going off the screen
                     entityLeftCol = 0;
                 }
-                else if (entityLeftCol > gp.maxWorldCol - 1) {
-                    entityLeftCol = gp.maxWorldCol - 1;
+                else if (entityLeftCol > gp.getMaxWorldCol() - 1) {
+                    entityLeftCol = gp.getMaxWorldCol() - 1;
                 }
-                tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
-                tileNum2 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
-                if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
-                    entity.collisionOn = true;
+                tileNum1 = gp.getTileM().getMapTileNum()[entityLeftCol][entityTopRow];
+                tileNum2 = gp.getTileM().getMapTileNum()[entityLeftCol][entityBottomRow];
+                if (gp.getTileM().getTile()[tileNum1].collision || gp.getTileM().getTile()[tileNum2].collision) {
+                    entity.setCollisionOn(true);
                 }
                 break;
             case "right":
-                entityRightCol = (entityRightWorldX + entity.speed) / gp.tileSize;
+                entityRightCol = (entityRightWorldX + entity.getSpeed()) / gp.getTileSize();
                 if (entityRightCol < 0) { // prevents a butterfly from going off the screen
                     entityRightCol = 0;
                 }
-                else if (entityRightCol > gp.maxWorldCol - 1) {
-                    entityRightCol = gp.maxWorldCol - 1;
+                else if (entityRightCol > gp.getMaxWorldCol() - 1) {
+                    entityRightCol = gp.getMaxWorldCol() - 1;
                 }
-                tileNum1 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
-                tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
-                if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
-                    entity.collisionOn = true;
+                tileNum1 = gp.getTileM().getMapTileNum()[entityRightCol][entityTopRow];
+                tileNum2 = gp.getTileM().getMapTileNum()[entityRightCol][entityBottomRow];
+                if (gp.getTileM().getTile()[tileNum1].collision || gp.getTileM().getTile()[tileNum2].collision) {
+                    entity.setCollisionOn(true);
                 }
                 break;
         }
@@ -205,10 +205,10 @@ public class CollisionChecker {
                 }
 
                 // resets the entity and the object's collision box
-                entity.solidArea.x = entity.solidAreaDefaultX;
-                entity.solidArea.y = entity.solidAreaDefaultY;
-                target[i].solidArea.x = target[i].solidAreaDefaultX;
-                target[i].solidArea.y = target[i].solidAreaDefaultY;
+                entity.getSolidArea().x = entity.getSolidAreaDefaultX();
+                entity.getSolidArea().y = entity.getSolidAreaDefaultY();
+                target[i].getSolidArea().x = target[i].getSolidAreaDefaultX();
+                target[i].getSolidArea().y = target[i].getSolidAreaDefaultY();
             }
         }
 
@@ -221,37 +221,37 @@ public class CollisionChecker {
         boolean contactPlayer = false; // keeps track of whether another entity is making contact with the player
 
         // Get entity's solid area position
-        entity.solidArea.x = entity.worldX + entity.solidArea.x;
-        entity.solidArea.y = entity.worldY + entity.solidArea.y;
+        entity.getSolidArea().x = entity.getWorldX() + entity.getSolidArea().x;
+        entity.getSolidArea().y = entity.getWorldY() + entity.getSolidArea().y;
 
         // Get the object's solid area position
-        gp.player.solidArea.x = gp.player.worldX + gp.player.solidArea.x;
-        gp.player.solidArea.y = gp.player.worldY + gp.player.solidArea.y;
+        gp.getPlayer().getSolidArea().x = gp.getPlayer().getWorldX() + gp.getPlayer().getSolidArea().x;
+        gp.getPlayer().getSolidArea().y = gp.getPlayer().getWorldY() + gp.getPlayer().getSolidArea().y;
 
-        switch (entity.direction) {
+        switch (entity.getDirection()) {
             case "up":
-                entity.solidArea.y -= entity.speed; // predicts the movement of the entity
+                entity.getSolidArea().y -= entity.getSpeed(); // predicts the movement of the entity
                 break;
             case "down":
-                entity.solidArea.y += entity.speed;
+                entity.getSolidArea().y += entity.getSpeed();
                 break;
             case "left":
-                entity.solidArea.x -= entity.speed;
+                entity.getSolidArea().x -= entity.getSpeed();
                 break;
             case "right":
-                entity.solidArea.x += entity.speed;
+                entity.getSolidArea().x += entity.getSpeed();
                 break;
         }
-        if (entity.solidArea.intersects(gp.player.solidArea)) { // automatically checks if the two rectangles are colliding
-            entity.collisionOn = true;
+        if (entity.getSolidArea().intersects(gp.getPlayer().getSolidArea())) { // automatically checks if the two rectangles are colliding
+            entity.setCollisionOn(true);
             contactPlayer = true; // the entity has made contact with the player
         }
 
         // resets the entity and the object's collision box
-        entity.solidArea.x = entity.solidAreaDefaultX;
-        entity.solidArea.y = entity.solidAreaDefaultY;
-        gp.player.solidArea.x = gp.player.solidAreaDefaultX;
-        gp.player.solidArea.y = gp.player.solidAreaDefaultY;
+        entity.getSolidArea().x = entity.getSolidAreaDefaultX();
+        entity.getSolidArea().y = entity.getSolidAreaDefaultY();
+        gp.getPlayer().getSolidArea().x = gp.getPlayer().getSolidAreaDefaultX();
+        gp.getPlayer().getSolidArea().y = gp.getPlayer().getSolidAreaDefaultY();
 
         return contactPlayer;
     }

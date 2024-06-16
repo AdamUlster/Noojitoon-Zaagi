@@ -6,15 +6,15 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Map extends TileManager{
-    GamePanel gp;
-    BufferedImage worldMap;
-    public boolean miniMapOn = true; // the mini map should be displayed
-    public Map(GamePanel gp) {
+    private GamePanel gp;
+    private BufferedImage worldMap;
+    private boolean miniMapOn = true; // the mini map should be displayed
+    private Map(GamePanel gp) {
         super(gp);
         this.gp = gp;
         createWorldMap();
     }
-    public void createWorldMap() {
+    private void createWorldMap() {
 
         // Gets the map size
         int worldMapWidth = gp.tileSize * gp.maxWorldCol;
@@ -42,7 +42,7 @@ public class Map extends TileManager{
         }
     }
 
-    public void drawFullMapScreen(Graphics2D g2) { // draws the full map
+    private void drawFullMapScreen(Graphics2D g2) { // draws the full map
         g2.setColor(Color.black); // background colour
         g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
 
@@ -71,31 +71,31 @@ public class Map extends TileManager{
         }
     }
 
-    public void drawMiniMap(Graphics2D g2) { // draws the mini map
+    private void drawMiniMap(Graphics2D g2) { // draws the mini map
         if (miniMapOn) {
             int width = 250;
             int height = 250;
-            int x = gp.screenWidth - width - 50; // displays the map at the top right
+            int x = gp.getScreenWidth() - width - 50; // displays the map at the top right
             int y = 50;
 
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f)); // Sets the opacity to draw the map
             g2.drawImage(worldMap, x, y, width, height, null); // draws the mini map
 
             // Draw the player on the mini map
-            double scale = (double) gp.tileSize * gp.maxWorldCol / width; // gets the scale which represents the size and position to draw the player
-            int playerX = (int) (x + gp.player.worldX / scale); // gets the player's scaled world X
-            int playerY = (int) (y + gp.player.worldY / scale); // gets the player's scaled world Y
-            int playerSize = gp.tileSize / 4;
+            double scale = (double) gp.getTileSize() * gp.getMaxWorldCol() / width; // gets the scale which represents the size and position to draw the player
+            int playerX = (int) (x + gp.getPlayer().getWorldX() / scale); // gets the player's scaled world X
+            int playerY = (int) (y + gp.getPlayer().getWorldY() / scale); // gets the player's scaled world Y
+            int playerSize = gp.getTileSize() / 4;
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // Resets the opacity when drawing the player
-            g2.drawImage(gp.player.down1, playerX - 6, playerY - 6, playerSize, playerSize, null); // draws the player with an offset due to the place Java Swing draws a sprite from
+            g2.drawImage(gp.getPlayer().getDown1(), playerX - 6, playerY - 6, playerSize, playerSize, null); // draws the player with an offset due to the place Java Swing draws a sprite from
 
             // Draw the totems on the mini map
-            for (int i = 0; i < gp.obj.length; i++) {
-                if (gp.obj[i] != null && gp.obj[i].name.equals("Totem")) {
-                    int totemX = (int)(x + gp.obj[i].worldX / scale); // gets the totem's scaled world X
-                    int totemY = (int)(y + gp.obj[i].worldY / scale); // gets the totem's scaled world Y
-                    int totemSize = (gp.tileSize / 3);
-                    g2.drawImage(gp.obj[i].down1, totemX - 6, totemY - 6, totemSize, totemSize, null); // draws the totem with an offset due to the place Java Swing draws a sprite from
+            for (int i = 0; i < gp.getObj().length; i++) {
+                if (gp.getObj()[i] != null && gp.getObj()[i].getName().equals("Totem")) {
+                    int totemX = (int)(x + gp.getObj()[i].getWorldX() / scale); // gets the totem's scaled world X
+                    int totemY = (int)(y + gp.getObj()[i].getWorldY() / scale); // gets the totem's scaled world Y
+                    int totemSize = (gp.getTileSize() / 3);
+                    g2.drawImage(gp.getObj()[i].getDown1(), totemX - 6, totemY - 6, totemSize, totemSize, null); // draws the totem with an offset due to the place Java Swing draws a sprite from
                 }
             }
         }

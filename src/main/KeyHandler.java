@@ -9,16 +9,16 @@ import java.security.Key;
 //handle keyboard inputs
 public class KeyHandler implements KeyListener, MouseListener {
 
-    public GamePanel gp;
-    public boolean upPressed, downPressed, leftPressed, rightPressed, shotKeyPressed;//boolean values that determine which keys are
+    private GamePanel gp;
+    private boolean upPressed, downPressed, leftPressed, rightPressed, shotKeyPressed;//boolean values that determine which keys are
     // pressed and which are not
-    public boolean onePressed, twoPressed, threePressed;//boolean values that determine which number keys have been
-    public boolean primaryPressed, secondaryPressed;
+    private boolean onePressed, twoPressed, threePressed;//boolean values that determine which number keys have been
+    private boolean primaryPressed, secondaryPressed;
     // pressed for sprite switching
     //DEBUG STUFF
-    public boolean checkDrawTime = false;
-    public boolean displayControls = false;
-    public boolean displayMap = false;
+    private boolean checkDrawTime = false;
+    private boolean displayControls = false;
+    private boolean displayMap = false;
 
     public KeyHandler(GamePanel gp) { // constructor
         this.gp = gp;
@@ -45,21 +45,21 @@ public class KeyHandler implements KeyListener, MouseListener {
         if (code == KeyEvent.VK_D) {//if D key has been pressed
             rightPressed = true;
         }
-        if (!gp.player.isDying) { // runs if the player is not dying
-            if (code == KeyEvent.VK_1 && !gp.player.spirits[0].dead) {//if 1 key has been pressed and bear is not dead
+        if (!gp.getPlayer().isDying()) { // runs if the player is not dying
+            if (code == KeyEvent.VK_1 && !gp.getPlayer().getSpirits()[0].isDead()) {//if 1 key has been pressed and bear is not dead
                 onePressed = true;
-            } else if (code == KeyEvent.VK_1 && gp.player.spirits[0].dead && gp.player.displayDeathMessage) { // if the spirit is dead and the death message should be displayed
-                gp.ui.showMessage("You cannot switch to the bear since the bear is dead");
+            } else if (code == KeyEvent.VK_1 && gp.getPlayer().getSpirits()[0].isDead() && gp.getPlayer().isDisplayDeathMessage()) { // if the spirit is dead and the death message should be displayed
+                gp.getUi().showMessage("You cannot switch to the bear since the bear is dead");
             }
-            if (code == KeyEvent.VK_2 && !gp.player.spirits[1].dead) {//if key 2 has been pressed and eagle is not dead
+            if (code == KeyEvent.VK_2 && !gp.getPlayer().getSpirits()[1].isDead()) {//if key 2 has been pressed and eagle is not dead
                 twoPressed = true;
-            } else if (code == KeyEvent.VK_2 && gp.player.spirits[1].dead && gp.player.displayDeathMessage) { // if the spirit is dead and the death message should be displayed
-                gp.ui.showMessage("You cannot switch to the eagle since the eagle is dead");
+            } else if (code == KeyEvent.VK_2 && gp.getPlayer().getSpirits()[1].isDead() && gp.getPlayer().isDisplayDeathMessage()) { // if the spirit is dead and the death message should be displayed
+                gp.getUi().showMessage("You cannot switch to the eagle since the eagle is dead");
             }
-            if (code == KeyEvent.VK_3 && !gp.player.spirits[2].dead) {//if key 3 has been pressed and turtle is not dead
+            if (code == KeyEvent.VK_3 && !gp.getPlayer().getSpirits()[2].isDead()) {//if key 3 has been pressed and turtle is not dead
                 threePressed = true;
-            } else if (code == KeyEvent.VK_3 && gp.player.spirits[2].dead && gp.player.displayDeathMessage) { // if the spirit is dead and the death message should be displayed
-                gp.ui.showMessage("You cannot switch to the turtle since the turtle is dead");
+            } else if (code == KeyEvent.VK_3 && gp.getPlayer().getSpirits()[2].isDead() && gp.getPlayer().isDisplayDeathMessage()) { // if the spirit is dead and the death message should be displayed
+                gp.getUi().showMessage("You cannot switch to the turtle since the turtle is dead");
             }
             if (code == KeyEvent.VK_K) {//K key has been pressed
                 primaryPressed = true;
@@ -69,7 +69,7 @@ public class KeyHandler implements KeyListener, MouseListener {
             }
             //continue this chain for when more moves are added
         }
-        if (code == KeyEvent.VK_F && gp.player.getCurrentSpirit().name.equals("Turtle")) { // only allow the projectile to be shot if the "F" key is pressed and the current spirit is a turtle
+        if (code == KeyEvent.VK_F && gp.getPlayer().getCurrentSpirit().getName().equals("Turtle")) { // only allow the projectile to be shot if the "F" key is pressed and the current spirit is a turtle
             shotKeyPressed = true;
         }
 
@@ -87,12 +87,12 @@ public class KeyHandler implements KeyListener, MouseListener {
         }
 
         if (code == KeyEvent.VK_Q) {
-            gp.map.miniMapOn = !gp.map.miniMapOn; // displays the mini map if it wasn't already displayed
+            gp.getMap().miniMapOn = !gp.getMap().miniMapOn; // displays the mini map if it wasn't already displayed
         }
 
         if (code == KeyEvent.VK_H) {
-            gp.player.onPath = !gp.player.onPath;
-            gp.tileM.drawPath = !gp.tileM.drawPath; // draws the path to the maze if it wasn't already shown
+            gp.getPlayer().setOnPath(!gp.getPlayer().isOnPath());
+            gp.getTileM().setDrawPath(!gp.getTileM().isDrawPath()); // draws the path to the maze if it wasn't already shown
         }
     }
 
@@ -164,5 +164,58 @@ public class KeyHandler implements KeyListener, MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    // Get and set methods
+    public boolean isUpPressed() {
+        return upPressed;
+    }
+
+    public boolean isDownPressed() {
+        return downPressed;
+    }
+
+    public boolean isLeftPressed() {
+        return leftPressed;
+    }
+
+    public boolean isRightPressed() {
+        return rightPressed;
+    }
+
+    public boolean isShotKeyPressed() {
+        return shotKeyPressed;
+    }
+
+    public boolean isOnePressed() {
+        return onePressed;
+    }
+
+    public boolean isTwoPressed() {
+        return twoPressed;
+    }
+
+    public boolean isThreePressed() {
+        return threePressed;
+    }
+
+    public boolean isPrimaryPressed() {
+        return primaryPressed;
+    }
+
+    public boolean isSecondaryPressed() {
+        return secondaryPressed;
+    }
+
+    public boolean isCheckDrawTime() {
+        return checkDrawTime;
+    }
+
+    public boolean isDisplayControls() {
+        return displayControls;
+    }
+
+    public boolean isDisplayMap() {
+        return displayMap;
     }
 }

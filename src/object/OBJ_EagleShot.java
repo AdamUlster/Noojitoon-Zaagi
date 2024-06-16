@@ -5,22 +5,22 @@ import entity.TargetingProjectile;
 import main.GamePanel;
 
 public class OBJ_EagleShot extends TargetingProjectile {
-    GamePanel gp;
+    private GamePanel gp;
 
     public OBJ_EagleShot(GamePanel gp) {
         super(gp);
         this.gp = gp;
 
-        name = "Eagle Shot";
-        speed = 20;
-        maxHealth = 80;
-        health = maxHealth;
-        attack = 10;
+        setName("Eagle Shot");
+        setSpeed(20);
+        setMaxHealth(80);
+        setHealth(maxHealth);
+        setAttack(10);
         useCost = 1;
         alive = false;
         getImage();
     }
-    public void getImage() {
+    private void getImage() {
         up1 = setup("objects/eagle_shot", 1, 1);
         up2 = setup("objects/eagle_shot", 1, 1);
         down1 = setup("objects/eagle_shot", 1, 1);

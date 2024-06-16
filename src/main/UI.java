@@ -8,17 +8,17 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class UI {
-    GamePanel gp;
-    Font arial_40; // not instantiated in game loop so that it doesn't run 60 times per second
-    BufferedImage totemImage, heart_full, heart_half, heart_blank;
-    public boolean messageOn = false; // whether there is a message displayed
-    public boolean loadingMessageOn = true; // loading sprites message
-    public boolean respawningMessageOn = false; // respawning message
-    public boolean collectionMessageOn = false; // totem collection message
-    public boolean completionMessageOn = false; // game over message
-    public String message = "";
-    int messageDisplayTime = 0; // keeps track of the amount of time that has elapsed since the message has appeared
-    public int respawningMessageDisplayTime = 0; // counts to 3 and then, the player respawns
+    private GamePanel gp;
+    private Font arial_40; // not instantiated in game loop so that it doesn't run 60 times per second
+    private BufferedImage totemImage, heart_full, heart_half, heart_blank;
+    private boolean messageOn = false; // whether there is a message displayed
+    private boolean loadingMessageOn = true; // loading sprites message
+    private boolean respawningMessageOn = false; // respawning message
+    private boolean collectionMessageOn = false; // totem collection message
+    private boolean completionMessageOn = false; // game over message
+    private String message = "";
+    private int messageDisplayTime = 0; // keeps track of the amount of time that has elapsed since the message has appeared
+    private int respawningMessageDisplayTime = 0; // counts to 3 and then, the player respawns
 
     public UI (GamePanel gp) { // constructor
         this.gp = gp;
@@ -35,22 +35,22 @@ public class UI {
         heart_blank = heart.image3;
     }
 
-    public void showMessage(String text) {
+    void showMessage(String text) {
         message = text;
         messageOn = true;
     }
 
-    public void showLoadingMessage(String text) {
+    private void showLoadingMessage(String text) {
         message = text;
         loadingMessageOn = true;
     }
 
-    public void showCollectionMessage(String text) {
+    private void showCollectionMessage(String text) {
         message = text;
         collectionMessageOn = true;
     }
 
-    public void showRespawningMessage() {
+    private void showRespawningMessage() {
         respawningMessageOn = true;
     }
 
@@ -166,7 +166,7 @@ public class UI {
         }
     }
 
-    public void drawSpiritsHealth(Graphics2D g2) {
+    private void drawSpiritsHealth(Graphics2D g2) {
 
         // sets the coordinates of the spirit name in terms of the tile size
         int x;
@@ -254,5 +254,70 @@ public class UI {
                 y += 140;
             }
         }
+    }
+
+    // Get and set methods
+    public boolean isMessageOn() {
+        return messageOn;
+    }
+
+    public void setMessageOn(boolean messageOn) {
+        this.messageOn = messageOn;
+    }
+
+    public boolean isLoadingMessageOn() {
+        return loadingMessageOn;
+    }
+
+    public void setLoadingMessageOn(boolean loadingMessageOn) {
+        this.loadingMessageOn = loadingMessageOn;
+    }
+
+    public boolean isRespawningMessageOn() {
+        return respawningMessageOn;
+    }
+
+    public void setRespawningMessageOn(boolean respawningMessageOn) {
+        this.respawningMessageOn = respawningMessageOn;
+    }
+
+    public boolean isCollectionMessageOn() {
+        return collectionMessageOn;
+    }
+
+    public void setCollectionMessageOn(boolean collectionMessageOn) {
+        this.collectionMessageOn = collectionMessageOn;
+    }
+
+    public boolean isCompletionMessageOn() {
+        return completionMessageOn;
+    }
+
+    public void setCompletionMessageOn(boolean completionMessageOn) {
+        this.completionMessageOn = completionMessageOn;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public int getMessageDisplayTime() {
+        return messageDisplayTime;
+    }
+
+    public void setMessageDisplayTime(int messageDisplayTime) {
+        this.messageDisplayTime = messageDisplayTime;
+    }
+
+    public int getRespawningMessageDisplayTime() {
+        return respawningMessageDisplayTime;
+    }
+
+    public void setRespawningMessageDisplayTime(int respawningMessageDisplayTime) {
+        this.respawningMessageDisplayTime = respawningMessageDisplayTime;
     }
 }

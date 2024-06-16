@@ -3,7 +3,7 @@ package entity;
 import main.GamePanel;
 
 public class Projectile extends Entity {
-    Entity user;
+    private Entity user;
 
     public Projectile(GamePanel gp) {
         super(gp);
@@ -11,7 +11,7 @@ public class Projectile extends Entity {
         type = 3; // sets this entity's type to a projectile
     }
 
-    public void set(int worldX, int worldY, String direction, boolean alive, Entity user) { // passes the coordinates to create the fireball
+    private void set(int worldX, int worldY, String direction, boolean alive, Entity user) { // passes the coordinates to create the fireball
         this.worldX = worldX;
         this.worldY = worldY;
         this.direction = direction;

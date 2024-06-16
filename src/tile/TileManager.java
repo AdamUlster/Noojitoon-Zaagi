@@ -10,11 +10,11 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 public class TileManager {
-    GamePanel gp;
-    public Tile[] tile;
-    public int mapTileNum[][];//create a 2d array for each tile element in the map
+    private GamePanel gp;
+    private Tile[] tile;
+    private int mapTileNum[][];//create a 2d array for each tile element in the map
 
-    public boolean drawPath = false;
+    private boolean drawPath = false;
     public TileManager(GamePanel gp) {//set default
 
         this.gp = gp;
@@ -25,7 +25,7 @@ public class TileManager {
         loadMap("/maps/map_1.txt");//load the formation of the tiles after inputing the file path of the map file
     }
 
-    public void getTileImage() {//retrieves the tile png's from the resource files
+    private void getTileImage() {//retrieves the tile png's from the resource files
 
         //setup(index of tile, tile file name, collision on or off);
         setup(0, "tree", true);//turn back to true
@@ -38,7 +38,7 @@ public class TileManager {
         setup(7, "snowy_tree", true);
     }
 
-    public void setup(int index, String imageName, boolean collision) {
+    private void setup(int index, String imageName, boolean collision) {
         UtilityTool uTool = new UtilityTool();
 
         try {
@@ -51,7 +51,7 @@ public class TileManager {
         }
     }
 
-    public void loadMap(String mapPath) {//reads through the map file and assigns into the tile array
+    private void loadMap(String mapPath) {//reads through the map file and assigns into the tile array
         try {
             InputStream is = getClass().getResourceAsStream(mapPath);//extracts map file from resource folder
 
@@ -126,5 +126,38 @@ public class TileManager {
                 g2.fillRect(screenX, screenY, gp.tileSize, gp.tileSize);
             }
         }
+    }
+
+    // Get and set methods
+    public boolean isDrawPath() {
+        return drawPath;
+    }
+
+    public void setDrawPath(boolean drawPath) {
+        this.drawPath = drawPath;
+    }
+
+    public GamePanel getGp() {
+        return gp;
+    }
+
+    public void setGp(GamePanel gp) {
+        this.gp = gp;
+    }
+
+    public Tile[] getTile() {
+        return tile;
+    }
+
+    public void setTile(Tile[] tile) {
+        this.tile = tile;
+    }
+
+    public int[][] getMapTileNum() {
+        return mapTileNum;
+    }
+
+    public void setMapTileNum(int[][] mapTileNum) {
+        this.mapTileNum = mapTileNum;
     }
 }

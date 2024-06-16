@@ -7,25 +7,25 @@ import java.awt.*;
 public class Spirit extends Entity {
     public Spirit(GamePanel gp, String name, int maxHealth, int health, int x, int y, int width, int height, int width2, int height2, int attack, int defense) {
         super(gp);
-        this.name = name; // sets the spirit's name to the value passed to it
-        this.maxHealth = maxHealth;
-        this.health = health;
-        this.attack = attack;
-        this.defense = defense;
+        this.setName(name); // sets the spirit's name to the value passed to it
+        this.setMaxHealth(maxHealth);
+        this.setHealth(health);
+        this.setAttack(attack);
+        this.setDefense(defense);
 
         // gives each spirit its own image
         if (name.equals("Bear")) {
-            up1 = setup("bear/bear_up", 1, 1);
-            up2 = setup("bear/bear_up_2", 1, 1);
-            down1 = setup("bear/bear_down", 1, 1);
-            down2 = setup("bear/bear_down_2", 1, 1);
-            left1 = setup("bear/bear_left", 1, 1);
-            left2 = setup("bear/bear_left_2", 1, 1);
-            right1 = setup("bear/bear_right", 1, 1);
-            right2 = setup("bear/bear_right_2", 1, 1);
+            setUp1(setup("bear/bear_up", 1, 1));
+            setUp2(setup("bear/bear_up_2", 1, 1));
+            setDown1(setup("bear/bear_down", 1, 1));
+            setDown2(setup("bear/bear_down_2", 1, 1));
+            setLeft1(setup("bear/bear_left", 1, 1));
+            setLeft2(setup("bear/bear_left_2", 1, 1));
+            setRight1(setup("bear/bear_right", 1, 1));
+            setRight2(setup("bear/bear_right_2", 1, 1));
         }
         else if (name.equals("Eagle")) {
-            up1 = setup("eagle/eagle_up", 1, 1);
+            setUp1(setup("eagle/eagle_up", 1, 1));
             up2 = setup("eagle/eagle_up_2", 1, 1);
             down1 = setup("eagle/eagle_down", 1, 1);
             down2 = setup("eagle/eagle_down_2", 1, 1);

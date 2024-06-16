@@ -7,8 +7,7 @@ import java.util.Random;
 
 public class MON_Miasma extends Entity {
 
-    public double hitboxScale = 0.70;//scaling factor for hitbox
-    public MON_Miasma(GamePanel gp) {
+    private MON_Miasma(GamePanel gp) {
         super(gp);
 
         type = 2; // sets this entity's type to a monster
@@ -30,7 +29,7 @@ public class MON_Miasma extends Entity {
         getImage();
     }
 
-    public void getImage() {
+    private void getImage() {
         up1 = setup("monsters/miasma_1", 1,1);
         up2 = setup("monsters/miasma_2", 1,1);
         down1 = setup("monsters/miasma_1", 1,1);
