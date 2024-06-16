@@ -59,7 +59,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Player player = new Player(this, keyH);//CREATE PLPAYER
     public Entity[] obj = new Entity[10]; // CREATE 10 OBJECTS
     public Entity[] npc = new Entity[50];// CREATE 50 NPCs
-    public Entity[] monster = new Entity[200];//CREATE 200 MONSTERS
+    public Entity[] monster = new Entity[170];//CREATE 170
     public ArrayList<Entity> projectileList = new ArrayList<>(); // CREATE ARRAY LIST TO STORE ALL THE PROJECTILES
     public ArrayList<Entity> targetProjectileList = new ArrayList<>(); // CREATE LIST TO STORE TARGET PROJECTILES
     public ArrayList<Entity> entityList = new ArrayList<>(); // CREATE ARRAY LIST TO STORE ALL ENTITIES

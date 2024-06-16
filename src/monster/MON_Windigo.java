@@ -52,17 +52,19 @@ public class MON_Windigo extends Entity {
 //        CALCULATE DISTANCE FROM THE PLAYER
         int xDistance = Math.abs(worldX - gp.player.worldX);
         int yDistance = Math.abs(worldY - gp.player.worldY);
-        int tileDistance = (xDistance + yDistance) / gp.tileSize;
+        int tileDistance = (int)Math.sqrt(Math.pow(xDistance, 2.0) + Math.pow(yDistance, 2)) / gp.tileSize;
 
-//        CHECK IF THE PLAYER IS IN AGGRO MODE AND IS WITHIN FIVE TILES OF THE PLAYER
-        if (!onPath && tileDistance < 5) {
+//        CHECK IF THE PLAYER IS IN AGGRO MODE AND IS WITHIN 4 TILES OF THE PLAYER
+        if (!onPath && tileDistance < 4) {
             int i = new Random().nextInt(100) + 1; // PICK A RANDOM NUMBER FROM 1 TO 100
             if (i > 50) {
                 onPath = true; // HALF THE TIME IT DOESN'T FOLLOW THE PLAYER
+            } else {
+                onPath = false;
             }
         }
 //        TURNS OFF AGGRO ONCE THE PLAYER IS A CERTAIN DISTANCE AWAY
-        if (onPath && tileDistance > 15) {
+        if (onPath && tileDistance > 7) {
             onPath = false;
         }
     }

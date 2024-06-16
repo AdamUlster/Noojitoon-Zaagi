@@ -7,7 +7,7 @@ public class Main {
         window = new JFrame();//CREATE NEW J-FRAME
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // EXITS PROGRAM WHEN USER HITS X
         window.setResizable(false); // USER CANNOT RESIZE THE WINDOW
-        window.setTitle("my 2D adventure"); // GAME TITLE
+        window.setTitle("Noojitoon Zaagi'"); // GAME TITLE
 
         GamePanel gamePanel = new GamePanel(); // CREATE PANEL
         window.add(gamePanel);//ADD GAME PANEL TO THE WINDOW

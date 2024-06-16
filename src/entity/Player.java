@@ -21,12 +21,12 @@ public class Player extends Entity {
 
     public int numTotems = 0; // KEEP TRACK OF NUMBER OF TOTEMS PLAYER HAS COLLECTED
 
-//    SCALING FACTORS FOR PLAYER HIT BOXES
+    //    SCALING FACTORS FOR PLAYER HIT BOXES
     public double bearHitboxScale = 0.5;
     public double eagleHitboxScale = 0.5;
     public double turtleHitboxScale = 0.5;
 
-//    ATTACKING ZONE, A HITBOX TO DETERMINE WHETHER AN ATTACK REGISTERS ON A MONSTER
+    //    ATTACKING ZONE, A HITBOX TO DETERMINE WHETHER AN ATTACK REGISTERS ON A MONSTER
     public double bearAttackBoxScaleSize = 1.25; // BEAR SPIRIT ATTACKING HIT BOX SCALE
     public double eagleAttackBoxScaleSize = 1.25;// EAGLE SPIRIT ATTACKING HIT BOX SCALE
     public double turtleAttackBoxScaleSize = 1;// TURTLE SPIRIT ATTACKING HIT BOX SCALE
@@ -39,10 +39,14 @@ public class Player extends Entity {
     public boolean eagleSpecialUnlocked = false;
     public boolean turtleSpecialUnlocked = false;
 
+//    SPIRIT STATES
+    public boolean berserkerMode = false;// BEAR SPIRIT IN BERSERK MODE
+
     //COUNTERS
     public int invincibilityCounter = 0;
     public int primaryICD = 0;//internal cooldown for attacks
     public int secondaryICD = 0;//internal cooldown for special/secondary moves
+    public int berserkerCounter = 0;//BEAR SPIRIT BERSERKER MODE DURATION
 
     public Player(GamePanel gp, KeyHandler keyH) { //CREATE DEFAULT ATTRIBUTES (CONSTRUCTOR)
 
@@ -79,7 +83,7 @@ public class Player extends Entity {
         targetProjectile = new OBJ_EagleShot(gp);
 
 //        INITIALIZE INDIVUDAL SPIRIT SPRITES AND THEIR HEALTH
-        spirits[0] = new Spirit(gp, "Bear", 9, 9,
+        spirits[0] = new Spirit(gp, "Bear", 18, 18,
                 (int) (gp.tileSize * (1.0 - bearHitboxScale)) / 2,
                 (int) (gp.tileSize * (1.0 - bearHitboxScale)) / 2,
                 (int) (gp.tileSize * bearHitboxScale),
@@ -87,7 +91,7 @@ public class Player extends Entity {
                 (int) (gp.tileSize * bearAttackBoxScaleSize),
                 (int) (gp.tileSize * bearAttackBoxScaleSize),
                 1, 4);
-        spirits[1] = new Spirit(gp, "Eagle", 5, 5,
+        spirits[1] = new Spirit(gp, "Eagle", 14, 14,
                 (int) (gp.tileSize * eagleHitboxScale) / 2,
                 (int) (gp.tileSize * eagleHitboxScale) / 2,
                 (int) (gp.tileSize * eagleHitboxScale),
@@ -95,7 +99,7 @@ public class Player extends Entity {
                 (int) (gp.tileSize * eagleAttackBoxScaleSize),
                 (int) (gp.tileSize * eagleAttackBoxScaleSize),
                 1, 4);
-        spirits[2] = new Spirit(gp, "Turtle", 8, 8,
+        spirits[2] = new Spirit(gp, "Turtle", 20, 20,
                 (int) (gp.tileSize * (1.0 - turtleHitboxScale)) / 2,
                 (int) (gp.tileSize * (1.0 - turtleHitboxScale)) / 2,
                 (int) (gp.tileSize * turtleHitboxScale),
@@ -106,7 +110,7 @@ public class Player extends Entity {
         switchSpirit(0); // STARS THE GAME AS THE BEAR SPIRIT
     }
 
-//    RESETS GAME IF ALL SPIRITS HAVE DIED
+    //    RESETS GAME IF ALL SPIRITS HAVE DIED
     public void restoreSettings() {
         Arrays.fill(gp.npc, null);
         Arrays.fill(gp.monster, null);
@@ -136,7 +140,7 @@ public class Player extends Entity {
         setDefaultValues(); // sets the default player values
     }
 
-//    RETRIEVE PLAYER MOVEMENT IMAGES
+    //    RETRIEVE PLAYER MOVEMENT IMAGES
     public void getPlayerImage() {
         Spirit currentSpirit = getCurrentSpirit(); // GET CURRENT SPIRIT
 
@@ -150,88 +154,102 @@ public class Player extends Entity {
         right1 = currentSpirit.right1;
         right2 = currentSpirit.right2;
 
+        String name = getCurrentSpirit().name;
 //        USE SETUP METHOD FROM ENTITY CLASS TO RETRIEVE WALKING FILES DEPENDING ON THE CURRENT SPIRIT
-        if (currentSpirit.name.equals("Bear")) { //BEAR IMAGES
-            up1 = setup("bear/bear_up", 1, 1);
-            up2 = setup("bear/bear_up_2", 1, 1);
-            down1 = setup("bear/bear_down", 1, 1);
-            down2 = setup("bear/bear_down_2", 1, 1);
-            left1 = setup("bear/bear_left", 1, 1);
-            left2 = setup("bear/bear_left_2", 1, 1);
-            right1 = setup("bear/bear_right", 1, 1);
-            right2 = setup("bear/bear_right_2", 1, 1);
+        switch (name) {
+            case "Bear": //BEAR IMAGES
+                up1 = setup("bear/bear_up", 1, 1);
+                up2 = setup("bear/bear_up_2", 1, 1);
+                down1 = setup("bear/bear_down", 1, 1);
+                down2 = setup("bear/bear_down_2", 1, 1);
+                left1 = setup("bear/bear_left", 1, 1);
+                left2 = setup("bear/bear_left_2", 1, 1);
+                right1 = setup("bear/bear_right", 1, 1);
+                right2 = setup("bear/bear_right_2", 1, 1);
+                break;
 
-        } else if (currentSpirit.name.equals("Eagle")) { //EAGLE IMAGES
-            up1 = setup("eagle/eagle_up", 1, 1);
-            up2 = setup("eagle/eagle_up_2", 1, 1);
-            down1 = setup("eagle/eagle_down", 1, 1);
-            down2 = setup("eagle/eagle_down_2", 1, 1);
-            left1 = setup("eagle/eagle_left", 1, 1);
-            left2 = setup("eagle/eagle_left_2", 1, 1);
-            right1 = setup("eagle/eagle_right", 1, 1);
-            right2 = setup("eagle/eagle_right_2", 1, 1);
+            case "Eagle": //EAGLE IMAGES
+                up1 = setup("eagle/eagle_up", 1, 1);
+                up2 = setup("eagle/eagle_up_2", 1, 1);
+                down1 = setup("eagle/eagle_down", 1, 1);
+                down2 = setup("eagle/eagle_down_2", 1, 1);
+                left1 = setup("eagle/eagle_left", 1, 1);
+                left2 = setup("eagle/eagle_left_2", 1, 1);
+                right1 = setup("eagle/eagle_right", 1, 1);
+                right2 = setup("eagle/eagle_right_2", 1, 1);
+                break;
 
-        } else if (currentSpirit.name.equals("Turtle")) {// TURTLE IMAGES
-            up1 = setup("turtle/turtle_up", 1.25, 1.25);
-            up2 = setup("turtle/turtle_up_2", 1.25, 1.25);
-            down1 = setup("turtle/turtle_down", 1.25, 1.25);
-            down2 = setup("turtle/turtle_down_2", 1.25, 1.25);
-            left1 = setup("turtle/turtle_left", 1.25, 1.25);
-            left2 = setup("turtle/turtle_left_2", 1.25, 1.25);
-            right1 = setup("turtle/turtle_right", 1.25, 1.25);
-            right2 = setup("turtle/turtle_right_2", 1.25, 1.25);
+            case "Turtle":// TURTLE IMAGES
+                up1 = setup("turtle/turtle_up", 1.25, 1.25);
+                up2 = setup("turtle/turtle_up_2", 1.25, 1.25);
+                down1 = setup("turtle/turtle_down", 1.25, 1.25);
+                down2 = setup("turtle/turtle_down_2", 1.25, 1.25);
+                left1 = setup("turtle/turtle_left", 1.25, 1.25);
+                left2 = setup("turtle/turtle_left_2", 1.25, 1.25);
+                right1 = setup("turtle/turtle_right", 1.25, 1.25);
+                right2 = setup("turtle/turtle_right_2", 1.25, 1.25);
+                break;
         }
     }
 
-//    USE SETUP METHOD FROM ENTITY CLASS TO RETRIEVE PRIMARY ATTACK FILES DEPENDING ON THE CURRENT SPIRIT
+    //    USE SETUP METHOD FROM ENTITY CLASS TO RETRIEVE PRIMARY ATTACK FILES DEPENDING ON THE CURRENT SPIRIT
     public void getPlayerAttackImage() {
-        if (getCurrentSpirit().name.equals("Bear")) {// BEAR IMAGES
-            attackUp1 = setup("bear/bear_up_attack_1", 1.25, 1.25);
-            attackUp2 = setup("bear/bear_up_attack_2", 1.25, 1.25);
-            attackUp3 = setup("bear/bear_up_attack_3", 1.25, 1.25);
-            attackDown1 = setup("bear/bear_down_attack_1", 1.25, 1.25);
-            attackDown2 = setup("bear/bear_down_attack_2", 1.25, 1.25);
-            attackDown3 = setup("bear/bear_down_attack_3", 1.25, 1.25);
-            attackLeft1 = setup("bear/bear_left_attack_1", 1.25, 1.25);
-            attackLeft2 = setup("bear/bear_left_attack_2", 1.25, 1.25);
-            attackLeft3 = setup("bear/bear_left_attack_3", 1.25, 1.25);
-            attackRight1 = setup("bear/bear_right_attack_1", 1.25, 1.25);
-            attackRight2 = setup("bear/bear_right_attack_2", 1.25, 1.25);
-            attackRight3 = setup("bear/bear_right_attack_3", 1.25, 1.25);
-        }
-        if (getCurrentSpirit().name.equals("Eagle")) {// EAGLE IMAGES
-            attackUp1 = setup("eagle/eagle_up_attack_1", 1.25, 1.25);
-            attackUp2 = setup("eagle/eagle_up_attack_2", 1.25, 1.25);
-            attackUp3 = setup("eagle/eagle_up_attack_3", 1.25, 1.25);
-            attackDown1 = setup("eagle/eagle_down_attack_1", 1.25, 1.25);
-            attackDown2 = setup("eagle/eagle_down_attack_2", 1.25, 1.25);
-            attackDown3 = setup("eagle/eagle_down_attack_3", 1.25, 1.25);
-            attackLeft1 = setup("eagle/eagle_left_attack_1", 1.25, 1.25);
-            attackLeft2 = setup("eagle/eagle_left_attack_2", 1.25, 1.25);
-            attackLeft3 = setup("eagle/eagle_left_attack_3", 1.25, 1.25);
-            attackRight1 = setup("eagle/eagle_right_attack_1", 1.25, 1.25);
-            attackRight2 = setup("eagle/eagle_right_attack_2", 1.25, 1.25);
-            attackRight3 = setup("eagle/eagle_right_attack_3", 1.25, 1.25);
-        }
-        if (getCurrentSpirit().name.equals("Turtle")) {// TURTLE IMAGES
-            attackUp1 = setup("turtle/turtle_up_attack_1", 1.7, 1.7);
-            attackUp2 = setup("turtle/turtle_up_attack_2", 1.7, 1.7);
-            attackUp3 = setup("turtle/turtle_up_attack_3", 1.7, 1.7);
-            attackDown1 = setup("turtle/turtle_down_attack_1", 1.7, 1.7);
-            attackDown2 = setup("turtle/turtle_down_attack_2", 1.7, 1.7);
-            attackDown3 = setup("turtle/turtle_down_attack_3", 1.7, 1.7);
-            attackLeft1 = setup("turtle/turtle_left_attack_1", 1.7, 1.7);
-            attackLeft2 = setup("turtle/turtle_left_attack_2", 1.7, 1.7);
-            attackLeft3 = setup("turtle/turtle_left_attack_3", 1.7, 1.7);
-            attackRight1 = setup("turtle/turtle_right_attack_1", 1.7, 1.7);
-            attackRight2 = setup("turtle/turtle_right_attack_2", 1.7, 1.7);
-            attackRight3 = setup("turtle/turtle_right_attack_3", 1.7, 1.7);
+        String name = getCurrentSpirit().name;
+
+        switch (name) {
+            case "Bear":// BEAR IMAGES
+                attackUp1 = setup("bear/bear_up_attack_1", 1.25, 1.25);
+                attackUp2 = setup("bear/bear_up_attack_2", 1.25, 1.25);
+                attackUp3 = setup("bear/bear_up_attack_3", 1.25, 1.25);
+                attackDown1 = setup("bear/bear_down_attack_1", 1.25, 1.25);
+                attackDown2 = setup("bear/bear_down_attack_2", 1.25, 1.25);
+                attackDown3 = setup("bear/bear_down_attack_3", 1.25, 1.25);
+                attackLeft1 = setup("bear/bear_left_attack_1", 1.25, 1.25);
+                attackLeft2 = setup("bear/bear_left_attack_2", 1.25, 1.25);
+                attackLeft3 = setup("bear/bear_left_attack_3", 1.25, 1.25);
+                attackRight1 = setup("bear/bear_right_attack_1", 1.25, 1.25);
+                attackRight2 = setup("bear/bear_right_attack_2", 1.25, 1.25);
+                attackRight3 = setup("bear/bear_right_attack_3", 1.25, 1.25);
+                break;
+
+            case "Eagle":// EAGLE IMAGES
+                attackUp1 = setup("eagle/eagle_up_attack_1", 1.25, 1.25);
+                attackUp2 = setup("eagle/eagle_up_attack_2", 1.25, 1.25);
+                attackUp3 = setup("eagle/eagle_up_attack_3", 1.25, 1.25);
+                attackDown1 = setup("eagle/eagle_down_attack_1", 1.25, 1.25);
+                attackDown2 = setup("eagle/eagle_down_attack_2", 1.25, 1.25);
+                attackDown3 = setup("eagle/eagle_down_attack_3", 1.25, 1.25);
+                attackLeft1 = setup("eagle/eagle_left_attack_1", 1.25, 1.25);
+                attackLeft2 = setup("eagle/eagle_left_attack_2", 1.25, 1.25);
+                attackLeft3 = setup("eagle/eagle_left_attack_3", 1.25, 1.25);
+                attackRight1 = setup("eagle/eagle_right_attack_1", 1.25, 1.25);
+                attackRight2 = setup("eagle/eagle_right_attack_2", 1.25, 1.25);
+                attackRight3 = setup("eagle/eagle_right_attack_3", 1.25, 1.25);
+                break;
+
+            case "Turtle":// TURTLE IMAGES
+                attackUp1 = setup("turtle/turtle_up_attack_1", 1.7, 1.7);
+                attackUp2 = setup("turtle/turtle_up_attack_2", 1.7, 1.7);
+                attackUp3 = setup("turtle/turtle_up_attack_3", 1.7, 1.7);
+                attackDown1 = setup("turtle/turtle_down_attack_1", 1.7, 1.7);
+                attackDown2 = setup("turtle/turtle_down_attack_2", 1.7, 1.7);
+                attackDown3 = setup("turtle/turtle_down_attack_3", 1.7, 1.7);
+                attackLeft1 = setup("turtle/turtle_left_attack_1", 1.7, 1.7);
+                attackLeft2 = setup("turtle/turtle_left_attack_2", 1.7, 1.7);
+                attackLeft3 = setup("turtle/turtle_left_attack_3", 1.7, 1.7);
+                attackRight1 = setup("turtle/turtle_right_attack_1", 1.7, 1.7);
+                attackRight2 = setup("turtle/turtle_right_attack_2", 1.7, 1.7);
+                attackRight3 = setup("turtle/turtle_right_attack_3", 1.7, 1.7);
+                break;
         }
     }
 
-//    USE SETUP METHOD FROM ENTITY CLASS TO RETRIEVE SPECIAL ATTACK FILES DEPENDING ON CURRENT SPIRIT
+    //    USE SETUP METHOD FROM ENTITY CLASS TO RETRIEVE SPECIAL ATTACK FILES DEPENDING ON CURRENT SPIRIT
     public void getPlayerSpecialAttackImage() {
-        if (getCurrentSpirit().name.equals("Bear")) {// BEAR IMAGES
+        String name = getCurrentSpirit().name;
+
+        switch (name) {
+            case "Bear":// BEAR IMAGES
             //UP SPECIALS
             specialUp1 = setup("bear/bear_up_special_1", 1, 1);
             specialUp2 = setup("bear/bear_up_special_2", 1, 1);
@@ -267,8 +285,10 @@ public class Player extends Entity {
             specialRight5 = setup("bear/bear_right_special_5", 1, 1);
             specialRight6 = setup("bear/bear_right_special_6", 1, 1);
             specialRight7 = setup("bear/bear_right_special_6", 1, 1);
-        }
-        if (getCurrentSpirit().name.equals("Eagle")) {// EAGLE IMAGES
+
+            break;
+
+            case "Eagle":// EAGLE IMAGES
             //UP SPECIALS
             specialUp1 = setup("eagle/eagle_up_special_1", 1.25, 1.25);
             specialUp2 = setup("eagle/eagle_up_special_2", 1.25, 1.25);
@@ -304,8 +324,10 @@ public class Player extends Entity {
             specialRight5 = setup("eagle/eagle_right_special_5", 1.25, 1.25);
             specialRight6 = setup("eagle/eagle_right_special_6", 1.25, 1.25);
             specialRight7 = setup("eagle/eagle_right_special_6", 1.25, 1.25);
-        }
-        if (getCurrentSpirit().name.equals("Turtle")) {// TURTLE IMAGES
+
+            break;
+
+            case "Turtle":// TURTLE IMAGES
             //UP SPECIALS
             specialUp1 = setup("turtle/turtle_up_special_1", 1.7, 1.7);
             specialUp2 = setup("turtle/turtle_up_special_2", 1.7, 1.7);
@@ -341,10 +363,12 @@ public class Player extends Entity {
             specialRight5 = setup("turtle/turtle_right_special_5", 1.7, 1.7);
             specialRight6 = setup("turtle/turtle_right_special_6", 1.7, 1.7);
             specialRight7 = setup("turtle/turtle_right_special_7", 1.7, 1.7);
+
+            break;
         }
     }
 
-//    UPDATE METHOD THAT GETS CALLED ON EACH FRAME
+    //    UPDATE METHOD THAT GETS CALLED ON EACH FRAME
     public void update() {
         if (onPath) {
             // SET DESTINATION TILE TO THE START OF THE MAZE
@@ -363,8 +387,7 @@ public class Player extends Entity {
                     if (numTotems < 3) { // find the next totem
                         goalCol = gp.obj[i].worldX / gp.tileSize;
                         goalRow = gp.obj[i].worldY / gp.tileSize;
-                    }
-                    else {
+                    } else {
                         // find the bricks to unlock the maze
                         goalCol = 18;
                         goalRow = 75;
@@ -378,6 +401,28 @@ public class Player extends Entity {
 //        INCREASE INTERNAL COOLDOWNS FOR PRIMARY AND SPECIAL ATTACKS EVERY FRAME
         secondaryICD++;
         primaryICD++;
+
+//        INCREASE COUNTER FOR BERSERKER MODE
+        if (berserkerMode) {
+            berserkerCounter++;
+        }
+
+//        HEAL BEAR HALF A HEART FOR 4 SECONDS
+        if (berserkerMode && berserkerCounter%30 == 0) {//perform every half a second
+            if (spirits[0].health < spirits[0].maxHealth) {
+                spirits[0].health++;//heal for one heart
+            }
+        }
+
+//        TURN OFF BERSERKER MODE AFTER 5 SECONDS
+        if (berserkerCounter > 300) {
+            spirits[0].attack = 1;//RESET ATTACK VALUE
+            if (spirits[0].health > 18) {//RESET HEALTH IF OVER MAX HEALTH
+                spirits[0].health  = 18;
+            }
+            spirits[0].maxHealth = 18;//RESET MAX HEALTH
+            berserkerMode = false;//TURN OFF BERSERKER MODE
+        }
 
         //ANIMTATION FOR IF PLAYER IS PRIMARY ATTACKING AND NOT SPECIAL ATTACKING
         if (attacking && !specialAttacking) {
@@ -393,7 +438,8 @@ public class Player extends Entity {
         if (keyH.primaryPressed || keyH.secondaryPressed) {
 //            SIMULATES AN ATTACK SO LONG AS LEFT CLICK IS THE ONLY THING HAPPENING AND AN ATTACK IS NOT ALREADY
 //            HAPPENING AND IF ICD HAS REFRESHED
-            if (keyH.primaryPressed && !keyH.secondaryPressed &&  !specialAttacking && primaryICD > 60) {
+            if (keyH.primaryPressed && !keyH.secondaryPressed && !specialAttacking && primaryICD > 60) {//ATTACK ONCE
+                // EVERY SECOND
                 spriteCounter = 0;
                 primaryICD = 0;
                 attacking = true;
@@ -401,7 +447,8 @@ public class Player extends Entity {
 
 //            SIMULATES AN ATTACK SO LONG AS RIGHT CLICK IS THE ONLY THING BEING PRESSED AND AN ATTACK IS NOT ALREADY
 //            HAPPENING AND IF ICD HAS REFRESHED
-            if (keyH.secondaryPressed && !keyH.primaryPressed && !attacking && secondaryICD > 100) {
+            if (keyH.secondaryPressed && !keyH.primaryPressed && !attacking && secondaryICD > 360) {//ALLOW A SPECIAL
+                // ATTACK EVERY6 SECONDS
                 spriteCounter = 0;
                 secondaryICD = 0;
                 specialAttacking = true;
@@ -428,9 +475,6 @@ public class Player extends Entity {
 
             int objIndex = gp.cChecker.checkObject(this, true);
             pickUpObject(objIndex);
-
-            int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
-            interactNPC(npcIndex);
 
             int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
             contactMonster(monsterIndex);
@@ -522,7 +566,7 @@ public class Player extends Entity {
         }
     }
 
-//    SWITCHES SPIRIT DEPENDING ON WHICH SPIRIT INDEX IS INPUTTED
+    //    SWITCHES SPIRIT DEPENDING ON WHICH SPIRIT INDEX IS INPUTTED
     public void switchSpirit(int spiritIndex) {
         currentSpiritIndex = spiritIndex; //SET CURRENT SPIRIT INDEX TO SPIRIT INDEX
 
@@ -548,7 +592,7 @@ public class Player extends Entity {
         this.defense = getCurrentSpirit().defense;
     }
 
-//    FINDS AND RETURNS THE NEXT SPIRIT THAT IS ALLIVE
+    //    FINDS AND RETURNS THE NEXT SPIRIT THAT IS ALLIVE
     public int nextAliveSpirit() {
         for (int i = currentSpiritIndex + 1; i < currentSpiritIndex + gp.player.spirits.length; i++) {
             int loopIndex = i % gp.player.spirits.length; // CALCULATES THE LOOP INDEX
@@ -559,7 +603,7 @@ public class Player extends Entity {
         return -1; // RETURNS -1 IF EVERY SPIRIT IS DEAD AND THEREFORE TRIGGERING RESPAWN
     }
 
-//    ATTACK METHOD, PLAYERS ATTACKING ANIMATION AND DAMAGES MONSTERS IN ATTACK BOX
+    //    ATTACK METHOD, PLAYERS ATTACKING ANIMATION AND DAMAGES MONSTERS IN ATTACK BOX
     public void attacking() {
         spriteCounter++;//UPDATE ANIMATION COUNTER
         if (spriteCounter <= 10) {//SHOW FIRST ANIMATION FRAME FOR THE FIRST 10 GAME TICKS
@@ -579,7 +623,7 @@ public class Player extends Entity {
 //            MANUAL ADJUSTMENTS HAVE BEEN MADE SO THE ANIMATIONS ARE FLUSH WITH EACH OTHER AND THE HIT ATTACK BOX
             switch (direction) {
                 case "up":
-                    switch(getCurrentSpirit().name) {
+                    switch (getCurrentSpirit().name) {
                         case "Bear":
                             worldX += (int) (attackArea.width - (gp.tileSize * 1.6));
                             worldY += (int) (attackArea.height - (gp.tileSize * 2.6));
@@ -595,7 +639,7 @@ public class Player extends Entity {
                     }
                     break;
                 case "down":
-                    switch(getCurrentSpirit().name) {
+                    switch (getCurrentSpirit().name) {
                         case "Bear":
                             worldX += (int) (attackArea.width - (gp.tileSize * 1.6));
                             worldY += (int) (attackArea.height - (gp.tileSize * 0.7));
@@ -611,7 +655,7 @@ public class Player extends Entity {
                     }
                     break;
                 case "left":
-                    switch(getCurrentSpirit().name) {
+                    switch (getCurrentSpirit().name) {
                         case "Bear":
                             worldX += (int) (attackArea.width - (gp.tileSize * 2.6));
                             worldY += (int) (attackArea.height - (gp.tileSize * 1.6));
@@ -627,7 +671,7 @@ public class Player extends Entity {
                     }
                     break;
                 case "right":
-                    switch(getCurrentSpirit().name) {
+                    switch (getCurrentSpirit().name) {
                         case "Bear":
                             worldX += (int) (attackArea.width - (gp.tileSize * 0.6));
                             worldY += (int) (attackArea.height - (gp.tileSize * 1.7));
@@ -665,7 +709,7 @@ public class Player extends Entity {
 //                SETS DEFAULT COORDINATES FOR THE PROJECTILE, ADJUSTMENTS HAVE BEEN MADE SO PROJECTILE SPAWNS AT THE
 //                TURTLE ATTACK BOX
                 switch (direction) {
-                    case"up":
+                    case "up":
                         projectile.set(worldX + (int) (attackArea.width - (gp.tileSize * 1.2)),
                                 worldY + (int) (attackArea.height - (gp.tileSize * 2.2)), direction, true, this);
                         break;
@@ -704,11 +748,11 @@ public class Player extends Entity {
 
 //        INCREASE TURTLE PROJECTILE COOLDOWN COUNTER
         if (shotAvailableCounter < 25) {
-            shotAvailableCounter ++;
+            shotAvailableCounter++;
         }
     }
 
-//    SPECIAL ATTACKING METHOD
+    //    SPECIAL ATTACKING METHOD
     public void specialAttacking() {
         spriteCounter++;
 
@@ -746,16 +790,19 @@ public class Player extends Entity {
             if (getCurrentSpirit().name.equals("Bear")) {
 //                CHECK IF THE BEAR TOTEM HAS BEEN UNLOCKED IN ORDER TO DEAL DAMAGE, OTHERWISE JUST PLAYS THE ANIMATION
                 if (bearSpecialUnlocked) {
-                    System.out.println(spirits[0].health);
-//                    HEAL BEAR SPIRIT
-                    if (spirits[0].health < 8) {
-                        spirits[0].health += 3;
-                    } else {
-                        spirits[0].health = spirits[0].maxHealth;
+//                    ACTIVATE BERSERKER MODE
+                    berserkerMode = true;
+
+//                    GRANT BONUS HEALTH
+                    spirits[0].maxHealth = 26;
+
+//                    INSTANTLY HEAL SOME DAMAGE IF BELOW THREE HEARTS
+                    if (spirits[0].health < 6 ) {//
+                        spirits[0].health += 10;
                     }
+                    berserkerCounter = 0;//RESET COUNTER
+                    spirits[0].attack = 10;//any attack done by bear should now be one shot
                 }
-                //TODO
-                // find a way to increase attack for 10 seconds or smth idk
             }
 //            TURTLE HEALING WAVE
             if (getCurrentSpirit().name.equals("Turtle")) {
@@ -769,8 +816,6 @@ public class Player extends Entity {
                         }
                     }
                 }
-                //TODO
-                // once sprite health has been decided, we can hard code some healing numbers instead of restoring all health
             }
 //            EAGLE EYE SHOT
             if (getCurrentSpirit().name.equals("Eagle")) {
@@ -780,7 +825,7 @@ public class Player extends Entity {
 //                    FIND INDEX OF THE CLOSEST MONSTER TO EAGLE
                     int targetSmallestDistance = 999;
                     int targetIndex = -1;
-                    for (int i = 0; i < gp.monster.length ; i++) {
+                    for (int i = 0; i < gp.monster.length; i++) {
                         if (gp.monster[i] != null) { // MAKE SURE MONSTER EXISTS
                             if (getDistance(i) < targetSmallestDistance) { // CHECKS IF THE DISTANCE IS SMALLET THAN
                                 // THE SMALLEST DISTANCE
@@ -792,25 +837,24 @@ public class Player extends Entity {
                     //IF THERE ARE NO MONSTERS NEARBY
                     if (targetIndex == -1) {
                         gp.ui.showMessage("There are no monsters nearby for the eagle eye to lock onto");
-                    }
-                    else {
+                    } else {
 //                        SPAWN EAGLE EYE PROJECTILES BASED ON WHAT DIRECTION EAGLE IS FACING
                         switch (direction) {
                             case "up":
-                                targetProjectile.set((int) (worldX + attackArea.width - (gp.tileSize * 1.35)),
-                                        (int) (worldY - attackArea.height + (gp.tileSize * 0.3)), true, targetIndex);
+                                targetProjectile.set((int) (worldX + attackArea.width - (gp.tileSize * 1.6)),
+                                        (int) (worldY + attackArea.height - (gp.tileSize * 2.6)), true, targetIndex);
                                 break;
                             case "down":
-                                targetProjectile.set((int) (worldX + attackArea.width - (gp.tileSize * 1.35)), (int)
-                                        (worldY + attackArea.height + (gp.tileSize * -0.5)), true, targetIndex);
+                                targetProjectile.set((int) (worldX + attackArea.width - (gp.tileSize * 1.6)), (int)
+                                        (worldY + attackArea.height - (gp.tileSize * 0.8)), true, targetIndex);
                                 break;
                             case "left":
-                                targetProjectile.set((int) (worldX - attackArea.width + (gp.tileSize * 0.2)), (int)
-                                        (worldY + attackArea.height - (gp.tileSize * 1.2)), true, targetIndex);
+                                targetProjectile.set((int) (worldX - attackArea.width - (gp.tileSize * 2.5)), (int)
+                                        (worldY + attackArea.height - (gp.tileSize * 1.6)), true, targetIndex);
                                 break;
                             case "right":
-                                targetProjectile.set((int) (worldX + attackArea.width - (gp.tileSize * 0.4)), (int)
-                                        (worldY - attackArea.height + (gp.tileSize * 1.3)), true, targetIndex);
+                                targetProjectile.set((int) (worldX + attackArea.width - (gp.tileSize * 0.6)), (int)
+                                        (worldY + attackArea.height - (gp.tileSize * 1.7)), true, targetIndex);
                                 break;
                         }
 //                        ADD PROJECTILE TO THE LIST OF PROJECTILES
@@ -839,14 +883,14 @@ public class Player extends Entity {
         solidArea.height = solidAreaHeight;
     }
 
-//    METHOD TO CALCULATE THE DISTANCE BETWEEN THE PLAYER AND A MONSTER
-    public int getDistance (int i) {
+    //    METHOD TO CALCULATE THE DISTANCE BETWEEN THE PLAYER AND A MONSTER
+    public int getDistance(int i) {
 //        USES PYTHAGOREAN THEOREM TO RETURN THE DISTANCE BETWEEN THE PLAYER COORDS AND THE MONSTER COORDS
         return (int) Math.sqrt(Math.pow(worldX - gp.monster[i].worldX, 2) + Math.pow(worldY - gp.monster[i].worldY, 2));
 
     }
 
-//    METHOD TO PICK UP TOTEM
+    //    METHOD TO PICK UP TOTEM
     public void pickUpObject(int index) {
 //        CHECK IF AN OBJECT IS CURRENTLY BEING TOUCHED BY THE PLAYER, IF INDEX IS 999, NO OBJECT WAS TOUCHED
         if (index != 999) {
@@ -854,48 +898,25 @@ public class Player extends Entity {
 
 //            FIND OUT WHICH OBJECT THE PLAYER IS TOUCHING, EITHER A TOTEM OR A WALL
             switch (objectName) {
-                case "Totem":// PLAYER IS TOUCHING A TOTEM OBJECT
-                    numTotems++; // INCREASE THE NUMBER OF TOTEMS THE PLAYER HAS COLLECTED
-                    gp.obj[index] = null; // REMOVES THE TOTEM
-                    if (index == 0) { // TURTLE TOTEM COLLECTED
-                        turtleSpecialUnlocked = true;
-                    }
-                    else if (index == 1) { // EAGLE TOTEM COLLECTED
-                        eagleSpecialUnlocked = true;
-                    }
-                    else { // BEAR TOTEM COLLECTED
-                        bearSpecialUnlocked = true;
-                    }
-
-//                    TOTEM COLLECTION MESSAGES
-                    if (numTotems == 3) {// MESSAGE FOR WHEN THE PLAYER HAS COLLECTED THE THREE TOTEMS NEEDED TO
-                        // UNLOCK THE MAZE
-                        gp.ui.showCollectionMessage("Congratulations, all three totems have been collected. I think I hear a door opening somewhere");
-                    }
-//                    DISPLAY COMPLETION MESSAGE IF THE FOURTH TOTEM IN THE MAZE HAS BEEN COLLECTED
-                    else if (numTotems == 4) {
-                        gp.ui.completionMessageOn = true;
-                    }
 //                    DISPLAY MESSAGE SAYING THE PLAYER HAS PICKED UP A TOTEM
-                case "Totem":
-                    numTotems++; // increases the number of totems the user has collected
-                    gp.obj[index] = null; // removes the object
+                case "Totem":// PLAYER IS TOUCHING A TOTEM OBJECT
+                    numTotems++; // INCREASES THE NUMBER OF TOTEMS THE PLAYER HAS COLLECTED
+                    gp.obj[index] = null; // REMOVES THE TOTEM
                     if (numTotems < 3) {
-                        if (index == 0) { // turtle totem collected
+                        if (index == 0) { // TURTLE TOTEM COLLECTED
                             turtleSpecialUnlocked = true;
                             gp.ui.showMessage("Turtle Special Unlocked");
-                        } else if (index == 1) { // eagle totem collected
+                        } else if (index == 1) { // EAGLE TOTEM COLLECTED
                             eagleSpecialUnlocked = true;
                             gp.ui.showMessage("Eagle Special Unlocked");
-                        } else { // bear totem collected
+                        } else { // BEAR TOTEM COLLECTED
                             bearSpecialUnlocked = true;
                             gp.ui.showMessage("Bear Special Unlocked");
                         }
-                    }
-                    else if (numTotems == 3) {
+                    } else if (numTotems == 3) {//PLAY MESSAGE FOR WHEN PLAYER HAS COLLECTED THE THREE TOTEMS NEEDED TO
+                        // UNLOCK THE MAZE
                         gp.ui.showCollectionMessage("Congratulations, all three totems have been collected. I think I hear a door opening somewhere");
-                    }
-                    else {
+                    } else {//DISPLAY COMPLETION MESSAGE IF THE FOURTH TOTEM IN THE MAZE HAS BEEN COLLECTED
                         gp.ui.completionMessageOn = true;
                     }
                     break;
@@ -914,14 +935,7 @@ public class Player extends Entity {
         }
     }
 
-//    NPC INTERACTION METHOD
-    public void interactNPC(int i) {
-        if (i != 999) {
-            System.out.println("you are hitting an npc");
-        }
-    }
-
-//    MONSTER CONTACT METHOD
+    //    MONSTER CONTACT METHOD
 //    MODIFIES THE PLAYER'S INVINCIBILITY IF THEY MAKE CONTACT WITH A MONSTER
     public void contactMonster(int index) {
         Spirit currentSpirit = gp.player.getCurrentSpirit(); // GET CURRENT SPIRIT
@@ -940,7 +954,7 @@ public class Player extends Entity {
         }
     }
 
-//    PLAYER DAMAGE MONSTER METHOD
+    //    PLAYER DAMAGE MONSTER METHOD
     public void damageMonster(int index, int attack) { // ACCEPTS THE MONSTER BEING ATTACKED AND THE SPIRIT'S ATTACK
         // VALUE
 
@@ -964,7 +978,7 @@ public class Player extends Entity {
         }
     }
 
-//DRAWING METHOD
+    //DRAWING METHOD
     public void draw(Graphics2D g2) {
         BufferedImage image = null;//CALL ON BUFFERED IMAGE CLASS
 
@@ -989,16 +1003,21 @@ public class Player extends Entity {
                         tempScreenY = screenY - (int) (gp.tileSize * 0.68);
                     }
 //                    SET THE SPRITE IMAGE DEPENDING ON WHAT ANIMATION FRAME
-                    if (spriteNum == 1) {image = attackUp1;}
-                    if (spriteNum == 2) {image = attackUp2;}
-                    if (spriteNum == 3) {image = attackUp3;}
+                    if (spriteNum == 1) {
+                        image = attackUp1;
+                    }
+                    if (spriteNum == 2) {
+                        image = attackUp2;
+                    }
+                    if (spriteNum == 3) {
+                        image = attackUp3;
+                    }
                     break;
                 case "down":
                     if (getCurrentSpirit().name.equals("Bear")) {// BEAR SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.4);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.25);
-                    }
-                    else if (getCurrentSpirit().name.equals("Eagle")) {//EAGLE SPRITE
+                    } else if (getCurrentSpirit().name.equals("Eagle")) {//EAGLE SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.33);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.47);
                     } else {// TURTLE SPRITE
@@ -1006,16 +1025,21 @@ public class Player extends Entity {
                         tempScreenY = screenY - (int) (gp.tileSize * 0.62);
                     }
 //                    SET THE SPRITE IMAGE DEPENDING ON WHAT ANIMATION FRAME
-                    if (spriteNum == 1) {image = attackDown1;}
-                    if (spriteNum == 2) {image = attackDown2;}
-                    if (spriteNum == 3) {image = attackDown3;}
+                    if (spriteNum == 1) {
+                        image = attackDown1;
+                    }
+                    if (spriteNum == 2) {
+                        image = attackDown2;
+                    }
+                    if (spriteNum == 3) {
+                        image = attackDown3;
+                    }
                     break;
                 case "left":
                     if (getCurrentSpirit().name.equals("Bear")) {// BEAR SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.38);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.38);
-                    }
-                    else if (getCurrentSpirit().name.equals("Eagle")) {// EAGLE SPRITE
+                    } else if (getCurrentSpirit().name.equals("Eagle")) {// EAGLE SPRITE
                         tempScreenX = screenX - (int) (gp.tileSize * 0.38);
                         tempScreenY = screenY - (int) (gp.tileSize * 0.525);
                     } else {// TURTLE SPRITE
@@ -1023,9 +1047,15 @@ public class Player extends Entity {
                         tempScreenY = screenY - (int) (gp.tileSize * 0.68);
                     }
 //                    SET THE SPRITE IMAGE DEPENDING ON WHAT ANIMATION FRAME
-                    if (spriteNum == 1) {image = attackLeft1;}
-                    if (spriteNum == 2) {image = attackLeft2;}
-                    if (spriteNum == 3) {image = attackLeft3;}
+                    if (spriteNum == 1) {
+                        image = attackLeft1;
+                    }
+                    if (spriteNum == 2) {
+                        image = attackLeft2;
+                    }
+                    if (spriteNum == 3) {
+                        image = attackLeft3;
+                    }
                     break;
                 case "right":
                     if (getCurrentSpirit().name.equals("Bear")) {//TURTLE SPRITE
@@ -1039,9 +1069,15 @@ public class Player extends Entity {
                         tempScreenY = screenY - (int) (gp.tileSize * 0.68);
                     }
 //                    SET THE SPRITE IMAGE DEPENDING ON WHAT ANIMATION FRAME
-                    if (spriteNum == 1) {image = attackRight1;}
-                    if (spriteNum == 2) {image = attackRight2;}
-                    if (spriteNum == 3) {image = attackRight3;}
+                    if (spriteNum == 1) {
+                        image = attackRight1;
+                    }
+                    if (spriteNum == 2) {
+                        image = attackRight2;
+                    }
+                    if (spriteNum == 3) {
+                        image = attackRight3;
+                    }
                     break;
             }
         }
@@ -1061,13 +1097,27 @@ public class Player extends Entity {
                         tempScreenY = screenY - (int) (gp.tileSize * 0.677);
                     }
 //                    SET THE SPRITE IMAGE DEPENDING ON WHAT ANIMATION FRAME
-                    if (spriteNum == 1) {image = specialUp1;}
-                    if (spriteNum == 2) {image = specialUp2;}
-                    if (spriteNum == 3) {image = specialUp3;}
-                    if (spriteNum == 4) {image = specialUp4;}
-                    if (spriteNum == 5) {image = specialUp5;}
-                    if (spriteNum == 6) {image = specialUp6;}
-                    if (spriteNum == 7) {image = specialUp7;}
+                    if (spriteNum == 1) {
+                        image = specialUp1;
+                    }
+                    if (spriteNum == 2) {
+                        image = specialUp2;
+                    }
+                    if (spriteNum == 3) {
+                        image = specialUp3;
+                    }
+                    if (spriteNum == 4) {
+                        image = specialUp4;
+                    }
+                    if (spriteNum == 5) {
+                        image = specialUp5;
+                    }
+                    if (spriteNum == 6) {
+                        image = specialUp6;
+                    }
+                    if (spriteNum == 7) {
+                        image = specialUp7;
+                    }
                     break;
                 case "down":
                     if (getCurrentSpirit().name.equals("Bear")) {//BEAR SPRITE
@@ -1081,13 +1131,27 @@ public class Player extends Entity {
                         tempScreenY = screenY - (int) (gp.tileSize * 0.62);
                     }
 //                    SET THE SPRITE IMAGE DEPENDING ON WHAT ANIMATION FRAME
-                    if (spriteNum == 1) {image = specialDown1;}
-                    if (spriteNum == 2) {image = specialDown2;}
-                    if (spriteNum == 3) {image = specialDown3;}
-                    if (spriteNum == 4) {image = specialDown4;}
-                    if (spriteNum == 5) {image = specialDown5;}
-                    if (spriteNum == 6) {image = specialDown6;}
-                    if (spriteNum == 7) {image = specialDown7;}
+                    if (spriteNum == 1) {
+                        image = specialDown1;
+                    }
+                    if (spriteNum == 2) {
+                        image = specialDown2;
+                    }
+                    if (spriteNum == 3) {
+                        image = specialDown3;
+                    }
+                    if (spriteNum == 4) {
+                        image = specialDown4;
+                    }
+                    if (spriteNum == 5) {
+                        image = specialDown5;
+                    }
+                    if (spriteNum == 6) {
+                        image = specialDown6;
+                    }
+                    if (spriteNum == 7) {
+                        image = specialDown7;
+                    }
                     break;
                 case "left":
                     if (getCurrentSpirit().name.equals("Bear")) {// BEAR SPRITE
@@ -1101,13 +1165,27 @@ public class Player extends Entity {
                         tempScreenY = screenY - (int) (gp.tileSize * 0.57);
                     }
 //                    SET THE SPRITE IMAGE DEPENDING ON WHAT ANIMATION FRAME
-                    if (spriteNum == 1) {image = specialLeft1;}
-                    if (spriteNum == 2) {image = specialLeft2;}
-                    if (spriteNum == 3) {image = specialLeft3;}
-                    if (spriteNum == 4) {image = specialLeft4;}
-                    if (spriteNum == 5) {image = specialLeft5;}
-                    if (spriteNum == 6) {image = specialLeft6;}
-                    if (spriteNum == 7) {image = specialLeft7;}
+                    if (spriteNum == 1) {
+                        image = specialLeft1;
+                    }
+                    if (spriteNum == 2) {
+                        image = specialLeft2;
+                    }
+                    if (spriteNum == 3) {
+                        image = specialLeft3;
+                    }
+                    if (spriteNum == 4) {
+                        image = specialLeft4;
+                    }
+                    if (spriteNum == 5) {
+                        image = specialLeft5;
+                    }
+                    if (spriteNum == 6) {
+                        image = specialLeft6;
+                    }
+                    if (spriteNum == 7) {
+                        image = specialLeft7;
+                    }
                     break;
                 case "right":
                     if (getCurrentSpirit().name.equals("Bear")) {// BEAR SPRITE
@@ -1121,13 +1199,27 @@ public class Player extends Entity {
                         tempScreenY = screenY - (int) (gp.tileSize * 0.58);
                     }
 //                    SET THE SPRITE IMAGE DEPENDING ON WHAT ANIMATION FRAME
-                    if (spriteNum == 1) {image = specialRight1;}
-                    if (spriteNum == 2) {image = specialRight2;}
-                    if (spriteNum == 3) {image = specialRight3;}
-                    if (spriteNum == 4) {image = specialRight4;}
-                    if (spriteNum == 5) {image = specialRight5;}
-                    if (spriteNum == 6) {image = specialRight6;}
-                    if (spriteNum == 7) {image = specialRight7;}
+                    if (spriteNum == 1) {
+                        image = specialRight1;
+                    }
+                    if (spriteNum == 2) {
+                        image = specialRight2;
+                    }
+                    if (spriteNum == 3) {
+                        image = specialRight3;
+                    }
+                    if (spriteNum == 4) {
+                        image = specialRight4;
+                    }
+                    if (spriteNum == 5) {
+                        image = specialRight5;
+                    }
+                    if (spriteNum == 6) {
+                        image = specialRight6;
+                    }
+                    if (spriteNum == 7) {
+                        image = specialRight7;
+                    }
                     break;
             }
         }
@@ -1147,8 +1239,12 @@ public class Player extends Entity {
                         tempScreenY = screenY - (int) (gp.tileSize * 0.45);
                     }
 //                    SET THE SPRITE IMAGE DEPENDING ON WHAT ANIMATION FRAME
-                    if (spriteNum == 1) {image = up1;}
-                    if (spriteNum == 2) {image = up2;}
+                    if (spriteNum == 1) {
+                        image = up1;
+                    }
+                    if (spriteNum == 2) {
+                        image = up2;
+                    }
                     break;
                 case "down":
                     if (getCurrentSpirit().name.equals("Bear")) {// BEAR SPRITE
@@ -1162,8 +1258,12 @@ public class Player extends Entity {
                         tempScreenY = screenY - (int) (gp.tileSize * 0.4);
                     }
 //                    SET THE SPRITE IMAGE DEPENDING ON WHAT ANIMATION FRAME
-                    if (spriteNum == 1) {image = down1;}
-                    if (spriteNum == 2) {image = down2;}
+                    if (spriteNum == 1) {
+                        image = down1;
+                    }
+                    if (spriteNum == 2) {
+                        image = down2;
+                    }
                     break;
                 case "left":
                     if (getCurrentSpirit().name.equals("Bear")) {// BEAR SPRIETE
@@ -1177,8 +1277,12 @@ public class Player extends Entity {
                         tempScreenY = screenY - (int) (gp.tileSize * 0.45);
                     }
 //                    SET THE SPRITE IMAGE DEPENDING ON WHAT ANIMATION FRAME
-                    if (spriteNum == 1) {image = left1;}
-                    if (spriteNum == 2) {image = left2;}
+                    if (spriteNum == 1) {
+                        image = left1;
+                    }
+                    if (spriteNum == 2) {
+                        image = left2;
+                    }
                     break;
                 case "right":
                     if (getCurrentSpirit().name.equals("Bear")) {// BEAR SPRITE
@@ -1192,8 +1296,12 @@ public class Player extends Entity {
                         tempScreenY = screenY - (int) (gp.tileSize * 0.45);
                     }
 //                    SET THE SPRITE IMAGE DEPENDING ON WHAT ANIMATION FRAME
-                    if (spriteNum == 1) {image = right1;}
-                    if (spriteNum == 2) {image = right2;}
+                    if (spriteNum == 1) {
+                        image = right1;
+                    }
+                    if (spriteNum == 2) {
+                        image = right2;
+                    }
                     break;
             }
         }
@@ -1206,7 +1314,6 @@ public class Player extends Entity {
 
 //        DRAW THE IMAGE, NULL MEANS WE CANNOT TYPE ON THE IMAGE
         g2.drawImage(image, tempScreenX, tempScreenY, null);//draws the image, null means we cannot type
-
 
 
         // DEBUGGING
