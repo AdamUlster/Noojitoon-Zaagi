@@ -14,123 +14,133 @@ import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements Runnable {
 
-    //screen settings
+    // SCREEN SETTINGS
     public final int originalTileSize = 32;
-    //32 x 32 means the game operates with objects of 32 pixel tiles, so objects, sprites etc.
-    public final int scale = 3;//DO NOT CHANGE, WILL SCREW EVERYTHING UP
-    //all the characters we create will be as if they are 32x32 but will be scaled up threefold
+//    32 X 32 MEANS THE GAME OPERATES WITH OBJECTS OF 32 PIXEL SIZED TILES, OBJECTS, SPRITES, ETC.
+    public final int scale = 3;//SCALING FACTOR, NOW TILES ARE TECHNICALLY 96 X 96 PIXELS BIG
+//    ALL ENTITIES CREATED WILL AS IF THEY ARE 32X32 BUT WILL BE SCALED UP THREEFOLD
 
-    public final int tileSize = originalTileSize * scale;//48x48 actual tile size that will be displayed
+    public final int tileSize = originalTileSize * scale;//96X96 IS THE ACTUAL SIZE OF TILES IN PIXELS
 
-    //determine the size of the screen in terms of ties
-    //changeable values
-    final int maxScreenCol = 16;//16 tiles across
-    final int maxScreenRow = 12;//12 tiles vertically
+    //SCREEN SIZE
 
-    //how big in pixels will the screen be as represented by the size of the tile and the number of tiles
-    public final int screenWidth = tileSize * maxScreenCol;//768 pixels horizontally
-    public final int screenHeight = tileSize * maxScreenRow;//576 pixels vertically
+    final int maxScreenCol = 16;//16 TILES CROSS
+    final int maxScreenRow = 12;//12 TILES VERTICALLY
 
-    //world map settings
-    //change these values to change the map size
+//    HOW BIG IN PIXELS WILL THE SCREEN BE AS REPRESENTED BY THE SIZE OF THE TILE AND THE NUMBER OF TILES
+    public final int screenWidth = tileSize * maxScreenCol;//768 PIXELS HORIZONTALLY
+    public final int screenHeight = tileSize * maxScreenRow;//576 PIXELS VERTICALLY
+
+    //WORLD MAP SETTINGS
+//    SETS THE BORDERS OF THE WORLD IN TERMS OF TILES
+//    CREATES A MAP OF 100X100 TILES
     public final int maxWorldCol = 100;//sets the borders of the world in terms of tiles
-    public final int maxWorldRow = 100;//sets the border of the world in terms of tiles
+    public final int maxWorldRow = 100;
 
-    public final int worldWidth = tileSize * maxWorldCol;//sets the border of the world in pixels
-    public final int worldHeight = tileSize * maxWorldRow;
 
     //FPS
-    int FPS = 60;
+    int FPS = 60;//GAME RUNS AT 60 FRAMES PER SECOND, OTHERWISE, THE GAME WOULD RUN TOO FAST
 
-    // System
-    public TileManager tileM = new TileManager(this); // passes the game panel
-    KeyHandler keyH = new KeyHandler(this);//call on the keyhandle class to create the keylistener
-    public CollisionChecker cChecker = new CollisionChecker(this);
-    public AssetSetter aSetter = new AssetSetter(this); // passes the game panel as a parameter
-    public UI ui = new UI(this);
+    // SYSTEM
+    public TileManager tileM = new TileManager(this); // CREATE TILE MANGEGER CLASS
+    KeyHandler keyH = new KeyHandler(this);//CALL KEY HANDLER CLASS TO CREATE KEY AND MOUSE LISTENER
+    public CollisionChecker cChecker = new CollisionChecker(this);//CREATE COLLISION CHECKER CLASS
+    public AssetSetter aSetter = new AssetSetter(this); // CREATE ASSET SETTER CLASS
+    public UI ui = new UI(this);//CREATE UI CLASS
+
+//    CREATE PATHFINDER
     public PathFinder pFinderToTotem = new PathFinder(this);
     public PathFinder pFinderToPlayer = new PathFinder(this);
 
-    public Map map = new Map(this); // instantiates the map
-    Thread gameThread;//repeats a process again and again
+    public Map map = new Map(this); // CREATES THE MAP
+    Thread gameThread;//CALL ON THREAD CLASS, THAT ALLOWS FOR GAME LOGIC TO BE RUN AGAIN AND AGAIN
 
-    // Entities and objects
-    public Player player = new Player(this, keyH);
-    public Entity[] obj = new Entity[10]; // to display up to 10 objects at the same time
-    public Entity[] npc = new Entity[50];//create 50 npcs
-    public Entity[] monster = new Entity[200];//create 200 monsters
-    public ArrayList<Entity> projectileList = new ArrayList<>(); // holds the projectiles
-    public ArrayList<Entity> targetProjectileList = new ArrayList<>(); // holds the target projectiles
-    public ArrayList<Entity> entityList = new ArrayList<>(); // creates an array list to store all the entities
+    // ENTITIES AND OBJECTS
+    public Player player = new Player(this, keyH);//CREATE PLPAYER
+    public Entity[] obj = new Entity[10]; // CREATE 10 OBJECTS
+    public Entity[] npc = new Entity[50];// CREATE 50 NPCs
+    public Entity[] monster = new Entity[200];//CREATE 200 MONSTERS
+    public ArrayList<Entity> projectileList = new ArrayList<>(); // CREATE ARRAY LIST TO STORE ALL THE PROJECTILES
+    public ArrayList<Entity> targetProjectileList = new ArrayList<>(); // CREATE LIST TO STORE TARGET PROJECTILES
+    public ArrayList<Entity> entityList = new ArrayList<>(); // CREATE ARRAY LIST TO STORE ALL ENTITIES
 
-    public GamePanel() {//set default values for the gamepanel
-        this.setPreferredSize(new Dimension(screenWidth, screenHeight));//set screen dimensions
-        this.setBackground(Color.black);//changeable colour via rgb values
-        this.setDoubleBuffered(true);//all graphics are now done buffered, ie the screen gets rendered before being displayed
-        //improves rendering performance
-        this.addKeyListener(keyH); // adds the key listener to the gamepanel
-        this.addMouseListener(keyH); // adds the mouse listener to the gamepanel
-        this.setFocusable(true);//changes the focus of the gamepanel to the key inputs
+//    SET DEFAULT VALUES FOR GAME PANEL
+    public GamePanel() {
+        this.setPreferredSize(new Dimension(screenWidth, screenHeight));// SET SCREEN DIMENSIONS
+        this.setBackground(Color.black);//BACKGROUND COLOURS SET TO BLACK
+
+//        ALL GRAPHICS ARE NOT BUFFERED, MEANING ON EACH FRAME THE SCREEN GETS RENDERED BEFORE IT GETS DISPLAYED ALL
+//        AT ONCE TO IMPROVE RENDERING PERFORMANCE
+        this.setDoubleBuffered(true);
+
+//        ADD KEY LISTENER, MOUSE LISTENER, AND FOCUSES GAMEPANEL TO KEY INPUTS
+        this.addKeyListener(keyH);
+        this.addMouseListener(keyH);
+        this.setFocusable(true);
     }
 
+//    SET UP GAME BEFORE PLAYER CAN MOVE
     public void setupGame() {
-        ui.showLoadingMessage("Loading... Please Wait");
-        aSetter.setObject();
-        aSetter.setNPC();
-        aSetter.setMonster();
-        ui.loadingMessageOn = false; // makes the loading message disappear after the monsters load
+        ui.showLoadingMessage("Loading... Please Wait");// DISPLAYS LOADING MESSAGE EVERYTHING IS DONE LOADING
+        aSetter.setObject();//PLACE OBJECTS ONTO MAP
+        aSetter.setNPC();//PLACE NPCs ONTO MAP
+        aSetter.setMonster();//PLACE MONSTERS ONTO MAP
+        ui.loadingMessageOn = false; // MAKE LOADING MESSAGE DISAPPEAR
     }
 
+//    START CORE LOGIC WHEN THE PROGRAM STARTS
     public void startGameThread() {//starts core logic when the program starts
-        gameThread = new Thread(this);//create the thread that will run
-        gameThread.start();
+        gameThread = new Thread(this);//CREATE THE GAME THREAD THAT WILL RUN FOREVER
+        gameThread.start();//START EHT GAME LOGIC
     }
 
     @Override
-    public void run() {//core game loop, all the actions done, better than running a forever loop for game logic
+//    CORE GAME LOOP, ALL THE ACTIONS DONE IN THE GAME ARE RUN HERE, IT IS MORE EFFICIENT THAN RUNNING A FOREVER LOOP
+    public void run() {
 
-        double drawInterval = 1000000000 / FPS;//1/60th of a second, intervals are now at 60 fps
+        double drawInterval = 1000000000 / FPS;// 1/60TH OF A SECOND, GAME NOW RUNS AT 60 FPS
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
 
-        while (gameThread != null) {//will repeat the game logic forever
+        while (gameThread != null) {//WILL REPEAT AS LONG AS GAME THREAD IS ACTIVE
 
-            //ensures game operates at 60 fps
-            currentTime = System.nanoTime();//get current time in nanosecondd
+//            ENSURES GAME OPERATES AT 60 FPS
+            currentTime = System.nanoTime();//GET CURRENT TIME IN NANOSECONDS
 
-            delta += (currentTime - lastTime) / drawInterval;//delta counts upwards in a linear pattern, waiting up
-            // the remaining time
+//            DELTA COUNTS UPWARDS IN A LINEAR PATTERN WAITING UP THE REMAINING TIME
+            delta += (currentTime - lastTime) / drawInterval;
             lastTime = currentTime;
 
-            if (delta >= 1) {//when delta has passed 1, repaint everything and reset delta
-                update();
-                repaint();
-                delta--;
+//            WHEN DELTA HAS PASSED 1, REPAINT EVERYTHING AND RESET DELTA
+            if (delta >= 1) {
+                update();//UPDATE ALL INFORMATION TO BE PRINTED
+                repaint();//PRINT GAME PANEL AGAIN
+                delta--;//RESET DELTA
             }
         }
     }
 
-    // update information
+//    UPDATE INFORMATION
     public void update() {
         //UPDATE PLAYER
         player.update();
 
-        // update NPC
+        // UPDATE ALL NPCs
         for (int i = 0; i < npc.length; i++) {
             if (npc[i] != null) {
                 npc[i].update();
             }
         }
 
-       // update monster
+//        UPDATE MONSTERS
         for (int i = 0; i < monster.length; i++) {
             if (monster[i] != null) {
                 monster[i].update();
             }
         }
 
-        // update projectile
+//        UPDATE PROJECTILES
         for (int i = 0; i < projectileList.size(); i++) {
             if (projectileList.get(i) != null) { // if the projectile exists
                 if (projectileList.get(i).alive) {
@@ -142,102 +152,122 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
 
-        // update target projectile
+//        UPDATE TARGET PROJECTILES
         for (int i = 0; i < targetProjectileList.size(); i++) {
-            if (targetProjectileList.get(i) != null) { // if the projectile exists
+//            CHECK IF PROJECTILE EXISTS
+            if (targetProjectileList.get(i) != null) {
                 if (targetProjectileList.get(i).alive) {
                     System.out.println(targetProjectileList.get(i).toString() + " " + i);
                     targetProjectileList.get(i).update();
                 }
                 if (targetProjectileList.get(i).alive == false) {
-                    targetProjectileList.remove(i); // removes the projectile if it is no longer alive
+                    targetProjectileList.remove(i); // REMOVES PROJECTILE IF IT IS NO LONGER ALIVE
                 }
             }
         }
     }
 
-    //draw screen with updated information
+//    DRAW SCREEN WITH UPDATED INFORMATION
     public void paintComponent(Graphics g) {
 
         super.paintComponent(g);
 
-        Graphics2D g2 = (Graphics2D) g;//better graphics class that makes things easier
+//        USE 2D GRAPHICS CLASS TO MAKE THINGS EASIER
+        Graphics2D g2 = (Graphics2D) g;
 
-        //DEBUG STUFF
+        //DEBUGGING STUFF
+//        PART OF DISPLAYING TIME TAKEN TO DRAW ALL COMPONENTS
         long drawStart = 0;
         if (keyH.checkDrawTime == true) {
             drawStart = System.nanoTime();
         }
 
-        tileM.draw(g2); // tiles are drawn before the player so to prevent layering issues
+//        DRAWING ORDER, THE ORDER IN WHICH TO DRAW THINGS HAS BEEN PREDETERMINED IN ORDER TO PREVENT OVERLAPPING
 
-        entityList.add(player); // adds the player to the entity list
+//        DRAW TILES FIRST TO PREVENT OVERLAPPING
+        tileM.draw(g2);
 
-        for (int i = 0; i < npc.length; i++) { // adds every npc to the entity list
+//        ADD PLAYER TO ENTITY LIST
+        entityList.add(player);
+
+//        ADD EVERY NPC TO ENTITY LIST
+        for (int i = 0; i < npc.length; i++) {
             if (npc[i] != null) {
                 entityList.add(npc[i]);
             }
         }
 
-        for (int i = 0; i < obj.length; i++) { // adds every object to the entity list
+//        ADD EVERY OBJECT TO ENTITY LIST
+        for (int i = 0; i < obj.length; i++) {
             if (obj[i] != null) {
                 entityList.add(obj[i]);
             }
         }
 
-        for (int i = 0; i < monster.length; i++) { // adds every monster to the entity list
+//        ADD EVERY MONSTER TO ENTITY LIST
+        for (int i = 0; i < monster.length; i++) {
             if (monster[i] != null) {
                 entityList.add(monster[i]);
             }
         }
 
-        for (int i = 0; i < projectileList.size(); i++) { // adds every projectile to the entity list
+//        ADD EVERY PROJECTILE TO THE ENTITY LIST
+        for (int i = 0; i < projectileList.size(); i++) {
             if (projectileList.get(i) != null) {
                 entityList.add(projectileList.get(i));
             }
         }
 
+//        ADD EVERY TARGET PROJECTILE TO THE ENTITY LIST
         for (int i = 0; i < targetProjectileList.size(); i++) { // adds every target projectile to the entity list
             if (targetProjectileList.get(i) != null) {
                 entityList.add(targetProjectileList.get(i));
             }
         }
 
-        // Sorts the entities by their world y values
+//        SORT ENTITIES BY THEIR WORLD Y VALUES
         Collections.sort(entityList, new Comparator<Entity>() {
 
             @Override
             public int compare(Entity e1, Entity e2) {
-                int result = Integer.compare(e1.worldY, e2.worldY); // compares the two entity's world y values
+//                COMPARES THE TWO ENTITY'S WORLD Y VALUES
+                int result = Integer.compare(e1.worldY, e2.worldY);
                 return result;
             }
         });
 
-        // draws the entities based on their world y values (the ones further up are drawn first to avoid clipping the other entities)
+//        DRAW ENTITIES BASED ON WORLD Y VALUES (ONES HIGHER UP ON THE SCREEN ARE DRAWN FIRST TO AVOID CLIPPING THE
+//        OTHER ENTITIES
         for (int i = 0; i < entityList.size(); i++) {
             entityList.get(i).draw(g2);
         }
-        entityList.clear(); // resets the entity list so that it doesn't keep adding the same entities to the list every time the paintComponent method is called
+//        RESETS THE ENTITY LIST SO THAT IT DOESN'T KEEP ADDING THE SAME ENTITIES TO THE LIST EVERY TIME THE PAINT
+//        COMPONENT METHOD IS CALLED
+        entityList.clear();
 
-        map.drawMiniMap(g2); // draws the mini map before the UI so the UI text is not hidden
+//        DRAWS MINI MAP BEFORE UI SO UI TEXT IS NOT HIDDEN
+        map.drawMiniMap(g2);
 
-        // Draws the UI
+        // DRAWS UI
         ui.draw(g2);
 
+//        DRAW MAP SCREEN IF M KEY HAS BEEN PRESSED
         if (keyH.displayMap) {
-            map.drawFullMapScreen(g2); // draws the map screen
+            map.drawFullMapScreen(g2);
         }
 
-        //DEBUG STUFF
+        //DEBUGGING STUFF
+//        DISPLAYS TIME TAKEN TO DRAW EVERYTHING BY PRESSING T ON KEYBOARD
         if (keyH.checkDrawTime) {
             long drawEnd = System.nanoTime();
             long passed = drawEnd - drawStart;
             g2.setColor(Color.white);
-            g2.setFont(g2.getFont().deriveFont(30F)); // changes the font size
+            g2.setFont(g2.getFont().deriveFont(30F));
             g2.drawString("Draw Time: " + passed, 10, 400);
             System.out.println("Draw Time: " + passed);
         }
 
-        g2.dispose();//saves processing power
+//        DISPOSES OF G2 TO SAVE PROCESSING POWER
+        g2.dispose();
     }
 }

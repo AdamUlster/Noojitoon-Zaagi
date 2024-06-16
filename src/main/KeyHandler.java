@@ -4,17 +4,21 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.security.Key;
 
-//handle keyboard inputs
+//HANDLE KEYBOARD INPUTS
 public class KeyHandler implements KeyListener, MouseListener {
 
-    public GamePanel gp;
-    public boolean upPressed, downPressed, leftPressed, rightPressed, shotKeyPressed;//boolean values that determine which keys are
-    // pressed and which are not
+    public GamePanel gp;//IMPORT GAME PANEL
+
+//    BOOLEAN VALUES THAT DETERMINE WHICH KEYS ARE PRESSED AND WHICH ARE NOT
+    public boolean upPressed, downPressed, leftPressed, rightPressed;
+
+//    BOOLEAN VALUES THAT DETERMINE WHICH NUMBER KEYS HAVE BEEN PRESSED, USED FOR SPRITE SWITCHING
     public boolean onePressed, twoPressed, threePressed;//boolean values that determine which number keys have been
+
+//    BOOLEAN VALUES THAT DETERMINE LEFT CLICK OR RIGHT CLICK
     public boolean primaryPressed, secondaryPressed;
-    // pressed for sprite switching
+
     //DEBUG STUFF
     public boolean checkDrawTime = false;
     public boolean displayControls = false;
@@ -31,138 +35,127 @@ public class KeyHandler implements KeyListener, MouseListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        int code = e.getKeyCode();//returns the keycode of a key that has been pressed
+//        RETURNS THE KEYCODE OF THE KEY THAT HAS BEEN PRESSED
+        int code = e.getKeyCode();
 
-        if (code == KeyEvent.VK_W) {//if w key has been pressed
+        if (code == KeyEvent.VK_W) {//W KEY HAS BEEN PRESSED
             upPressed = true;
         }
-        if (code == KeyEvent.VK_S) {//if s key has been pressed
+        if (code == KeyEvent.VK_S) {// S KEY HAS BEEN PRESSED
             downPressed = true;
         }
-        if (code == KeyEvent.VK_A) {//if A key has been pressed
+        if (code == KeyEvent.VK_A) {// A KEY HAS BEEN PRESSED
             leftPressed = true;
         }
-        if (code == KeyEvent.VK_D) {//if D key has been pressed
+        if (code == KeyEvent.VK_D) {//D KEY HAD BEEN PRESSED
             rightPressed = true;
         }
-        if (!gp.player.isDying) { // runs if the player is not dying
-            if (code == KeyEvent.VK_1 && !gp.player.spirits[0].dead) {//if 1 key has been pressed and bear is not dead
+//        RUNS IF THE PLAYER IS NOT DYING
+        if (!gp.player.isDying) {
+            if (code == KeyEvent.VK_1 && !gp.player.spirits[0].dead) {// IF 1 KEY HAS BEEN PRESSED AND BEAR IS NOT DEAD
                 onePressed = true;
-            } else if (code == KeyEvent.VK_1 && gp.player.spirits[0].dead && gp.player.displayDeathMessage) { // if the spirit is dead and the death message should be displayed
+//                IF SPIRIT IS DEAD DISPLAY DEATH MESSAGE AND PREVENT PLAYER FROM SWITCHING BACK
+            } else if (code == KeyEvent.VK_1 && gp.player.spirits[0].dead && gp.player.displayDeathMessage) {
                 gp.ui.showMessage("You cannot switch to the bear since the bear is dead");
             }
-            if (code == KeyEvent.VK_2 && !gp.player.spirits[1].dead) {//if key 2 has been pressed and eagle is not dead
+
+//            SWITCH TO EAGLE
+            if (code == KeyEvent.VK_2 && !gp.player.spirits[1].dead) {
                 twoPressed = true;
-            } else if (code == KeyEvent.VK_2 && gp.player.spirits[1].dead && gp.player.displayDeathMessage) { // if the spirit is dead and the death message should be displayed
+            } else if (code == KeyEvent.VK_2 && gp.player.spirits[1].dead && gp.player.displayDeathMessage) {
                 gp.ui.showMessage("You cannot switch to the eagle since the eagle is dead");
             }
-            if (code == KeyEvent.VK_3 && !gp.player.spirits[2].dead) {//if key 3 has been pressed and turtle is not dead
+
+//            SWITCH TO TURTLE
+            if (code == KeyEvent.VK_3 && !gp.player.spirits[2].dead) {
                 threePressed = true;
-            } else if (code == KeyEvent.VK_3 && gp.player.spirits[2].dead && gp.player.displayDeathMessage) { // if the spirit is dead and the death message should be displayed
+            } else if (code == KeyEvent.VK_3 && gp.player.spirits[2].dead && gp.player.displayDeathMessage) {
                 gp.ui.showMessage("You cannot switch to the turtle since the turtle is dead");
             }
-            if (code == KeyEvent.VK_K) {//K key has been pressed
-                primaryPressed = true;
-            }
-            if (code == KeyEvent.VK_L) {//L key has been pressed
-                secondaryPressed = true;
-            }
-            //continue this chain for when more moves are added
-        }
-        if (code == KeyEvent.VK_F && gp.player.getCurrentSpirit().name.equals("Turtle")) { // only allow the projectile to be shot if the "F" key is pressed and the current spirit is a turtle
-            shotKeyPressed = true;
         }
 
-        //DEBUG STUFF
+        //DEBUGGING STUFF
+//        PRINTS DRAW TIME IF T KEY HAS BEEN PRESSED
         if (code == KeyEvent.VK_T) {
-            checkDrawTime = !checkDrawTime; // sets checkDrawTime to its other state
+            checkDrawTime = !checkDrawTime;
         }
-
+//        DISPLAY CONTROLS IF THEY WERE NOT DISPLAYED PREVIOUSLY
+//       DISPLAYS THE CONTROLS IF THEY WERE NOT DISPLAYED PREVIOUSLY
         if (code == KeyEvent.VK_C) {
-            displayControls = !displayControls; // displays the controls if they were not displayed previously
+//            DISPLAY CONTROLS ARE NOW TOGGLEABLE
+            displayControls = !displayControls;
         }
-
         if (code == KeyEvent.VK_M) {
-            displayMap = !displayMap; // displays the map if it wasn't already
+//            DISPLAYS THE MAP IF IT WASN'T ALREADY, TOGGLEABLE
+            displayMap = !displayMap;
         }
-
         if (code == KeyEvent.VK_Q) {
-            gp.map.miniMapOn = !gp.map.miniMapOn; // displays the mini map if it wasn't already displayed
+//            TOGGLEABLE DISPLAY MINI MAP
+            gp.map.miniMapOn = !gp.map.miniMapOn;
         }
-
         if (code == KeyEvent.VK_H) {
+            //TOGGLEABLE DRAW PATH TO THE MAZE IF IT WASN'T ALREADY SHOWN
             gp.player.onPath = !gp.player.onPath;
-            gp.tileM.drawPath = !gp.tileM.drawPath; // draws the path to the maze if it wasn't already shown
+            gp.tileM.drawPath = !gp.tileM.drawPath;
         }
     }
 
     @Override
     public void keyReleased (KeyEvent e){
 
-        int code = e.getKeyCode();//returns the keycode of a key that has been released
+//        RETURNS THE KEYCODE OF A KEY THAT HAS BEN RELEASED
+        int code = e.getKeyCode();
 
-        //now resets the keypressed booleans when the key is released
-        if (code == KeyEvent.VK_W) {//if w key has been released
+//        RESETS THE KEYPRESSED BOOLEANS WHEN THE KEYS ARE RELEASED
+        if (code == KeyEvent.VK_W) {// W KEY
             upPressed = false;
-        }
-        if (code == KeyEvent.VK_S) {//if s key has been released
+        }if (code == KeyEvent.VK_S) {// S KEY
             downPressed = false;
-        }
-        if (code == KeyEvent.VK_A) {//if A key has been released
+        }if (code == KeyEvent.VK_A) {// A KEY
             leftPressed = false;
-        }
-        if (code == KeyEvent.VK_D) {//if D key has been released
+        }if (code == KeyEvent.VK_D) {//D KEY
             rightPressed = false;
-        }
-        if (code == KeyEvent.VK_1) {//if key 1 has been released
+        }if (code == KeyEvent.VK_1) {// 1 KEY
             onePressed = false;
-        }
-        if (code == KeyEvent.VK_2) {
+        }if (code == KeyEvent.VK_2) {// 2 KEY
             twoPressed = false;
-        }
-        if (code == KeyEvent.VK_3) {
+        }if (code == KeyEvent.VK_3) {// 3 KET
             threePressed = false;
         }
-        if (code == KeyEvent.VK_F) {
-            shotKeyPressed = false;
-        }
-    } // implements a class that listens to keyboard inputs
+    }
 
+//    NECESSARY CLASS INSIDE MOUSE LISTENER IMPORT
     @Override
     public void mouseClicked(MouseEvent e) {
-
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        int button = e.getButton();
-        if (button == MouseEvent.BUTTON1) {
+        int button = e.getButton();//GET KEYCODE OF THE WHICH MOUSE BUTTON HAS BEEN PRESSED
+        if (button == MouseEvent.BUTTON1) {// LEFT CLICK
             primaryPressed = true;
-            secondaryPressed = false; // ensures only one action at a time
-        } else if (button == MouseEvent.BUTTON3) {
+            secondaryPressed = false; // ENSURES ONLY ONE ACTION AT A TIME
+        } else if (button == MouseEvent.BUTTON3) {// RIGHT CLICK
             secondaryPressed = true;
-            primaryPressed = false; // ensures only one action at a time
+            primaryPressed = false; // ENSURES ONLY ONE ACTION AT A TIME
         }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        int button = e.getButton(); // gets the mouse button that was clicked
-        if (button == MouseEvent.BUTTON1) { // left click
+//        GETS THE KEYCODE OF THE MOUSE BUTTON THAT WAS RELEASED
+        int button = e.getButton();
+        if (button == MouseEvent.BUTTON1) { // LEFT CLICK
             primaryPressed = false;
         }
-        else if (button == MouseEvent.BUTTON3) { // right click
+        else if (button == MouseEvent.BUTTON3) { // RIGHT CLICK
             secondaryPressed = false;
         }
     }
 
+//    NECESSARY CLASSES THAT ARE PART OF MOUSE LISTENER CLASS
     @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
+    public void mouseEntered(MouseEvent e) {}
     @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
+    public void mouseExited(MouseEvent e) {}
 }
