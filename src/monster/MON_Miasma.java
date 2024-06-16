@@ -9,7 +9,7 @@ public class MON_Miasma extends Entity {
 
     public double hitboxScale = 0.70;// SCALING FACTOR FOR THE HITBOX
     public MON_Miasma(GamePanel gp) {
-        super(gp);
+        super(gp);//CALL ON GAME PANEL CLASS
 
         setType(2); // sets this entity's type to a monster
         setName("Miasma");
@@ -26,8 +26,7 @@ public class MON_Miasma extends Entity {
         getSolidArea().y = (gp.getTileSize() - getSolidArea().height) / 2;
         setSolidAreaDefaultX(getSolidArea().x);
         setSolidAreaDefaultY(getSolidArea().y);
-
-        getImage();
+        getImage();//RETRIEVE IMAGE VIA METHOD
     }
 
     private void getImage() {
@@ -41,6 +40,31 @@ public class MON_Miasma extends Entity {
         setRight2(setup("monsters/miasma_2", 1, 1));
     }
 
+//    MONSTER BEHAVIOR AND MOVEMENT
+    public void setAction() {
+
+        // RANDOM MOVEMENT BEHAVIOR
+        Random random = new Random();
+        actionLockCounter++;//INCREASES ACTION LOCK COUNTER SO DIRECTION CHANGE ONLY OCCURS EVERY 120 FRAMES
+        if (actionLockCounter == 120) {// CHANGES DIRECTION ONLY EVERY 120 FRAMES OR EVERY 2 SECONDS
+
+            int i = random.nextInt(100) + 1;// PICKS A RANDOM NUMBER BETWEEN 1 AND 100
+
+            //CHOOSES A RANDOM DIRECTION TO TRAVEL IN
+            if (i <= 25) {
+                direction = "up";
+            }
+            if (i > 25 && i <= 50) {
+                direction = "down";
+            }
+            if (i > 50 && i <= 75) {
+                direction = "left";
+            }
+            if (i > 75 && i < 100) {
+                direction = "right";
+            }
+            actionLockCounter = 0;//RESET DIRECTION CHANGE COUNTER
+          
     public void update() { // overwrites the parent class's update method
         super.update(); // calls on the parent's class update method
 

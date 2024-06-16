@@ -12,7 +12,7 @@ public class Map extends TileManager{
     public Map(GamePanel gp) {
         super(gp);
         this.gp = gp;
-        createWorldMap();
+        createWorldMap();// CREATE WORLD MAP
     }
     private void createWorldMap() {
 
@@ -46,7 +46,7 @@ public class Map extends TileManager{
         g2.setColor(Color.black); // background colour
         g2.fillRect(0, 0, gp.getScreenWidth(), gp.getScreenHeight());
 
-        // Size of the map on the screen
+//        SIZE OF THE MAP ON THE SCREEN
         int width = 700;
         int height = 700;
         int x = gp.getScreenWidth() / 2 - width / 2; // centers the map
@@ -71,14 +71,20 @@ public class Map extends TileManager{
         }
     }
 
-    public void drawMiniMap(Graphics2D g2) { // draws the mini map
+//    DRAWS MINI MAP
+    public void drawMiniMap(Graphics2D g2) {
+        //CHECKS IF MINI MAP HAS BEEN TOGGLED ON
         if (miniMapOn) {
+            //MINI MAP DIMENSIONS ON THE SCREEN
             int width = 250;
             int height = 250;
             int x = gp.getScreenWidth() - width - 50; // displays the map at the top right
             int y = 50;
 
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f)); // Sets the opacity to draw the map
+//            SETS OPACITY TO DRAW THE MAP
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f));
+
+//            DRAW MINI MAP
             g2.drawImage(worldMap, x, y, width, height, null); // draws the mini map
 
             // Draw the player on the mini map

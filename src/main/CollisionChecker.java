@@ -3,8 +3,10 @@ package main;
 import entity.Entity;
 
 public class CollisionChecker {
+
     private GamePanel gp;
 
+    //    CONSTRUCTOR
     public CollisionChecker(GamePanel gp) {
         this.gp = gp;
     }
@@ -107,7 +109,8 @@ public class CollisionChecker {
         }
     }
 
-    public int checkObject(Entity entity, boolean player) { // if a player hits an object, return the index of the object that a player is hitting
+    //    IF A PLAYER HITS AN OBJECT, RETURN THE INDEX OF THE  OBJECT THE PLAYER IS HITTING
+    public int checkObject(Entity entity, boolean player) {
         int index = 999;
 
         for (int i = 0; i < gp.getObj().length; i++) {
@@ -139,7 +142,8 @@ public class CollisionChecker {
                     if (gp.getObj()[i].isCollision()) { // if the object is solid
                         entity.setCollisionOn(true);
                     }
-                    if (player) { // if the entity is a player
+//                    IF THE ENTITY IS A PLAYER
+                    if (player) {
                         index = i;
                     }
                 }
@@ -170,7 +174,6 @@ public class CollisionChecker {
                 // Get the object's solid area position
                 target[i].getSolidArea().x = target[i].getWorldX() + target[i].getSolidArea().x;
                 target[i].getSolidArea().y = target[i].getWorldY() + target[i].getSolidArea().y;
-
                 switch (entity.getDirection()) {
                     case "up":
                         if (entity.getType() == 3 && entity.getName().equals("Eagle Shot")) { // detects if the eagle shot is hitting the target
@@ -211,14 +214,14 @@ public class CollisionChecker {
                 target[i].getSolidArea().y = target[i].getSolidAreaDefaultY();
             }
         }
-
-        return index;
+        return index;//RETURN THE INDEX OF THE ENTITY BEING TOUCHED
     }
 
     //CHECK IF NPC OR MONSTER IS HITTING THE PLAYER
     public boolean checkPlayer(Entity entity) {
 
-        boolean contactPlayer = false; // keeps track of whether another entity is making contact with the player
+//        BOOLEAN TO KEEP TRACK OF WHETHTER ANOTHER ENTITY IS MAKING CONTACT WITH THE PLAYER
+        boolean contactPlayer = false;// SET TO FALSE BY DEFAULT MEANING ENTITY IS NOT CONTACTING PLAYER
 
         // Get entity's solid area position
         entity.getSolidArea().x = entity.getWorldX() + entity.getSolidArea().x;
@@ -253,6 +256,6 @@ public class CollisionChecker {
         gp.getPlayer().getSolidArea().x = gp.getPlayer().getSolidAreaDefaultX();
         gp.getPlayer().getSolidArea().y = gp.getPlayer().getSolidAreaDefaultY();
 
-        return contactPlayer;
+        return contactPlayer;//RETURN TRUE IF THE ENTITY IS IN CONTACT WITH THE PLAYER, RETURNS FALSE OTHERWISE
     }
 }

@@ -8,13 +8,14 @@ public class Main {
         window.setResizable(false); // user cannot resize the window
         window.setTitle("my 2D adventure"); // game title
 
-        GamePanel gamePanel = new GamePanel(); // create gamepanel
-        window.add(gamePanel);
-        window.pack(); // cause the window to be size to fit the dimensions
+        GamePanel gamePanel = new GamePanel(); // CREATE PANEL
+        window.add(gamePanel);//ADD GAME PANEL TO THE WINDOW
+        window.pack(); // FORCE THE WINDOW TO BE SIZED TO FIT THE DIMENSIONS
 
-        window.setLocationRelativeTo(null); // sets the window so that it has no specific location
-        window.setVisible(true); // displays window now that it's generated
-        
+        window.setLocationRelativeTo(null); // SETS THE WINDOW SO THAT IT HAS NO SPECIFIC LOCATION ON THE SCREEN
+        window.setVisible(true); // DISPLAY NEWLY GENERATED WINDOW
+
+//        START GAME PANEL
         gamePanel.setupGame();
         gamePanel.startGameThread();
 

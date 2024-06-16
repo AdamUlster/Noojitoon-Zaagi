@@ -10,7 +10,7 @@ public class MON_Micipijiu extends Entity {
     private double widthHitboxScale = 0.70;//scaling factor for the hitbox width
     private double heightHitboxScale = 0.35;//scaling factor for the hitbox height
     public MON_Micipijiu(GamePanel gp) {
-        super(gp);
+        super(gp);// CALL ON GAME PANEL CLASS
 
         setType(2); // sets this entity's type to a monster
         setName("Micipijiu");
@@ -32,7 +32,7 @@ public class MON_Micipijiu extends Entity {
         setSolidAreaDefaultX(getSolidArea().x);
         setSolidAreaDefaultY(getSolidArea().y);
 
-        getImage();
+        getImage();//RETRIEVE SPRITE IMAGES
     }
 
     private void getImage() {
@@ -45,6 +45,32 @@ public class MON_Micipijiu extends Entity {
         setRight1(setup("monsters/micipijiu_right", 1, 1));
         setRight2(setup("monsters/micipijiu_right", 1, 1));
     }
+
+//BEHAVIOR AND MOVEMENT METHOD
+    public void setAction() {
+
+//        RANDOM MONSTER BEHAVIOR
+        Random random = new Random();
+        actionLockCounter++;// INCREASES MOVEMENT COUNTER SO MONSTER ONLY MOVES EVERY 120 FRAMES
+        if (actionLockCounter == 120) {//IF 120 FRAMES HAVE PASSED PICK A NEW DIRECTION AT RANDOM
+
+            int i = random.nextInt(100) + 1;//PICKS A RANDOM NUMBER BETWEEN 1 AND 100
+
+            //RANDOMLY CHOOSES A DIRECTION TO TRAVEL IN
+            if (i <= 25) {
+                direction = "up";
+            }
+            if (i > 25 && i <= 50) {
+                direction = "down";
+            }
+            if (i > 50 && i <= 75) {
+                direction = "left";
+            }
+            if (i > 75 && i < 100) {
+                direction = "right";
+            }
+            actionLockCounter = 0;//RESET MOVEMENT COUNTER AFTER PICKING A NEW DIRECTION AT RANDOM
+        }
 
     public void update() { // overwrites the parent class's update method
         super.update(); // calls on the parent's class update method
