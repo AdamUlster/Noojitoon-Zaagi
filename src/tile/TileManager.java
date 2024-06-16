@@ -20,7 +20,7 @@ public class TileManager {
         this.gp = gp;
 
         tile = new Tile[10]; //kinds of tile types, for now there are 10 types of tiles, we can add more
-        mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
+        mapTileNum = new int[gp.getMaxWorldCol()][gp.getMaxWorldRow()];
         getTileImage();//call on method to extract the tile pngs
         loadMap("/maps/map_1.txt");//load the formation of the tiles after inputing the file path of the map file
     }
@@ -43,9 +43,9 @@ public class TileManager {
 
         try {
             tile[index] = new Tile();
-            tile[index].image = ImageIO.read(getClass().getResourceAsStream("/tiles/" + imageName + ".png"));
-            tile[index].image = uTool.scaleImage(tile[index].image, gp.tileSize, gp.tileSize);
-            tile[index].collision = collision;
+            tile[index].setImage(ImageIO.read(getClass().getResourceAsStream("/tiles/" + imageName + ".png")));
+            tile[index].setImage(uTool.scaleImage(tile[index].getImage(), gp.getTileSize(), gp.getTileSize()));
+            tile[index].setCollision(collision);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -61,12 +61,12 @@ public class TileManager {
             while (mr.hasNextLine()) {//iterate through each line in the file
                 String fileLine = mr.nextLine();//read line in file
                 String[] elements = fileLine.split(" ");//splits the file line into an array of strings
-                while (col < gp.maxWorldCol) {//iterate through each element in the file
+                while (col < gp.getMaxWorldCol()) {//iterate through each element in the file
                     mapTileNum[col][row] = Integer.parseInt(elements[col]);//copy the file element into the
                     // corresponding index in the map tile array
                     col++;
                 }
-                if (col == gp.maxWorldCol) {//reset the loop for when the end of the column has been reached
+                if (col == gp.getMaxWorldCol()) {//reset the loop for when the end of the column has been reached
                     col = 0;
                     row++;
                 }
@@ -82,34 +82,34 @@ public class TileManager {
         int worldCol = 0;
         int worldRow = 0;
 
-        while (worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {//loops through each possible tile position
+        while (worldCol < gp.getMaxWorldCol() && worldRow < gp.getMaxWorldRow()) {//loops through each possible tile position
             // within
             // the screen
             int tileNum = mapTileNum[worldCol][worldRow];//extract the tile type from map tile array using its given
             // position
 
-            int worldX = worldCol * gp.tileSize;//tile position on the map
-            int worldY = worldRow * gp.tileSize;
+            int worldX = worldCol * gp.getTileSize();//tile position on the map
+            int worldY = worldRow * gp.getTileSize();
             //calculates the adjustment factor for the tiles  when they are drawn using the data of where the player
             // should be
-            int screenX = worldX - gp.player.worldX + gp.player.screenX;//tile position on the screen
-            int screenY = worldY - gp.player.worldY + gp.player.screenY;
+            int screenX = worldX - gp.getPlayer().getWorldX() + gp.getPlayer().getScreenX();//tile position on the screen
+            int screenY = worldY - gp.getPlayer().getWorldY() + gp.getPlayer().getScreenY();
 
 
-            if (worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
-                    worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
-                    worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
-                    worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {//improves rendering efficiency by
+            if (worldX + gp.getTileSize() > gp.getPlayer().getWorldX() - gp.getPlayer().getScreenX() &&
+                    worldX - gp.getTileSize() < gp.getPlayer().getWorldX() + gp.getPlayer().getScreenX() &&
+                    worldY + gp.getTileSize() > gp.getPlayer().getWorldY() - gp.getPlayer().getScreenY() &&
+                    worldY - gp.getTileSize() < gp.getPlayer().getWorldY() + gp.getPlayer().getScreenY()) {//improves rendering efficiency by
                 // checking if the tile being drawn are near the player in either of the four directions
 
-                g2.drawImage(tile[tileNum].image, screenX, screenY, null);//draw tile at
+                g2.drawImage(tile[tileNum].getImage(), screenX, screenY, null);//draw tile at
                 // using its position relative to the screen
 
             }
 
             worldCol++;
 
-            if (worldCol == gp.maxWorldCol) {//checks when draw method has reached the bottom of the column
+            if (worldCol == gp.getMaxWorldCol()) {//checks when draw method has reached the bottom of the column
                 worldCol = 0;//resets column and x position
                 worldRow++;//draw will now draw the column next to it
             }
@@ -118,12 +118,12 @@ public class TileManager {
         if (drawPath) { // if the path should be drawn
             g2.setColor(new Color(255, 0, 0 ,70)); // red with a reduces opacity
 
-            for (int i = 0; i < gp.pFinderToTotem.pathList.size(); i++) {
-                int worldX = gp.pFinderToTotem.pathList.get(i).col * gp.tileSize;
-                int worldY = gp.pFinderToTotem.pathList.get(i).row * gp.tileSize;
-                int screenX = worldX - gp.player.worldX + gp.player.screenX;//tile position on the screen
-                int screenY = worldY - gp.player.worldY + gp.player.screenY;
-                g2.fillRect(screenX, screenY, gp.tileSize, gp.tileSize);
+            for (int i = 0; i < gp.getPFinderToTotem().getPathList().size(); i++) {
+                int worldX = gp.getPFinderToTotem().getPathList().get(i).getCol() * gp.getTileSize();
+                int worldY = gp.getPFinderToTotem().getPathList().get(i).getRow() * gp.getTileSize();
+                int screenX = worldX - gp.getPlayer().getWorldX() + gp.getPlayer().getScreenX();//tile position on the screen
+                int screenY = worldY - gp.getPlayer().getWorldY() + gp.getPlayer().getScreenY();
+                g2.fillRect(screenX, screenY, gp.getTileSize(), gp.getTileSize());
             }
         }
     }

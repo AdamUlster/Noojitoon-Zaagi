@@ -8,17 +8,17 @@ public class OBJ_Totem extends Entity {
     public OBJ_Totem(GamePanel gp) { // constructor
         super(gp); // calls the entity class
 
-        name = "Totem";
-        down1 = setup("objects/totem", 1,1);
-        collision = true;
+        setName("Totem");
+        setDown1(setup("objects/totem", 1, 1));
+        setCollision(true);
 
         //create hitbox in the center
-        solidArea.width = (int)(gp.tileSize * hitboxScale);
-        solidArea.height = (int)(gp.tileSize * hitboxScale);
-        solidArea.x = (gp.tileSize - solidArea.width) / 2;
-        solidArea.y = (gp.tileSize - solidArea.height) / 2;
+        getSolidArea().width = (int)(gp.getTileSize() * hitboxScale);
+        getSolidArea().height = (int)(gp.getTileSize() * hitboxScale);
+        getSolidArea().x = (gp.getTileSize() - getSolidArea().width) / 2;
+        getSolidArea().y = (gp.getTileSize() - getSolidArea().height) / 2;
 
-        solidAreaDefaultX = solidArea.x;
-        solidAreaDefaultY = solidArea.y;
+        setSolidAreaDefaultX(getSolidArea().x);
+        setSolidAreaDefaultY(getSolidArea().y);
     }
 }

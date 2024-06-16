@@ -58,7 +58,7 @@ public class CollisionChecker {
                 }
                 tileNum1 = gp.getTileM().getMapTileNum()[entityLeftCol][entityTopRow];
                 tileNum2 = gp.getTileM().getMapTileNum()[entityRightCol][entityTopRow];
-                if (gp.getTileM().getTile()[tileNum1].collision || gp.getTileM().getTile()[tileNum2].collision) {
+                if (gp.getTileM().getTile()[tileNum1].isCollision() || gp.getTileM().getTile()[tileNum2].isCollision()) {
                     entity.setCollisionOn(true);
                 }
                 break;
@@ -72,7 +72,7 @@ public class CollisionChecker {
                 }
                 tileNum1 = gp.getTileM().getMapTileNum()[entityLeftCol][entityBottomRow];
                 tileNum2 = gp.getTileM().getMapTileNum()[entityRightCol][entityBottomRow];
-                if (gp.getTileM().getTile()[tileNum1].collision || gp.getTileM().getTile()[tileNum2].collision) {
+                if (gp.getTileM().getTile()[tileNum1].isCollision() || gp.getTileM().getTile()[tileNum2].isCollision()) {
                     entity.setCollisionOn(true);
                 }
                 break;
@@ -86,7 +86,7 @@ public class CollisionChecker {
                 }
                 tileNum1 = gp.getTileM().getMapTileNum()[entityLeftCol][entityTopRow];
                 tileNum2 = gp.getTileM().getMapTileNum()[entityLeftCol][entityBottomRow];
-                if (gp.getTileM().getTile()[tileNum1].collision || gp.getTileM().getTile()[tileNum2].collision) {
+                if (gp.getTileM().getTile()[tileNum1].isCollision() || gp.getTileM().getTile()[tileNum2].isCollision()) {
                     entity.setCollisionOn(true);
                 }
                 break;
@@ -100,7 +100,7 @@ public class CollisionChecker {
                 }
                 tileNum1 = gp.getTileM().getMapTileNum()[entityRightCol][entityTopRow];
                 tileNum2 = gp.getTileM().getMapTileNum()[entityRightCol][entityBottomRow];
-                if (gp.getTileM().getTile()[tileNum1].collision || gp.getTileM().getTile()[tileNum2].collision) {
+                if (gp.getTileM().getTile()[tileNum1].isCollision() || gp.getTileM().getTile()[tileNum2].isCollision()) {
                     entity.setCollisionOn(true);
                 }
                 break;
@@ -110,34 +110,34 @@ public class CollisionChecker {
     public int checkObject(Entity entity, boolean player) { // if a player hits an object, return the index of the object that a player is hitting
         int index = 999;
 
-        for (int i = 0; i < gp.obj.length; i++) {
-            if (gp.obj[i] != null) {
+        for (int i = 0; i < gp.getObj().length; i++) {
+            if (gp.getObj()[i] != null) {
 
                 // Get entity's solid area position
-                entity.solidArea.x = entity.worldX + entity.solidArea.x;
-                entity.solidArea.y = entity.worldY + entity.solidArea.y;
+                entity.getSolidArea().x = entity.getWorldX() + entity.getSolidArea().x;
+                entity.getSolidArea().y = entity.getWorldY() + entity.getSolidArea().y;
 
                 // Get the object's solid area position
-                gp.obj[i].solidArea.x = gp.obj[i].worldX + gp.obj[i].solidArea.x;
-                gp.obj[i].solidArea.y = gp.obj[i].worldY + gp.obj[i].solidArea.y;
+                gp.getObj()[i].getSolidArea().x = gp.getObj()[i].getWorldX() + gp.getObj()[i].getSolidArea().x;
+                gp.getObj()[i].getSolidArea().y = gp.getObj()[i].getWorldY() + gp.getObj()[i].getSolidArea().y;
 
-                switch (entity.direction) {
+                switch (entity.getDirection()) {
                     case "up":
-                        entity.solidArea.y -= entity.speed; // predicts the movement of the entity
+                        entity.getSolidArea().y -= entity.getSpeed(); // predicts the movement of the entity
                         break;
                     case "down":
-                        entity.solidArea.y += entity.speed;
+                        entity.getSolidArea().y += entity.getSpeed();
                         break;
                     case "left":
-                        entity.solidArea.x -= entity.speed;
+                        entity.getSolidArea().x -= entity.getSpeed();
                         break;
                     case "right":
-                        entity.solidArea.x += entity.speed;
+                        entity.getSolidArea().x += entity.getSpeed();
                         break;
                 }
-                if (entity.solidArea.intersects(gp.obj[i].solidArea)) { // automatically checks if the two rectangles are colliding
-                    if (gp.obj[i].collision) { // if the object is solid
-                        entity.collisionOn = true;
+                if (entity.getSolidArea().intersects(gp.getObj()[i].getSolidArea())) { // automatically checks if the two rectangles are colliding
+                    if (gp.getObj()[i].isCollision()) { // if the object is solid
+                        entity.setCollisionOn(true);
                     }
                     if (player) { // if the entity is a player
                         index = i;
@@ -145,10 +145,10 @@ public class CollisionChecker {
                 }
 
                 // resets the entity and the object's collision box
-                entity.solidArea.x = entity.solidAreaDefaultX;
-                entity.solidArea.y = entity.solidAreaDefaultY;
-                gp.obj[i].solidArea.x = gp.obj[i].solidAreaDefaultX;
-                gp.obj[i].solidArea.y = gp.obj[i].solidAreaDefaultY;
+                entity.getSolidArea().x = entity.getSolidAreaDefaultX();
+                entity.getSolidArea().y = entity.getSolidAreaDefaultY();
+                gp.getObj()[i].getSolidArea().x = gp.getObj()[i].getSolidAreaDefaultX();
+                gp.getObj()[i].getSolidArea().y = gp.getObj()[i].getSolidAreaDefaultY();
             }
         }
 
@@ -164,42 +164,42 @@ public class CollisionChecker {
             if (target[i] != null) {
 
                 // Get entity's solid area position
-                entity.solidArea.x = entity.worldX + entity.solidArea.x;
-                entity.solidArea.y = entity.worldY + entity.solidArea.y;
+                entity.getSolidArea().x = entity.getWorldX() + entity.getSolidArea().x;
+                entity.getSolidArea().y = entity.getWorldY() + entity.getSolidArea().y;
 
                 // Get the object's solid area position
-                target[i].solidArea.x = target[i].worldX + target[i].solidArea.x;
-                target[i].solidArea.y = target[i].worldY + target[i].solidArea.y;
+                target[i].getSolidArea().x = target[i].getWorldX() + target[i].getSolidArea().x;
+                target[i].getSolidArea().y = target[i].getWorldY() + target[i].getSolidArea().y;
 
-                switch (entity.direction) {
+                switch (entity.getDirection()) {
                     case "up":
-                        if (entity.type == 3 && entity.name.equals("Eagle Shot")) { // detects if the eagle shot is hitting the target
-                            entity.speed = entity.yMove; // predicts the projectile's next movement
+                        if (entity.getType() == 3 && entity.getName().equals("Eagle Shot")) { // detects if the eagle shot is hitting the target
+                            entity.setSpeed(entity.getyMove()); // predicts the projectile's next movement
                         }
-                        entity.solidArea.y -= entity.speed; // predicts the movement of the entity
+                        entity.getSolidArea().y -= entity.getSpeed(); // predicts the movement of the entity
                         break;
                     case "down":
-                        if (entity.type == 3 && entity.name.equals("Eagle Shot")) { // detects if the eagle shot is hitting the target
-                            entity.speed = entity.yMove; // predicts the projectile's next movement
+                        if (entity.getType() == 3 && entity.getName().equals("Eagle Shot")) { // detects if the eagle shot is hitting the target
+                            entity.setSpeed(entity.getyMove()); // predicts the projectile's next movement
                         }
-                        entity.solidArea.y += entity.speed;
+                        entity.getSolidArea().y += entity.getSpeed();
                         break;
                     case "left":
-                        if (entity.type == 3 && entity.name.equals("Eagle Shot")) { // detects if the eagle shot is hitting the target
-                            entity.speed = entity.xMove; // predicts the projectile's next movement
+                        if (entity.getType() == 3 && entity.getName().equals("Eagle Shot")) { // detects if the eagle shot is hitting the target
+                            entity.setSpeed(entity.getxMove()); // predicts the projectile's next movement
                         }
-                        entity.solidArea.x -= entity.speed;
+                        entity.getSolidArea().x -= entity.getSpeed();
                         break;
                     case "right":
-                        if (entity.type == 3 && entity.name.equals("Eagle Shot")) { // detects if the eagle shot is hitting the target
-                            entity.speed = entity.xMove; // predicts the projectile's next movement
+                        if (entity.getType() == 3 && entity.getName().equals("Eagle Shot")) { // detects if the eagle shot is hitting the target
+                            entity.setSpeed(entity.getxMove()); // predicts the projectile's next movement
                         }
-                        entity.solidArea.x += entity.speed;
+                        entity.getSolidArea().x += entity.getSpeed();
                         break;
                 }
-                if (entity.solidArea.intersects(target[i].solidArea)) { // automatically checks if the two rectangles are colliding
+                if (entity.getSolidArea().intersects(target[i].getSolidArea())) { // automatically checks if the two rectangles are colliding
                     if (target[i] != entity) { // makes sure the entity does not collide with itself
-                        entity.collisionOn = true;
+                        entity.setCollisionOn(true);
                         index = i;
                     }
                 }

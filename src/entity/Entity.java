@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class Entity {
-    GamePanel gp;
+    protected GamePanel gp;
     private BufferedImage image1, image2, image3;
     private BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
     private BufferedImage attackUp1, attackUp2, attackUp3, attackDown1, attackDown2,
@@ -65,6 +65,7 @@ public class Entity {
     private int speed;
     private int attack;
     private int defense;
+    private int useCost;
     private Projectile projectile;
     private TargetingProjectile targetProjectile;
 
@@ -185,7 +186,7 @@ public class Entity {
         }
     }
 
-    BufferedImage setup(String imagePath, double widthScale, double heightScale) {
+    protected BufferedImage setup(String imagePath, double widthScale, double heightScale) {
         UtilityTool uTool = new UtilityTool();
         BufferedImage image = null;
 
@@ -198,25 +199,25 @@ public class Entity {
         return image;
     }
 
-    private void searchPathToTotem(int goalCol, int goalRow) {
+    void searchPathToTotem(int goalCol, int goalRow) {
 
         // gets the entity's current tile
         int startCol = (worldX + solidArea.x) / gp.getTileSize();
         int startRow = (worldY + solidArea.y) / gp.getTileSize();
 
-        gp.pFinderToTotem.setNodes(startCol, startRow, goalCol, goalRow);
+        gp.getPFinderToTotem().setNodes(startCol, startRow, goalCol, goalRow);
 
-        if (gp.pFinderToTotem.search()) { // a path has been found
+        if (gp.getPFinderToTotem().search()) { // a path has been found
 
-            int nextCol = gp.pFinderToTotem.getPathList().get(0).getCol();
-            int nexRow = gp.pFinderToTotem.getPathList().get(0).getRow();
+            int nextCol = gp.getPFinderToTotem().getPathList().get(0).getCol();
+            int nexRow = gp.getPFinderToTotem().getPathList().get(0).getRow();
             if (nextCol == goalCol && nexRow == goalRow) {
                 onPath = false; // stops the entity when it reaches its destination
             }
         }
     }
 
-    private void searchPathToPlayer(int goalCol, int goalRow) {
+    protected void searchPathToPlayer(int goalCol, int goalRow) {
         // gets the entity's current tile
         int startCol = (worldX + solidArea.x) / gp.getTileSize();
         int startRow = (worldY + solidArea.y) / gp.getTileSize();
@@ -998,6 +999,14 @@ public class Entity {
 
     public void setDefense(int defense) {
         this.defense = defense;
+    }
+
+    public int getUseCost() {
+        return useCost;
+    }
+
+    public void setUseCost(int useCost) {
+        this.useCost = useCost;
     }
 
     public Projectile getProjectile() {

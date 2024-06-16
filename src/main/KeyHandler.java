@@ -87,7 +87,7 @@ public class KeyHandler implements KeyListener, MouseListener {
         }
 
         if (code == KeyEvent.VK_Q) {
-            gp.getMap().miniMapOn = !gp.getMap().miniMapOn; // displays the mini map if it wasn't already displayed
+            gp.getMap().setMiniMapOn(!gp.getMap().isMiniMapOn()); // displays the mini map if it wasn't already displayed
         }
 
         if (code == KeyEvent.VK_H) {
@@ -171,51 +171,103 @@ public class KeyHandler implements KeyListener, MouseListener {
         return upPressed;
     }
 
+    public void setUpPressed(boolean upPressed) {
+        this.upPressed = upPressed;
+    }
+
     public boolean isDownPressed() {
         return downPressed;
+    }
+
+    public void setDownPressed(boolean downPressed) {
+        this.downPressed = downPressed;
     }
 
     public boolean isLeftPressed() {
         return leftPressed;
     }
 
+    public void setLeftPressed(boolean leftPressed) {
+        this.leftPressed = leftPressed;
+    }
+
     public boolean isRightPressed() {
         return rightPressed;
+    }
+
+    public void setRightPressed(boolean rightPressed) {
+        this.rightPressed = rightPressed;
     }
 
     public boolean isShotKeyPressed() {
         return shotKeyPressed;
     }
 
+    public void setShotKeyPressed(boolean shotKeyPressed) {
+        this.shotKeyPressed = shotKeyPressed;
+    }
+
     public boolean isOnePressed() {
         return onePressed;
+    }
+
+    public void setOnePressed(boolean onePressed) {
+        this.onePressed = onePressed;
     }
 
     public boolean isTwoPressed() {
         return twoPressed;
     }
 
+    public void setTwoPressed(boolean twoPressed) {
+        this.twoPressed = twoPressed;
+    }
+
     public boolean isThreePressed() {
         return threePressed;
+    }
+
+    public void setThreePressed(boolean threePressed) {
+        this.threePressed = threePressed;
     }
 
     public boolean isPrimaryPressed() {
         return primaryPressed;
     }
 
+    public void setPrimaryPressed(boolean primaryPressed) {
+        this.primaryPressed = primaryPressed;
+    }
+
     public boolean isSecondaryPressed() {
         return secondaryPressed;
+    }
+
+    public void setSecondaryPressed(boolean secondaryPressed) {
+        this.secondaryPressed = secondaryPressed;
     }
 
     public boolean isCheckDrawTime() {
         return checkDrawTime;
     }
 
+    public void setCheckDrawTime(boolean checkDrawTime) {
+        this.checkDrawTime = checkDrawTime;
+    }
+
     public boolean isDisplayControls() {
         return displayControls;
     }
 
+    public void setDisplayControls(boolean displayControls) {
+        this.displayControls = displayControls;
+    }
+
     public boolean isDisplayMap() {
         return displayMap;
+    }
+
+    public void setDisplayMap(boolean displayMap) {
+        this.displayMap = displayMap;
     }
 }

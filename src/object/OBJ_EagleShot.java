@@ -14,20 +14,20 @@ public class OBJ_EagleShot extends TargetingProjectile {
         setName("Eagle Shot");
         setSpeed(20);
         setMaxHealth(80);
-        setHealth(maxHealth);
+        setHealth(getMaxHealth());
         setAttack(10);
-        useCost = 1;
-        alive = false;
+        setUseCost(1);
+        setAlive(false);
         getImage();
     }
     private void getImage() {
-        up1 = setup("objects/eagle_shot", 1, 1);
-        up2 = setup("objects/eagle_shot", 1, 1);
-        down1 = setup("objects/eagle_shot", 1, 1);
-        down2 = setup("objects/eagle_shot", 1, 1);
-        left1 = setup("objects/eagle_shot", 1, 1);
-        left2 = setup("objects/eagle_shot", 1, 1);
-        right1 = setup("objects/eagle_shot", 1, 1);
-        right2 = setup("objects/eagle_shot", 1, 1);
+        setUp1(setup("objects/eagle_shot", 1, 1));
+        setUp2(setup("objects/eagle_shot", 1, 1));
+        setDown1(setup("objects/eagle_shot", 1, 1));
+        setDown2(setup("objects/eagle_shot", 1, 1));
+        setLeft1(setup("objects/eagle_shot", 1, 1));
+        setLeft2(setup("objects/eagle_shot", 1, 1));
+        setRight1(setup("objects/eagle_shot", 1, 1));
+        setRight2(setup("objects/eagle_shot", 1, 1));
     }
 }

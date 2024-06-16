@@ -74,11 +74,11 @@ public class PathFinder {
         int col = 0;
         int row = 0;
 
-        while (col < gp.maxWorldCol && row < gp.maxWorldRow) {
+        while (col < gp.getMaxWorldCol() && row < gp.getMaxWorldRow()) {
 
             // Set solid node by checking solid tiles
-            int tileNum = gp.tileM.mapTileNum[col][row];
-            if (gp.tileM.tile[tileNum].collision) {
+            int tileNum = gp.getTileM().getMapTileNum()[col][row];
+            if (gp.getTileM().getTile()[tileNum].isCollision()) {
                 node[col][row].setSolid(true);
             }
 
@@ -86,7 +86,7 @@ public class PathFinder {
             getCost(node[col][row]);
 
             col++;
-            if (col == gp.maxWorldCol) { // moves on to the next row
+            if (col == gp.getMaxWorldCol()) { // moves on to the next row
                 col = 0;
                 row++;
             }
@@ -129,12 +129,12 @@ public class PathFinder {
             }
 
             // Open the down node
-            if (row + 1 < gp.maxWorldRow) {
+            if (row + 1 < gp.getMaxWorldRow()) {
                 openNode(node[col][row + 1]);
             }
 
             // Open the right node
-            if (col + 1 < gp.maxWorldRow) {
+            if (col + 1 < gp.getMaxWorldRow()) {
                 openNode(node[col + 1][row]);
             }
 

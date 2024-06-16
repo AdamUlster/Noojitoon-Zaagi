@@ -70,15 +70,15 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);//changes the focus of the gamepanel to the key inputs
     }
 
-    private void setupGame() {
+    void setupGame() {
         ui.showLoadingMessage("Loading... Please Wait");
         aSetter.setObject();
         aSetter.setNPC();
         aSetter.setMonster();
-        ui.loadingMessageOn = false; // makes the loading message disappear after the monsters load
+        ui.setLoadingMessageOn(false); // makes the loading message disappear after the monsters load
     }
 
-    private void startGameThread() {//starts core logic when the program starts
+    void startGameThread() {//starts core logic when the program starts
         gameThread = new Thread(this);//create the thread that will run
         gameThread.start();
     }
@@ -130,10 +130,10 @@ public class GamePanel extends JPanel implements Runnable {
         // update projectile
         for (int i = 0; i < projectileList.size(); i++) {
             if (projectileList.get(i) != null) { // if the projectile exists
-                if (projectileList.get(i).alive) {
+                if (projectileList.get(i).isAlive()) {
                     projectileList.get(i).update();
                 }
-                if (projectileList.get(i).alive == false) {
+                if (projectileList.get(i).isAlive() == false) {
                     projectileList.remove(i); // removes the projectile if it is no longer alive
                 }
             }
@@ -142,11 +142,11 @@ public class GamePanel extends JPanel implements Runnable {
         // update target projectile
         for (int i = 0; i < targetProjectileList.size(); i++) {
             if (targetProjectileList.get(i) != null) { // if the projectile exists
-                if (targetProjectileList.get(i).alive) {
+                if (targetProjectileList.get(i).isAlive()) {
                     System.out.println(targetProjectileList.get(i).toString() + " " + i);
                     targetProjectileList.get(i).update();
                 }
-                if (targetProjectileList.get(i).alive == false) {
+                if (targetProjectileList.get(i).isAlive() == false) {
                     targetProjectileList.remove(i); // removes the projectile if it is no longer alive
                 }
             }
@@ -162,7 +162,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         //DEBUG STUFF
         long drawStart = 0;
-        if (keyH.checkDrawTime == true) {
+        if (keyH.isCheckDrawTime() == true) {
             drawStart = System.nanoTime();
         }
 
@@ -205,7 +205,7 @@ public class GamePanel extends JPanel implements Runnable {
 
             @Override
             public int compare(Entity e1, Entity e2) {
-                int result = Integer.compare(e1.worldY, e2.worldY); // compares the two entity's world y values
+                int result = Integer.compare(e1.getWorldY(), e2.getWorldY()); // compares the two entity's world y values
                 return result;
             }
         });
@@ -221,12 +221,12 @@ public class GamePanel extends JPanel implements Runnable {
         // Draws the UI
         ui.draw(g2);
 
-        if (keyH.displayMap) {
+        if (keyH.isDisplayMap()) {
             map.drawFullMapScreen(g2); // draws the map screen
         }
 
         //DEBUG STUFF
-        if (keyH.checkDrawTime) {
+        if (keyH.isCheckDrawTime()) {
             long drawEnd = System.nanoTime();
             long passed = drawEnd - drawStart;
             g2.setColor(Color.white);

@@ -16,60 +16,60 @@ public class AssetSetter {
         this.gp = gp;
     }
 
-    private void setObject() {
-        gp.obj[0] = new OBJ_Totem(gp);
-        gp.obj[0].worldX = gp.tileSize * 36;
-        gp.obj[0].worldY = gp.tileSize * 95;
+    void setObject() {
+        gp.getObj()[0] = new OBJ_Totem(gp);
+        gp.getObj()[0].setWorldX(gp.getTileSize() * 36);
+        gp.getObj()[0].setWorldY(gp.getTileSize() * 95);
 
-        gp.obj[1] = new OBJ_Totem(gp);
-        gp.obj[1].worldX = gp.tileSize * 14;
-        gp.obj[1].worldY = gp.tileSize * 4;
+        gp.getObj()[1] = new OBJ_Totem(gp);
+        gp.getObj()[1].setWorldX(gp.getTileSize() * 14);
+        gp.getObj()[1].setWorldY(gp.getTileSize() * 4);
 
-        gp.obj[2] = new OBJ_Totem(gp); // spawns a totem
-        gp.obj[2].worldX = gp.tileSize * 2;
-        gp.obj[2].worldY = gp.tileSize * 55;
+        gp.getObj()[2] = new OBJ_Totem(gp); // spawns a totem
+        gp.getObj()[2].setWorldX(gp.getTileSize() * 2);
+        gp.getObj()[2].setWorldY(gp.getTileSize() * 55);
 
-        gp.obj[3] = new OBJ_Wall(gp); // spawns the wall
-        gp.obj[3].worldX = gp.tileSize * 17;
-        gp.obj[3].worldY = gp.tileSize * 76;
+        gp.getObj()[3] = new OBJ_Wall(gp); // spawns the wall
+        gp.getObj()[3].setWorldX(gp.getTileSize() * 17);
+        gp.getObj()[3].setWorldY(gp.getTileSize() * 76);
 
-        gp.obj[4] = new OBJ_Wall(gp); // spawns the wall
-        gp.obj[4].worldX = gp.tileSize * 18;
-        gp.obj[4].worldY = gp.tileSize * 76;
+        gp.getObj()[4] = new OBJ_Wall(gp); // spawns the wall
+        gp.getObj()[4].setWorldX(gp.getTileSize() * 18);
+        gp.getObj()[4].setWorldY(gp.getTileSize() * 76);
 
-        gp.obj[5] = new OBJ_Wall(gp); // spawns the wall
-        gp.obj[5].worldX = gp.tileSize * 19;
-        gp.obj[5].worldY = gp.tileSize * 76;
+        gp.getObj()[5] = new OBJ_Wall(gp); // spawns the wall
+        gp.getObj()[5].setWorldX(gp.getTileSize() * 19);
+        gp.getObj()[5].setWorldY(gp.getTileSize() * 76);
 
-        gp.obj[6] = new OBJ_Wall(gp); // spawns the wall
-        gp.obj[6].worldX = gp.tileSize * 20;
-        gp.obj[6].worldY = gp.tileSize * 76;
+        gp.getObj()[6] = new OBJ_Wall(gp); // spawns the wall
+        gp.getObj()[6].setWorldX(gp.getTileSize() * 20);
+        gp.getObj()[6].setWorldY(gp.getTileSize() * 76);
 
-        gp.obj[7] = new OBJ_Wall(gp); // spawns the wall
-        gp.obj[7].worldX = gp.tileSize * 18;
-        gp.obj[7].worldY = gp.tileSize * 77;
+        gp.getObj()[7] = new OBJ_Wall(gp); // spawns the wall
+        gp.getObj()[7].setWorldX(gp.getTileSize() * 18);
+        gp.getObj()[7].setWorldY(gp.getTileSize() * 77);
 
-        gp.obj[8] = new OBJ_Wall(gp); // spawns the wall
-        gp.obj[8].worldX = gp.tileSize * 19;
-        gp.obj[8].worldY = gp.tileSize * 77;
+        gp.getObj()[8] = new OBJ_Wall(gp); // spawns the wall
+        gp.getObj()[8].setWorldX(gp.getTileSize() * 19);
+        gp.getObj()[8].setWorldY(gp.getTileSize() * 77);
 
-        gp.obj[9] = new OBJ_Totem(gp);
-        gp.obj[9].worldX = gp.tileSize * 76;
-        gp.obj[9].worldY = gp.tileSize * 33;
+        gp.getObj()[9] = new OBJ_Totem(gp);
+        gp.getObj()[9].setWorldX(gp.getTileSize() * 76);
+        gp.getObj()[9].setWorldY(gp.getTileSize() * 33);
     }
 
-    private void setNPC() {
+    public void setNPC() {
         Random random = new Random();
         // create 1 npc
-        for (int i = 0; i < gp.npc.length; i++) {
-            gp.npc[i] = new NPC(gp);
-            gp.npc[i].worldX = gp.tileSize * random.nextInt(99);
-            gp.npc[i].worldY = gp.tileSize * random.nextInt(99);
+        for (int i = 0; i < gp.getNpc().length; i++) {
+            gp.getNpc()[i] = new NPC(gp);
+            gp.getNpc()[i].setWorldX(gp.getTileSize() * random.nextInt(99));
+            gp.getNpc()[i].setWorldY(gp.getTileSize() * random.nextInt(99));
         }
 
     }
 
-    private void setMonster() {
+    public void setMonster() {
 
         int[][] miasmaCoords = {{58, 44}, {61, 45}, {61, 52}, {61, 55}, {67, 57}, {62, 59}, {64, 61}, {67, 62}, {69, 57},
                 {74, 50}, {73, 50}, {72, 49}, {71, 49}, {70, 46}, {68, 43}, {64, 43}, {64, 42}, {64, 42}, {70, 40},
@@ -87,23 +87,23 @@ public class AssetSetter {
 
         // Spawns the monsters
         for (int i = 0; i < miasmaCoords.length; i++) {
-            gp.monster[i] = new MON_Miasma(gp);
-            gp.monster[i].worldX = gp.tileSize * miasmaCoords[i][0];
-            gp.monster[i].worldY = gp.tileSize * miasmaCoords[i][1];
+            gp.getMonster()[i] = new MON_Miasma(gp);
+            gp.getMonster()[i].setWorldX(gp.getTileSize() * miasmaCoords[i][0]);
+            gp.getMonster()[i].setWorldY(gp.getTileSize() * miasmaCoords[i][1]);
         }
         for (int i = 0; i < windigoCoords.length; i++) {
-            gp.monster[i] = new MON_Windigo(gp);
-            gp.monster[i].worldX = gp.tileSize * windigoCoords[i][0];
-            gp.monster[i].worldY = gp.tileSize * windigoCoords[i][1];
+            gp.getMonster()[i] = new MON_Windigo(gp);
+            gp.getMonster()[i].setWorldX(gp.getTileSize() * windigoCoords[i][0]);
+            gp.getMonster()[i].setWorldY(gp.getTileSize() * windigoCoords[i][1]);
         }
 
 
-        gp.monster[1] = new MON_Micipijiu(gp);
-        gp.monster[1].worldX = gp.tileSize * 48;
-        gp.monster[1].worldY = gp.tileSize * 48;
+        gp.getMonster()[1] = new MON_Micipijiu(gp);
+        gp.getMonster()[1].setWorldX(gp.getTileSize() * 48);
+        gp.getMonster()[1].setWorldY(gp.getTileSize() * 48);
 
-        gp.monster[2] = new MON_Windigo(gp);
-        gp.monster[2].worldX = gp.tileSize * 49;
-        gp.monster[2].worldY = gp.tileSize * 49;
+        gp.getMonster()[2] = new MON_Windigo(gp);
+        gp.getMonster()[2].setWorldX(gp.getTileSize() * 49);
+        gp.getMonster()[2].setWorldY(gp.getTileSize() * 49);
     }
 }

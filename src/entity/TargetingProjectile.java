@@ -8,15 +8,15 @@ public class TargetingProjectile extends Entity {
     public TargetingProjectile(GamePanel gp) {
         super(gp);
 
-        type = 3; // sets this entity's type to a projectile
+        setType(3); // sets this entity's type to a projectile
     }
 
-    private void set(int worldX, int worldY, boolean alive, int target) { // passes the coordinates to create the fireball
-        this.worldX = worldX;
-        this.worldY = worldY;
-        this.direction = "up";
-        this.alive = alive;
-        this.health = this.maxHealth;
+    void set(int worldX, int worldY, boolean alive, int target) { // passes the coordinates to create the fireball
+        this.setWorldX(worldX);
+        this.setWorldY(worldY);
+        this.setDirection("up");
+        this.setAlive(alive);
+        this.setHealth(this.getMaxHealth());
         this.target = target;
 
         // To adjust the hit box of the targeting projectile
@@ -30,33 +30,33 @@ public class TargetingProjectile extends Entity {
     }
 
     public void update() {
-        int xDistance = gp.monster[target].worldX - worldX;//relative distance in both axis
-        int yDistance = gp.monster[target].worldY - worldY;
-        System.out.println(gp.monster[target].worldX + " " + gp.monster[target].worldY);
+        int xDistance = gp.getMonster()[target].getWorldX() - getWorldX();//relative distance in both axis
+        int yDistance = gp.getMonster()[target].getWorldY() - getWorldY();
+        System.out.println(gp.getMonster()[target].getWorldX() + " " + gp.getMonster()[target].getWorldY());
 
         //find the distance
         if (xDistance > 0) {
-            xMove = (int) Math.ceil((double) xDistance / 30);
+            setxMove((int) Math.ceil((double) xDistance / 30));
         }
         else {
-            xMove = (int) Math.floor((double) xDistance / 30);
+            setxMove((int) Math.floor((double) xDistance / 30));
         }
         if (yDistance > 0) {
-            yMove = (int) Math.ceil((double) yDistance / 30);
+            setyMove((int) Math.ceil((double) yDistance / 30));
         }
         else {
-            yMove = (int) Math.floor((double) yDistance / 30);
+            setyMove((int) Math.floor((double) yDistance / 30));
         }
 
         //move the projectile
-        worldX += xMove;
-        worldY += yMove;
-        System.out.println(worldX + " " + worldY);
+        setWorldX(getWorldX() + getxMove());
+        setWorldY(getWorldY() + getyMove());
+        System.out.println(getWorldX() + " " + getWorldY());
 
-        int monsterIndex = gp.cChecker.checkEntity(this, gp.monster); // gets the monster index that the projectile hits
+        int monsterIndex = gp.getCChecker().checkEntity(this, gp.getMonster()); // gets the monster index that the projectile hits
         if (monsterIndex != 999) { // if the projectile hits a monster
-            gp.player.damageMonster(monsterIndex, attack); // passes the projectile's attack to a monster
-            alive = false; // the projectile disappears after hitting a monster
+            gp.getPlayer().damageMonster(monsterIndex, getAttack()); // passes the projectile's attack to a monster
+            setAlive(false); // the projectile disappears after hitting a monster
         }
 
         //find relative position between targeting projectile and the monster

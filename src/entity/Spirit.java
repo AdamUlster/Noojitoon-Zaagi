@@ -26,49 +26,37 @@ public class Spirit extends Entity {
         }
         else if (name.equals("Eagle")) {
             setUp1(setup("eagle/eagle_up", 1, 1));
-            up2 = setup("eagle/eagle_up_2", 1, 1);
-            down1 = setup("eagle/eagle_down", 1, 1);
-            down2 = setup("eagle/eagle_down_2", 1, 1);
-            left1 = setup("eagle/eagle_left", 1, 1);
-            left2 = setup("eagle/eagle_left_2", 1, 1);
-            right1 = setup("eagle/eagle_right", 1, 1);
-            right2 = setup("eagle/eagle_right_2", 1, 1);
+            setUp2(setup("eagle/eagle_up_2", 1, 1));
+            setDown1(setup("eagle/eagle_down", 1, 1));
+            setDown2(setup("eagle/eagle_down_2", 1, 1));
+            setLeft1(setup("eagle/eagle_left", 1, 1));
+            setLeft2(setup("eagle/eagle_left_2", 1, 1));
+            setRight1(setup("eagle/eagle_right", 1, 1));
+            setRight2(setup("eagle/eagle_right_2", 1, 1));
         }
         else {
-            up1 = setup("turtle/turtle_up", 1.8, 1.8);
-            up2 = setup("turtle/turtle_up_2", 1.8, 1.8);
-            down1 = setup("turtle/turtle_down", 1.8, 1.8);
-            down2 = setup("turtle/turtle_down_2", 1.8, 1.8);
-            left1 = setup("turtle/turtle_left", 1.8, 1.8);
-            left2 = setup("turtle/turtle_left_2", 1.8, 1.8);
-            right1 = setup("turtle/turtle_right", 1.8, 1.8);
-            right2 = setup("turtle/turtle_right_2", 1.8, 1.8);
+            setUp1(setup("turtle/turtle_up", 1.8, 1.8));
+            setUp2(setup("turtle/turtle_up_2", 1.8, 1.8));
+            setDown1(setup("turtle/turtle_down", 1.8, 1.8));
+            setDown2(setup("turtle/turtle_down_2", 1.8, 1.8));
+            setLeft1(setup("turtle/turtle_left", 1.8, 1.8));
+            setLeft2(setup("turtle/turtle_left_2", 1.8, 1.8));
+            setRight1(setup("turtle/turtle_right", 1.8, 1.8));
+            setRight2(setup("turtle/turtle_right_2", 1.8, 1.8));
         }
 
         // Collision box
-        this.solidArea = new Rectangle(x, y, width, height);
+        this.setSolidArea(new Rectangle(x, y, width, height));
 
         // Attack area
-        this.attackArea = new Rectangle(x, y, width2, height2);
-    }
-
-    public int getMaxHealth() { // gets the spirit's max health
-        return maxHealth;
-    }
-
-    public int getHealth() { // gets the spirit's current health
-        return health;
-    }
-
-    public void setHealth(int health) { // sets the spirit's current health
-        this.health = health;
+        this.setAttackArea(new Rectangle(x, y, width2, height2));
     }
 
     public void setHitBox (int width, int height) {
-        solidArea = new Rectangle(8, 16, width, height);
+        setSolidArea(new Rectangle(8, 16, width, height));
 
-        solidAreaDefaultX = solidArea.x;
-        solidAreaDefaultY = solidArea.y;
+        setSolidAreaDefaultX(getSolidArea().x);
+        setSolidAreaDefaultY(getSolidArea().y);
         System.out.println("hitbox established");
     }
 

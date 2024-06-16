@@ -24,33 +24,33 @@ public class UI {
         this.gp = gp;
         arial_40 = new Font("Arial", Font.PLAIN, 40);
         OBJ_Totem totem = new OBJ_Totem(gp);
-        totemImage = totem.down1;
+        totemImage = totem.getDown1();
 
         // Display hearts on screen
         Entity heart = new OBJ_Heart(gp); // creates a heart object
 
         // sets the heart states to their respective images
-        heart_full = heart.image1;
-        heart_half = heart.image2;
-        heart_blank = heart.image3;
+        heart_full = heart.getImage1();
+        heart_half = heart.getImage2();
+        heart_blank = heart.getImage3();
     }
 
-    void showMessage(String text) {
+    public void showMessage(String text) {
         message = text;
         messageOn = true;
     }
 
-    private void showLoadingMessage(String text) {
+    void showLoadingMessage(String text) {
         message = text;
         loadingMessageOn = true;
     }
 
-    private void showCollectionMessage(String text) {
+    public void showCollectionMessage(String text) {
         message = text;
         collectionMessageOn = true;
     }
 
-    private void showRespawningMessage() {
+    public void showRespawningMessage() {
         respawningMessageOn = true;
     }
 
@@ -65,12 +65,12 @@ public class UI {
         }
         g2.setFont(arial_40);
         g2.setColor(Color.white);
-        g2.drawImage(totemImage, gp.tileSize / 2, gp.tileSize / 2, gp.tileSize, gp.tileSize, null);
-        g2.drawString("x " + gp.player.numTotems, 160, 110);
+        g2.drawImage(totemImage, gp.getTileSize() / 2, gp.getTileSize() / 2, gp.getTileSize(), gp.getTileSize(), null);
+        g2.drawString("x " + gp.getPlayer().getNumTotems(), 160, 110);
 
         g2.setFont(g2.getFont().deriveFont(20F)); // changes the font size
         g2.setColor(new Color(135, 206, 235)); // light blue
-        if (gp.keyH.displayControls) { // displays the controls if they should be displayed
+        if (gp.getKeyH().isDisplayControls()) { // displays the controls if they should be displayed
             g2.fillRect(40, 700, 405, 280);
             g2.setColor(new Color(255, 255, 255)); // white
             g2.drawString("Controls:", 40, 730);
@@ -100,7 +100,7 @@ public class UI {
         if (messageOn) {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // resets the opacity
             g2.setFont(g2.getFont().deriveFont(30F)); // changes the font size
-            g2.drawString(message, gp.tileSize / 2, gp.tileSize * 5);
+            g2.drawString(message, gp.getTileSize() / 2, gp.getTileSize() * 5);
 
             messageDisplayTime ++;
 
@@ -114,14 +114,14 @@ public class UI {
         if (loadingMessageOn) {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // resets the opacity
             g2.setFont(g2.getFont().deriveFont(30F)); // changes the font size
-            g2.drawString(message, gp.tileSize / 2, gp.tileSize * 5);
+            g2.drawString(message, gp.getTileSize() / 2, gp.getTileSize() * 5);
         }
 
         // totem collection message
         if (collectionMessageOn) {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // resets the opacity
             g2.setFont(g2.getFont().deriveFont(30F)); // changes the font size
-            g2.drawString(message, gp.tileSize / 2, gp.tileSize * 5);
+            g2.drawString(message, gp.getTileSize() / 2, gp.getTileSize() * 5);
 
             messageDisplayTime ++;
 
@@ -141,13 +141,13 @@ public class UI {
 
             // Display the countdown message
             String message = Integer.toString(countdown); // Convert countdown number to string
-            g2.drawString("Respawning in", gp.screenWidth / 2 - 115, gp.screenHeight / 2 - 150);
+            g2.drawString("Respawning in", gp.getScreenWidth() / 2 - 115, gp.getScreenHeight() / 2 - 150);
             if (countdown <= 3) {
-                g2.drawString(message, gp.screenWidth / 2, gp.screenHeight / 2 - 65);
+                g2.drawString(message, gp.getScreenWidth() / 2, gp.getScreenHeight() / 2 - 65);
             }
             if (countdown == 1) { // displays the loading message on the last part of the countdown
                 g2.setFont(g2.getFont().deriveFont(30F)); // changes the font size
-                g2.drawString("Loading... Please Wait", gp.tileSize / 2, gp.tileSize * 5);
+                g2.drawString("Loading... Please Wait", gp.getTileSize() / 2, gp.getTileSize() * 5);
             }
         }
 
@@ -156,12 +156,12 @@ public class UI {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // resets the opacity
             g2.setFont(g2.getFont().deriveFont(30F)); // changes the font size
             g2.setColor(Color.MAGENTA); // text box colour
-            g2.fillRect(gp.tileSize / 2, (int) (gp.tileSize * 4.5), 950, 350);
+            g2.fillRect(gp.getTileSize() / 2, (int) (gp.getTileSize() * 4.5), 950, 350);
             g2.setColor(Color.black); // text colour
-            g2.drawString("Congratulations!", gp.tileSize / 2, gp.tileSize * 5);
-            g2.drawString("By collecting all four totems, you have just reunited the spirit animals!", gp.tileSize / 2, gp.tileSize * 6);
-            g2.drawString("The community is much safer with you in it! Good work!", gp.tileSize / 2, gp.tileSize * 7);
-            g2.drawString("Thank you for playing!", gp.tileSize / 2, gp.tileSize * 8);
+            g2.drawString("Congratulations!", gp.getTileSize() / 2, gp.getTileSize() * 5);
+            g2.drawString("By collecting all four totems, you have just reunited the spirit animals!", gp.getTileSize() / 2, gp.getTileSize() * 6);
+            g2.drawString("The community is much safer with you in it! Good work!", gp.getTileSize() / 2, gp.getTileSize() * 7);
+            g2.drawString("Thank you for playing!", gp.getTileSize() / 2, gp.getTileSize() * 8);
             System.exit(0); // Exits the program
         }
     }
@@ -170,7 +170,7 @@ public class UI {
 
         // sets the coordinates of the spirit name in terms of the tile size
         int x;
-        int y = gp.tileSize * 2;
+        int y = gp.getTileSize() * 2;
         float fontSize; // font size of the name of the spirits
         float scale; // a scale to scale the images when drawing them
 
@@ -178,8 +178,8 @@ public class UI {
         g2.setColor(Color.white);
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // resets the opacity
 
-        for (int i = 0; i < gp.player.spirits.length; i++) {
-            if (gp.player.spirits[i] == gp.player.getCurrentSpirit()) {
+        for (int i = 0; i < gp.getPlayer().getSpirits().length; i++) {
+            if (gp.getPlayer().getSpirits()[i] == gp.getPlayer().getCurrentSpirit()) {
                 fontSize = 30F;
             }
             else {
@@ -187,23 +187,23 @@ public class UI {
             }
             g2.setFont(g2.getFont().deriveFont(fontSize)); // changes the font size
 
-            x = gp.tileSize;
-            g2.drawString(gp.player.spirits[i].name, x, y);
+            x = gp.getTileSize();
+            g2.drawString(gp.getPlayer().getSpirits()[i].getName(), x, y);
             x += 150;
             y -= 60;
 
             // Adjusts the drawing of the spirits if the spirit is a turtle to account for the differences in its drawing
-            if (gp.player.spirits[i].name.equals("Turtle")) {
+            if (gp.getPlayer().getSpirits()[i].getName().equals("Turtle")) {
                 x -= 25;
                 y -= 50;
             }
 
             // Get the original width and height of the image
-            int originalWidth = gp.player.spirits[i].right1.getWidth();
-            int originalHeight = gp.player.spirits[i].right1.getHeight();
+            int originalWidth = gp.getPlayer().getSpirits()[i].getRight1().getWidth();
+            int originalHeight = gp.getPlayer().getSpirits()[i].getRight1().getHeight();
 
             // Calculate scaled size
-            if (gp.player.spirits[i] == gp.player.getCurrentSpirit()) {
+            if (gp.getPlayer().getSpirits()[i] == gp.getPlayer().getCurrentSpirit()) {
                 scale = 1F;
             }
             else {
@@ -213,11 +213,11 @@ public class UI {
             int scaledHeight = (int) (originalHeight * scale);
 
             // Draws the image at the scaled size
-            g2.drawImage(gp.player.spirits[i].right1, x, y, scaledWidth, scaledHeight, null);
+            g2.drawImage(gp.getPlayer().getSpirits()[i].getRight1(), x, y, scaledWidth, scaledHeight, null);
             y += 60;
 
             // Resets the coordinates after drawing the turtle
-            if (gp.player.spirits[i].name.equals("Turtle")) {
+            if (gp.getPlayer().getSpirits()[i].getName().equals("Turtle")) {
                 x += 25;
                 y += 50;
             }
@@ -231,23 +231,23 @@ public class UI {
             scaledWidth = (int) (originalWidth * scale);
             scaledHeight = (int) (originalHeight * scale);
 
-            for (int j = 0; j < gp.player.spirits[i].getMaxHealth() / 2; j++) { // since 2 lives means 1 heart
+            for (int j = 0; j < gp.getPlayer().getSpirits()[i].getMaxHealth() / 2; j++) { // since 2 lives means 1 heart
                 g2.drawImage(heart_blank, x, y, scaledWidth, scaledHeight, null);
-                x += gp.tileSize * 0.9; // moves over to the right to draw the next heart
+                x += gp.getTileSize() * 0.9; // moves over to the right to draw the next heart
             }
 
             // resets the coordinates
-            x = gp.tileSize + 260;
+            x = gp.getTileSize() + 260;
 
-            for (int j = 0; j < gp.player.spirits[i].getHealth(); j++) {
+            for (int j = 0; j < gp.getPlayer().getSpirits()[i].getHealth(); j++) {
                 g2.drawImage(heart_half, x, y, scaledWidth, scaledHeight, null); // draws a half heart
                 j++;
-                if (j < gp.player.spirits[i].getHealth()) { // if the player's health still is not full, make the heart full
+                if (j < gp.getPlayer().getSpirits()[i].getHealth()) { // if the player's health still is not full, make the heart full
                     g2.drawImage(heart_full, x, y, scaledWidth, scaledHeight, null); // draws the full heart
                 }
-                x += gp.tileSize * 0.9; // moves over to the right to draw the next heart
+                x += gp.getTileSize() * 0.9; // moves over to the right to draw the next heart
             }
-            if (gp.player.spirits[i] == gp.player.getCurrentSpirit()) {
+            if (gp.getPlayer().getSpirits()[i] == gp.getPlayer().getCurrentSpirit()) {
                 y += 170;
             }
             else {
