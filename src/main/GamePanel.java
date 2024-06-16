@@ -56,7 +56,7 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread;//CALL ON THREAD CLASS, THAT ALLOWS FOR GAME LOGIC TO BE RUN AGAIN AND AGAIN
 
     // ENTITIES AND OBJECTS
-    public Player player = new Player(this, keyH);//CREATE PLPAYER
+    public Player player = new Player(this, keyH);//CREATE PLAYER
     public Entity[] obj = new Entity[10]; // CREATE 10 OBJECTS
     public Entity[] npc = new Entity[50];// CREATE 50 NPCs
     public Entity[] monster = new Entity[170];//CREATE 170
