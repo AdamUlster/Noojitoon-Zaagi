@@ -2,20 +2,21 @@ package main;
 import javax.swing.JFrame;
 
 public class Main {
-    static JFrame window;
+    static JFrame window;//CREATE A J-FRAME TO DISPLAY EVERYTHING IN
     public static void main(String[] args) {
-        window = new JFrame();
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // exits program when user hits the x button
-        window.setResizable(false); // user cannot resize the window
-        window.setTitle("my 2D adventure"); // game title
+        window = new JFrame();//CREATE NEW J-FRAME
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // EXITS PROGRAM WHEN USER HITS X
+        window.setResizable(false); // USER CANNOT RESIZE THE WINDOW
+        window.setTitle("my 2D adventure"); // GAME TITLE
 
-        GamePanel gamePanel = new GamePanel(); // create gamepanel
-        window.add(gamePanel);
-        window.pack(); // cause the window to be size to fit the dimensions
+        GamePanel gamePanel = new GamePanel(); // CREATE PANEL
+        window.add(gamePanel);//ADD GAME PANEL TO THE WINDOW
+        window.pack(); // FORCE THE WINDOW TO BE SIZED TO FIT THE DIMENSIONS
 
-        window.setLocationRelativeTo(null); // sets the window so that it has no specific location
-        window.setVisible(true); // displays window now that it's generated
-        
+        window.setLocationRelativeTo(null); // SETS THE WINDOW SO THAT IT HAS NO SPECIFIC LOCATION ON THE SCREEN
+        window.setVisible(true); // DISPLAY NEWLY GENERATED WINDOW
+
+//        START GAME PANEL
         gamePanel.setupGame();
         gamePanel.startGameThread();
 

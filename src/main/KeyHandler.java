@@ -11,7 +11,7 @@ public class KeyHandler implements KeyListener, MouseListener {
     public GamePanel gp;//IMPORT GAME PANEL
 
 //    BOOLEAN VALUES THAT DETERMINE WHICH KEYS ARE PRESSED AND WHICH ARE NOT
-    public boolean upPressed, downPressed, leftPressed, rightPressed, shotKeyPressed;
+    public boolean upPressed, downPressed, leftPressed, rightPressed;
 
 //    BOOLEAN VALUES THAT DETERMINE WHICH NUMBER KEYS HAVE BEEN PRESSED, USED FOR SPRITE SWITCHING
     public boolean onePressed, twoPressed, threePressed;//boolean values that determine which number keys have been
@@ -106,7 +106,7 @@ public class KeyHandler implements KeyListener, MouseListener {
 //        RETURNS THE KEYCODE OF A KEY THAT HAS BEN RELEASED
         int code = e.getKeyCode();
 
-//        RESETS THE KEYKEYPRESSED BOOLEANS WHEN THE KEYS ARE RELEASED
+//        RESETS THE KEYPRESSED BOOLEANS WHEN THE KEYS ARE RELEASED
         if (code == KeyEvent.VK_W) {// W KEY
             upPressed = false;
         }if (code == KeyEvent.VK_S) {// S KEY
@@ -143,7 +143,7 @@ public class KeyHandler implements KeyListener, MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-//        GETS THGE KEYCODE OF THE MOUSE BUTTON THAT WAS RELEASED
+//        GETS THE KEYCODE OF THE MOUSE BUTTON THAT WAS RELEASED
         int button = e.getButton();
         if (button == MouseEvent.BUTTON1) { // LEFT CLICK
             primaryPressed = false;
