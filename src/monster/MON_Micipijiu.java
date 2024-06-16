@@ -46,43 +46,21 @@ public class MON_Micipijiu extends Entity {
         setRight2(setup("monsters/micipijiu_right", 1, 1));
     }
 
-//BEHAVIOR AND MOVEMENT METHOD
-    public void setAction() {
 
-//        RANDOM MONSTER BEHAVIOR
-        Random random = new Random();
-        actionLockCounter++;// INCREASES MOVEMENT COUNTER SO MONSTER ONLY MOVES EVERY 120 FRAMES
-        if (actionLockCounter == 120) {//IF 120 FRAMES HAVE PASSED PICK A NEW DIRECTION AT RANDOM
-
-            int i = random.nextInt(100) + 1;//PICKS A RANDOM NUMBER BETWEEN 1 AND 100
-
-            //RANDOMLY CHOOSES A DIRECTION TO TRAVEL IN
-            if (i <= 25) {
-                direction = "up";
-            }
-            if (i > 25 && i <= 50) {
-                direction = "down";
-            }
-            if (i > 50 && i <= 75) {
-                direction = "left";
-            }
-            if (i > 75 && i < 100) {
-                direction = "right";
-            }
-            actionLockCounter = 0;//RESET MOVEMENT COUNTER AFTER PICKING A NEW DIRECTION AT RANDOM
-        }
 
     public void update() { // overwrites the parent class's update method
         super.update(); // calls on the parent's class update method
 
         int xDistance = Math.abs(getWorldX() - gp.getPlayer().getWorldX());
         int yDistance = Math.abs(getWorldY() - gp.getPlayer().getWorldY());
-        int tileDistance = (xDistance + yDistance) / gp.getTileSize();
+        int tileDistance = (int)Math.sqrt(Math.pow(xDistance, 2.0) + Math.pow(yDistance, 2)) / gp.tileSize;
 
-        if (!isOnPath() && tileDistance < 5) { // if the monster is within 5 tiles of the player
+        if (!isOnPath() && tileDistance < 4) { // if the monster is within 5 tiles of the player
             int i = new Random().nextInt(100) + 1; // picks a random number from 1 to 100
             if (i > 50) {
                 setOnPath(true); // half the time, it doesn't follow the player
+            }else {
+                onPath = false;
             }
         }
         if (isOnPath() && tileDistance > 15) { // makes the monsters disappear once the player is a certain distance away
@@ -90,8 +68,10 @@ public class MON_Micipijiu extends Entity {
         }
     }
 
+//    MONSTER BEHAVIOR AND MOVEMENT
     public void setAction() {
 
+  //        ACTIVELY FOLLOWS PLAYER IF AGGRO IS ON
         if (isOnPath()) {
             int goalCol = (gp.getPlayer().getWorldX() + gp.getPlayer().getSolidArea().x) / gp.getTileSize();
             int goalRow = (gp.getPlayer().getWorldY() + gp.getPlayer().getSolidArea().y) / gp.getTileSize();
@@ -99,13 +79,14 @@ public class MON_Micipijiu extends Entity {
         }
         else {
 
-            // random monster behaviour
+//            RANDOM BEHAVIOR
             setActionLockCounter(getActionLockCounter() + 1);
             if (getActionLockCounter() == 120) {
 
                 Random random = new Random();
-                int i = random.nextInt(100) + 1;//pick a random number from 1 to 100
+                int i = random.nextInt(100) + 1;//PICKS A RANDOM NUMBER BETWEEN 1 AND 100
 
+//                SELECT A RANDOM DIRECTION TO TRAVEL IN
                 if (i <= 25) {
                     setDirection("up");
                 }
@@ -118,11 +99,13 @@ public class MON_Micipijiu extends Entity {
                 if (i > 75 && i < 100) {
                     setDirection("right");
                 }
-                setActionLockCounter(0);
+
+                setActionLockCounter(0);//RESET COUNTER SO MONSTER TRAVELS IN THAT DIRECTION FOR 2 SECONDS
             }
         }
     }
 
+//    TURNS ON AGGRO IF MONSTER HAS BEEN DAMAGED
     public void damageReaction() {
         setActionLockCounter(0);
         setOnPath(true);

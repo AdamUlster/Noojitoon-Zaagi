@@ -41,41 +41,21 @@ public class MON_Miasma extends Entity {
     }
 
 //    MONSTER BEHAVIOR AND MOVEMENT
-    public void setAction() {
 
-        // RANDOM MOVEMENT BEHAVIOR
-        Random random = new Random();
-        actionLockCounter++;//INCREASES ACTION LOCK COUNTER SO DIRECTION CHANGE ONLY OCCURS EVERY 120 FRAMES
-        if (actionLockCounter == 120) {// CHANGES DIRECTION ONLY EVERY 120 FRAMES OR EVERY 2 SECONDS
-
-            int i = random.nextInt(100) + 1;// PICKS A RANDOM NUMBER BETWEEN 1 AND 100
-
-            //CHOOSES A RANDOM DIRECTION TO TRAVEL IN
-            if (i <= 25) {
-                direction = "up";
-            }
-            if (i > 25 && i <= 50) {
-                direction = "down";
-            }
-            if (i > 50 && i <= 75) {
-                direction = "left";
-            }
-            if (i > 75 && i < 100) {
-                direction = "right";
-            }
-            actionLockCounter = 0;//RESET DIRECTION CHANGE COUNTER
           
     public void update() { // overwrites the parent class's update method
         super.update(); // calls on the parent's class update method
 
         int xDistance = Math.abs(getWorldX() - gp.getPlayer().getWorldX());
         int yDistance = Math.abs(getWorldY() - gp.getPlayer().getWorldY());
-        int tileDistance = (xDistance + yDistance) / gp.getTileSize();
+        int tileDistance = (int)Math.sqrt(Math.pow(xDistance, 2.0) + Math.pow(yDistance, 2)) / gp.tileSize;
 
-        if (!isOnPath() && tileDistance < 5) { // if the monster is within 5 tiles of the player
+        if (!isOnPath() && tileDistance < 4) { // if the monster is within 5 tiles of the player
             int i = new Random().nextInt(100) + 1; // picks a random number from 1 to 100
             if (i > 50) {
                 setOnPath(true); // half the time, it doesn't follow the player
+            }else {
+                onPath = false;
             }
         }
         if (isOnPath() && tileDistance > 15) { // makes the monsters disappear once the player is a certain distance away
@@ -94,10 +74,10 @@ public class MON_Miasma extends Entity {
 
             // random monster behaviour
             setActionLockCounter(getActionLockCounter() + 1);
-            if (getActionLockCounter() == 120) {
+            if (getActionLockCounter() == 120) {//PICK A RANDOM DIRECTION EVERY 2 SECONDS
 
                 Random random = new Random();
-                int i = random.nextInt(100) + 1;//pick a random number from 1 to 100
+                int i = random.nextInt(100) + 1;//PICKS A RANDOM NUMBER BETWEEN 1 AND 100
 
                 if (i <= 25) {
                     setDirection("up");

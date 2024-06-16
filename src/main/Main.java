@@ -3,10 +3,10 @@ import javax.swing.JFrame;
 
 public class Main {
     public static void main(String[] args) {
-        JFrame window = new JFrame();
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // exits program when user hits the x button
-        window.setResizable(false); // user cannot resize the window
-        window.setTitle("my 2D adventure"); // game title
+        JFrame window = new JFrame();//CREATE NEW J-FRAME
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // EXITS PROGRAM WHEN USER HITS X
+        window.setResizable(false);  // USER CANNOT RESIZE THE WINDOW
+        window.setTitle("my 2D adventure");  // GAME TITLE
 
         GamePanel gamePanel = new GamePanel(); // CREATE PANEL
         window.add(gamePanel);//ADD GAME PANEL TO THE WINDOW

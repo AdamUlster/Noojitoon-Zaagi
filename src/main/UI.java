@@ -10,19 +10,26 @@ import java.awt.image.BufferedImage;
 //USER INTERFACE CLASS
 public class UI {
     private GamePanel gp;
-    private Font arial_40; // not instantiated in game loop so that it doesn't run 60 times per second
+    private Font arial_40; //FONT NOT INSTANTIATED IN GAME LOOP SO THAT IT DOESN'T RUN 60 TIMES PER SECOND
+  
+ //    CREATE EMPTY BUFFERED IMAGES FOR TOTEM IMAGE, AND HEART
     private BufferedImage totemImage, heart_full, heart_half, heart_blank;
-    private boolean messageOn = false; // whether there is a message displayed
-    private boolean loadingMessageOn = true; // loading sprites message
-    private boolean respawningMessageOn = false; // respawning message
-    private boolean collectionMessageOn = false; // totem collection message
-    private boolean completionMessageOn = false; // game over message
-    private String message = "";
-    private int messageDisplayTime = 0; // keeps track of the amount of time that has elapsed since the message has appeared
+    private boolean messageOn = false; // WHETHER THERE IS A MESSAGE DISPLAYED
+    private boolean loadingMessageOn = true; // LOADING SPRITES MESSAGE
+    private boolean respawningMessageOn = false; // RESPAWN MESSAGE
+    private boolean collectionMessageOn = false; // TOTEM COLLECTION MESSAGE
+    private boolean completionMessageOn = false;// GAME OVER MESSAGE
+    private String message = "";// STRING THAT WILL BE INPUTTED INTO MESSAGE METHODS
+  
+//    VARIABLE TO KEEP TRACK OF THE AMOUNT OF TIME THAT HAS ELAPSED SINCE THE MESSAGE HAS APPEARED
+    private int messageDisplayTime = 0; 
+  
+    //    DISPLAYS A COUNTDOWN UP TO 3 BEFORE RESPAWNING THE PLAYER
     private int respawningMessageDisplayTime = 0; // counts to 3 and then, the player respawns
 
-//    CONSTRUCTOR METHOD
-    public UI (GamePanel gp) {
+
+    //    CONSTRUCTOR METHOD
+    public UI(GamePanel gp) {
         this.gp = gp;// CALL ON GAME PANEL CLASS
 
 //        SET FONT
@@ -41,41 +48,43 @@ public class UI {
         heart_blank = heart.getImage3();
     }
 
-//    SHOW MESSAGE WITH THE TEXT STRING AS INPUT
+    //    SHOW MESSAGE WITH THE TEXT STRING AS INPUT
     public void showMessage(String text) {
         message = text;
         messageOn = true;
     }
+
 
     void showLoadingMessage(String text) {
         message = text;
         loadingMessageOn = true;
     }
 
-//    SHOW COLLECTION FOR COLLECTION OF TOTEM
+    //    SHOW COLLECTION FOR COLLECTION OF TOTEM
     public void showCollectionMessage(String text) {
         message = text;
         collectionMessageOn = true;
     }
 
-//    SHOW RESPAWNING MESSAGE
+    //    SHOW RESPAWNING MESSAGE
     public void showRespawningMessage() {
         respawningMessageOn = true;
     }
 
-//    DRAW METHOD
+    //    DRAW METHOD
     public void draw(Graphics2D g2) {
         drawSpiritsHealth(g2); // draws the spirits' health
 
 //        CHECK IF MESSAGE BELONGS TO TARGETING PROJECTILE, MAKE THE FONT COLOUR BLACK
         if (message.equals("There are no monsters for the eagle eye to lock onto")) {
             g2.setColor(Color.black);
-        }
-        else {
+        } else {
             g2.setColor(Color.white);//OTHERWISE THE FONT COLOUR IS BLACK
         }
         g2.setFont(arial_40);
         g2.setColor(Color.white);
+
+//        DRAW THE TOTEM IMAGE IN THE TOP RIGHT AND THE NUMBER OF TOTEMS
         g2.drawImage(totemImage, gp.getTileSize() / 2, gp.getTileSize() / 2, gp.getTileSize(), gp.getTileSize(), null);
         g2.drawString("x " + gp.getPlayer().getNumTotems(), 160, 110);
 //        DISPLAYS CONTROLS IF C HAS BEEN TOGGLED ON
@@ -103,55 +112,56 @@ public class UI {
 
 
 //        TELLS USER THE GOAL OF THE GAME
-        g2.setFont(g2.getFont().deriveFont(20F)); // changes the font size
-        g2.setColor(new Color(135, 206, 235)); // light blue
-        g2.fillRect(540, 940, 850, 40);
-        g2.setColor(new Color(255, 255, 255)); // white
-        g2.drawString("Goal: Collect all of the totems to reunite the Indigenous spirit animals and protect the community", 540, 970);
+            g2.setFont(g2.getFont().deriveFont(20F)); // changes the font size
+            g2.setColor(new Color(135, 206, 235)); // light blue
+            g2.fillRect(540, 940, 850, 40);
+            g2.setColor(new Color(255, 255, 255)); // white
+            g2.drawString("Goal: Collect all of the totems to reunite the Indigenous spirit animals and protect the community", 540, 970);
 
         // MESSAGE
         if (messageOn) {
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // resets the opacity
-            g2.setFont(g2.getFont().deriveFont(30F)); // changes the font size
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // RESETS THE OPACITY
+            g2.setFont(g2.getFont().deriveFont(30F));  // CHANGE FONT SIZE
             g2.drawString(message, gp.getTileSize() / 2, gp.getTileSize() * 5);
 
-            messageDisplayTime ++;//ADDS TO COUNTER FOR DISPLAY DURATION
+                messageDisplayTime++;//ADDS TO COUNTER FOR DISPLAY DURATION
 
 //            MESSAGE DISAPPEARS AFTER 2 SECONDS
-            if (messageDisplayTime > 120) {
-                messageDisplayTime = 0;
-                messageOn = false;
+                if (messageDisplayTime > 120) {
+                    messageDisplayTime = 0;
+                    messageOn = false;
+                }
             }
-        }
 
         // LOADING MESSAGE
         if (loadingMessageOn) {
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // resets the opacity
-            g2.setFont(g2.getFont().deriveFont(30F)); // changes the font size
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); 
+            g2.setFont(g2.getFont().deriveFont(30F)); 
             g2.drawString(message, gp.getTileSize() / 2, gp.getTileSize() * 5);
         }
 
         // TOTEM COLLECTION MESSAGE
         if (collectionMessageOn) {
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // resets the opacity
-            g2.setFont(g2.getFont().deriveFont(30F)); // changes the font size
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+            g2.setFont(g2.getFont().deriveFont(30F));
             g2.drawString(message, gp.getTileSize() / 2, gp.getTileSize() * 5);
 
-            messageDisplayTime ++;
+                messageDisplayTime++;
 
 //            MESSAGE DISAPPEARS AFTER 2 SECONDS
-            if (messageDisplayTime > 240) {
-                collectionMessageOn = false;
+                if (messageDisplayTime > 240) {
+                    collectionMessageOn = false;
+                }
             }
-        }
 
-        // RESPAWNING MESSAGE
-        if (respawningMessageOn) {
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-            g2.setFont(g2.getFont().deriveFont(50F));
+            // RESPAWNING MESSAGE
+            if (respawningMessageOn) {
+                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+                g2.setFont(g2.getFont().deriveFont(50F));
 
 //            CALCULATE THE COUNTDOWN NUMBER BASED ON THE TIME
-            int countdown = 4 - respawningMessageDisplayTime / 60; // COUNTDOWN FROM 3 TO 0
+                int countdown = 4 - respawningMessageDisplayTime / 60; // COUNTDOWN FROM 3 TO 0
+
 
             // Display the countdown message
             String message = Integer.toString(countdown); // Convert countdown number to string
@@ -162,8 +172,8 @@ public class UI {
             if (countdown == 1) { // displays the loading message on the last part of the countdown
                 g2.setFont(g2.getFont().deriveFont(30F)); // changes the font size
                 g2.drawString("Loading... Please Wait", gp.getTileSize() / 2, gp.getTileSize() * 5);
+
             }
-        }
 
 //        IF USER BEATS THE GAME
         if (completionMessageOn) {
@@ -188,9 +198,9 @@ public class UI {
         float fontSize; // font size of the name of the spirits
         float scale; // a scale to scale the images when drawing them
 
-        g2.setFont(arial_40);
-        g2.setColor(Color.white);
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+            g2.setFont(arial_40);
+            g2.setColor(Color.white);
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
         for (int i = 0; i < gp.getPlayer().getSpirits().length; i++) {
             if (gp.getPlayer().getSpirits()[i] == gp.getPlayer().getCurrentSpirit()) {
@@ -236,8 +246,8 @@ public class UI {
                 y += 50;
             }
 
-            x += 110;
-            y -= 80;
+                x += 110;
+                y -= 80;
 
 //            DRAWS THE HEARTS AT THE SCALED SIZE
             originalWidth = heart_blank.getWidth();
@@ -335,3 +345,4 @@ public class UI {
         this.respawningMessageDisplayTime = respawningMessageDisplayTime;
     }
 }
+
