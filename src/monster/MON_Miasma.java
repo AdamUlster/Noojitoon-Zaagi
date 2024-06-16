@@ -7,19 +7,19 @@ import java.util.Random;
 
 public class MON_Miasma extends Entity {
 
-    public double hitboxScale = 0.70;//scaling factor for hitbox
+    public double hitboxScale = 0.70;// SCALING FACTOR FOR THE HITBOX
     public MON_Miasma(GamePanel gp) {
-        super(gp);
+        super(gp);//CALL ON GAME PANEL CLASS
 
-        type = 2; // sets this entity's type to a monster
+        type = 2; // SET ENTITY TYPE TO MONSTER
         name = "Miasma";
-        speed = 3;
-        maxHealth = 4;
-        health = maxHealth;
-        attack = 5;
-        defense = 0;
+        speed = 3;// SPEED IS 3 PIXELS PER SECOND
+        maxHealth = 4;// MAXIMUM HEALTH
+        health = maxHealth;//CURRENT HEALTH, SET TO FULL
+        attack = 5;//WILL DEAL 5 DAMAGE TO PLAYER
+        defense = 0;//NO DEFENSE,
 
-        // sets the collision box for the monster in the center
+//        SETS COLLISION BOX OF THE MONSTER TO THE CENTER
         solidArea.width = (int)(gp.tileSize * hitboxScale);
         solidArea.height = (int)(gp.tileSize * hitboxScale);
         solidArea.x = (gp.tileSize - solidArea.width)/2;
@@ -27,9 +27,10 @@ public class MON_Miasma extends Entity {
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
-        getImage();
+        getImage();//RETRIEVE IMAGE VIA METHOD
     }
 
+//    IMAGE RETRIEVAL METHOD
     public void getImage() {
         up1 = setup("monsters/miasma_1", 1,1);
         up2 = setup("monsters/miasma_2", 1,1);
@@ -41,15 +42,17 @@ public class MON_Miasma extends Entity {
         right2 = setup("monsters/miasma_2", 1,1);
     }
 
+//    MONSTER BEHAVIOR AND MOVEMENT
     public void setAction() {
 
-        // random monster behaviour
+        // RANDOM MOVEMENT BEHAVIOR
         Random random = new Random();
-        actionLockCounter++;
-        if (actionLockCounter == 120) {
+        actionLockCounter++;//INCREASES ACTION LOCK COUNTER SO DIRECTION CHANGE ONLY OCCURS EVERY 120 FRAMES
+        if (actionLockCounter == 120) {// CHANGES DIRECTION ONLY EVERY 120 FRAMES OR EVERY 2 SECONDS
 
-            int i = random.nextInt(100) + 1;//pick a random number from 1 to 100
+            int i = random.nextInt(100) + 1;// PICKS A RANDOM NUMBER BETWEEN 1 AND 100
 
+            //CHOOSES A RANDOM DIRECTION TO TRAVEL IN
             if (i <= 25) {
                 direction = "up";
             }
@@ -62,7 +65,7 @@ public class MON_Miasma extends Entity {
             if (i > 75 && i < 100) {
                 direction = "right";
             }
-            actionLockCounter = 0;
+            actionLockCounter = 0;//RESET DIRECTION CHANGE COUNTER
         }
 
     }

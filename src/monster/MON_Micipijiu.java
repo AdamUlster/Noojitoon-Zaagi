@@ -7,34 +7,35 @@ import java.util.Random;
 
 public class MON_Micipijiu extends Entity {
 
-    public double widthHitboxScale = 0.70;//scaling factor for the hitbox width
-    public double heightHitboxScale = 0.35;//scaling factor for the hitbox height
-    public MON_Micipijiu(GamePanel gp) {
-        super(gp);
+//    SCALING FACTOR FOR HIT BOX WIDTH AND HEIGHT
+    public double widthHitboxScale = 0.70;
+    public double heightHitboxScale = 0.35;
 
-        type = 2; // sets this entity's type to a monster
+//    CONSTRUCTOR METHOD
+    public MON_Micipijiu(GamePanel gp) {
+        super(gp);// CALL ON GAME PANEL CLASS
+
+        type = 2; // SET ENTITY TYPE TO MONSTER
         name = "Micipijiu";
-        speed = 3;
-        maxHealth = 4;
-        health = maxHealth;
-        attack = 5;
+        speed = 3;// SPEED IS 3 PIXELS PER FRAME
+        maxHealth = 4;//SET MAXIMUM HEALTH
+        health = maxHealth;//SET CURRENT HEALTH TO FULL
+        attack = 5;//ATTACK VALUE THAT WILL DEAL DAMAGE PLAYER
         defense = 0;
 
-
-        // sets the collision box for the monster in the center
+//        SET COLLISION BOX FOR THE MONSTER IN THE CENTER
         solidArea.width = (int)(gp.tileSize * widthHitboxScale);
         solidArea.height = (int)(gp.tileSize * heightHitboxScale);
         solidArea.x = (gp.tileSize - solidArea.width) /2;
         solidArea.y = (gp.tileSize - solidArea.height) /2;
 
-        //solidArea.width = 42 * (int)(gp.scale * 0.65);
-//        solidArea.height = 30 * (int)(gp.scale * 0.65);
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
-        getImage();
+        getImage();//RETRIEVE SPRITE IMAGES
     }
 
+//    USE SETUP METHOD TO RETRIEVE IMAGES FROM FILE PATH
     public void getImage() {
         up1 = setup("monsters/micipijiu_right", 1,1);
         up2 = setup("monsters/micipijiu_right", 1,1);
@@ -46,15 +47,17 @@ public class MON_Micipijiu extends Entity {
         right2 = setup("monsters/micipijiu_right", 1,1);
     }
 
+//BEHAVIOR AND MOVEMENT METHOD
     public void setAction() {
 
-        // random monster behaviour
+//        RANDOM MONSTER BEHAVIOR
         Random random = new Random();
-        actionLockCounter++;
-        if (actionLockCounter == 120) {
+        actionLockCounter++;// INCREASES MOVEMENT COUNTER SO MONSTER ONLY MOVES EVERY 120 FRAMES
+        if (actionLockCounter == 120) {//IF 120 FRAMES HAVE PASSED PICK A NEW DIRECTION AT RANDOM
 
-            int i = random.nextInt(100) + 1;//pick a random number from 1 to 100
+            int i = random.nextInt(100) + 1;//PICKS A RANDOM NUMBER BETWEEN 1 AND 100
 
+            //RANDOMLY CHOOSES A DIRECTION TO TRAVEL IN
             if (i <= 25) {
                 direction = "up";
             }
@@ -67,8 +70,7 @@ public class MON_Micipijiu extends Entity {
             if (i > 75 && i < 100) {
                 direction = "right";
             }
-            actionLockCounter = 0;
+            actionLockCounter = 0;//RESET MOVEMENT COUNTER AFTER PICKING A NEW DIRECTION AT RANDOM
         }
-
     }
 }
