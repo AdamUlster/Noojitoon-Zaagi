@@ -132,6 +132,8 @@ public class Player extends Entity {
         gp.map.miniMapOn = false;
         gp.player.onPath = false;
         gp.tileM.drawPath = false;
+
+        setDefaultValues(); // sets the default player values
     }
 
 //    RETRIEVE PLAYER MOVEMENT IMAGES
@@ -346,8 +348,30 @@ public class Player extends Entity {
     public void update() {
         if (onPath) {
             // SET DESTINATION TILE TO THE START OF THE MAZE
-            int goalCol = 18;
-            int goalRow = 75;
+            int goalCol = 0;
+            int goalRow = 0;
+
+            // sets the destination tile to the next totem the player needs to collect
+            for (int i = 0; i < gp.obj.length; i++) {
+                if (gp.obj[i] == null) {
+                    if (i >= 3 && i <= 8) { // if the user just destroyed the brick, find the end of the maze
+                        goalCol = 76;
+                        goalRow = 33;
+                        break;
+                    }
+                } else if (gp.obj[i] != null) {
+                    if (numTotems < 3) { // find the next totem
+                        goalCol = gp.obj[i].worldX / gp.tileSize;
+                        goalRow = gp.obj[i].worldY / gp.tileSize;
+                    }
+                    else {
+                        // find the bricks to unlock the maze
+                        goalCol = 18;
+                        goalRow = 75;
+                    }
+                    break;
+                }
+            }
             searchPathToTotem(goalCol, goalRow);
         }
 
@@ -853,8 +877,26 @@ public class Player extends Entity {
                         gp.ui.completionMessageOn = true;
                     }
 //                    DISPLAY MESSAGE SAYING THE PLAYER HAS PICKED UP A TOTEM
+                case "Totem":
+                    numTotems++; // increases the number of totems the user has collected
+                    gp.obj[index] = null; // removes the object
+                    if (numTotems < 3) {
+                        if (index == 0) { // turtle totem collected
+                            turtleSpecialUnlocked = true;
+                            gp.ui.showMessage("Turtle Special Unlocked");
+                        } else if (index == 1) { // eagle totem collected
+                            eagleSpecialUnlocked = true;
+                            gp.ui.showMessage("Eagle Special Unlocked");
+                        } else { // bear totem collected
+                            bearSpecialUnlocked = true;
+                            gp.ui.showMessage("Bear Special Unlocked");
+                        }
+                    }
+                    else if (numTotems == 3) {
+                        gp.ui.showCollectionMessage("Congratulations, all three totems have been collected. I think I hear a door opening somewhere");
+                    }
                     else {
-                        gp.ui.showMessage("You picked up a totem!");
+                        gp.ui.completionMessageOn = true;
                     }
                     break;
                 case "Wall":// PLAYER IS TOUCHING A WALL OBJECT AT THE MAZE

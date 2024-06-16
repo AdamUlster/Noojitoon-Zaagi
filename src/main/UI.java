@@ -87,18 +87,22 @@ public class UI {
 //        DRAW THE TOTEM IMAGE IN THE TOP RIGHT AND THE NUMBER OF TOTEMS
          g2.drawImage(totemImage, gp.tileSize / 2, gp.tileSize / 2, gp.tileSize, gp.tileSize, null);
         g2.drawString("x " + gp.player.numTotems, 160, 110);
-
+      
         g2.setFont(g2.getFont().deriveFont(20F)); //CHANGE FONT SIZE AND CHANGE TO LIGHT BLUE
         g2.setColor(new Color(135, 206, 235));
 
 //        DISPLAYS CONTROLS IF C HAS BEEN TOGGLED ON
         if (gp.keyH.displayControls) {
             g2.fillRect(40, 700, 330, 280);
+        g2.setFont(g2.getFont().deriveFont(20F)); // changes the font size
+        g2.setColor(new Color(135, 206, 235)); // light blue
+        if (gp.keyH.displayControls) { // displays the controls if they should be displayed
+            g2.fillRect(40, 700, 405, 280);
             g2.setColor(new Color(255, 255, 255)); // white
             g2.drawString("Controls:", 40, 730);
             g2.drawString("Up, Left, Down, Right -> W, A, S, D", 40, 760);
-            g2.drawString("Primary Attack (Once Unlocked) -> Left Click", 40, 790);
-            g2.drawString("Special Attack -> Right Click", 40, 820);
+            g2.drawString("Primary Attack -> Left Click", 40, 790);
+            g2.drawString("Special Attack (Once Unlocked) -> Right Click", 40, 820);
             g2.drawString("Hint -> H", 40, 850);
             g2.drawString("Open/Close Map -> M", 40, 880);
             g2.drawString("Open/Close Mini Map -> Q", 40, 910);
@@ -167,6 +171,10 @@ public class UI {
             g2.drawString("Respawning in", gp.screenWidth / 2 - 115, gp.screenHeight / 2 - 150);
             if (countdown <= 3) {
                 g2.drawString(message, gp.screenWidth / 2, gp.screenHeight / 2 - 65);
+            }
+            if (countdown == 1) { // displays the loading message on the last part of the countdown
+                g2.setFont(g2.getFont().deriveFont(30F)); // changes the font size
+                g2.drawString("Loading... Please Wait", gp.tileSize / 2, gp.tileSize * 5);
             }
         }
 

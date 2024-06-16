@@ -19,6 +19,9 @@ public class AssetSetter {
 
 //    OBJECT CREATION METHOD
     public void setObject() {
+        gp.obj[0] = new OBJ_Totem(gp);
+        gp.obj[0].worldX = gp.tileSize * 36;
+        gp.obj[0].worldY = gp.tileSize * 95;
 
 //        2D ARRAYS FOR COORDINATES OF TOTEMS AND WALLS
         int[][] totemCoords = {{2,55}, {14,4}, {36,95}, {76,33}};
@@ -37,6 +40,38 @@ public class AssetSetter {
             gp.obj[i].worldX = gp.tileSize * wallCoords[i - totemCoords.length][0];
             gp.obj[i].worldY = gp.tileSize * wallCoords[i - totemCoords.length][1];
         }
+
+        gp.obj[2] = new OBJ_Totem(gp); // spawns a totem
+        gp.obj[2].worldX = gp.tileSize * 2;
+        gp.obj[2].worldY = gp.tileSize * 55;
+
+        gp.obj[3] = new OBJ_Wall(gp); // spawns the wall
+        gp.obj[3].worldX = gp.tileSize * 17;
+        gp.obj[3].worldY = gp.tileSize * 76;
+
+        gp.obj[4] = new OBJ_Wall(gp); // spawns the wall
+        gp.obj[4].worldX = gp.tileSize * 18;
+        gp.obj[4].worldY = gp.tileSize * 76;
+
+        gp.obj[5] = new OBJ_Wall(gp); // spawns the wall
+        gp.obj[5].worldX = gp.tileSize * 19;
+        gp.obj[5].worldY = gp.tileSize * 76;
+
+        gp.obj[6] = new OBJ_Wall(gp); // spawns the wall
+        gp.obj[6].worldX = gp.tileSize * 20;
+        gp.obj[6].worldY = gp.tileSize * 76;
+
+        gp.obj[7] = new OBJ_Wall(gp); // spawns the wall
+        gp.obj[7].worldX = gp.tileSize * 18;
+        gp.obj[7].worldY = gp.tileSize * 77;
+
+        gp.obj[8] = new OBJ_Wall(gp); // spawns the wall
+        gp.obj[8].worldX = gp.tileSize * 19;
+        gp.obj[8].worldY = gp.tileSize * 77;
+
+        gp.obj[9] = new OBJ_Totem(gp);
+        gp.obj[9].worldX = gp.tileSize * 76;
+        gp.obj[9].worldY = gp.tileSize * 33;
     }
 
 //    NPC CREATIONG METHOD
