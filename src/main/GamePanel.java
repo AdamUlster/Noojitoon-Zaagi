@@ -14,84 +14,81 @@ import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements Runnable {
 
-    // SCREEN SETTINGS
-    public final int originalTileSize = 32;
-//    32 X 32 MEANS THE GAME OPERATES WITH OBJECTS OF 32 PIXEL SIZED TILES, OBJECTS, SPRITES, ETC.
-    public final int scale = 3;//SCALING FACTOR, NOW TILES ARE TECHNICALLY 96 X 96 PIXELS BIG
-//    ALL ENTITIES CREATED WILL AS IF THEY ARE 32X32 BUT WILL BE SCALED UP THREEFOLD
+    //screen settings
+    private final int originalTileSize = 32;
+    //32 x 32 means the game operates with objects of 32 pixel tiles, so objects, sprites etc.
+    private final int scale = 3;//DO NOT CHANGE, WILL SCREW EVERYTHING UP
+    //all the characters we create will be as if they are 32x32 but will be scaled up threefold
 
-    public final int tileSize = originalTileSize * scale;//96X96 IS THE ACTUAL SIZE OF TILES IN PIXELS
+    private final int tileSize = originalTileSize * scale;//48x48 actual tile size that will be displayed
 
-    //SCREEN SIZE
+    //determine the size of the screen in terms of ties
+    //changeable values
+    private final int maxScreenCol = 16;//16 tiles across
+    private final int maxScreenRow = 12;//12 tiles vertically
 
-    final int maxScreenCol = 16;//16 TILES CROSS
-    final int maxScreenRow = 12;//12 TILES VERTICALLY
+    //how big in pixels will the screen be as represented by the size of the tile and the number of tiles
+    private final int screenWidth = tileSize * maxScreenCol;//768 pixels horizontally
+    private final int screenHeight = tileSize * maxScreenRow;//576 pixels vertically
 
-//    HOW BIG IN PIXELS WILL THE SCREEN BE AS REPRESENTED BY THE SIZE OF THE TILE AND THE NUMBER OF TILES
-    public final int screenWidth = tileSize * maxScreenCol;//768 PIXELS HORIZONTALLY
-    public final int screenHeight = tileSize * maxScreenRow;//576 PIXELS VERTICALLY
-
-    //WORLD MAP SETTINGS
-//    SETS THE BORDERS OF THE WORLD IN TERMS OF TILES
-//    CREATES A MAP OF 100X100 TILES
-    public final int maxWorldCol = 100;//sets the borders of the world in terms of tiles
-    public final int maxWorldRow = 100;
-
+    //world map settings
+    //change these values to change the map size
+    private final int maxWorldCol = 100;//sets the borders of the world in terms of tiles
+    private final int maxWorldRow = 100;//sets the border of the world in terms of tiles
 
     //FPS
-    int FPS = 60;//GAME RUNS AT 60 FRAMES PER SECOND, OTHERWISE, THE GAME WOULD RUN TOO FAST
+    private int FPS = 60;//GAME RUNS AT 60 FRAMES PER SECOND, OTHERWISE, THE GAME WOULD RUN TOO FAST
 
     // SYSTEM
-    public TileManager tileM = new TileManager(this); // CREATE TILE MANGEGER CLASS
-    KeyHandler keyH = new KeyHandler(this);//CALL KEY HANDLER CLASS TO CREATE KEY AND MOUSE LISTENER
-    public CollisionChecker cChecker = new CollisionChecker(this);//CREATE COLLISION CHECKER CLASS
-    public AssetSetter aSetter = new AssetSetter(this); // CREATE ASSET SETTER CLASS
-    public UI ui = new UI(this);//CREATE UI CLASS
-
+    private TileManager tileM = new TileManager(this); // CREATE TILE MANGEGER CLASS
+    private KeyHandler keyH = new KeyHandler(this);//CALL KEY HANDLER CLASS TO CREATE KEY AND MOUSE LISTENER
+    private CollisionChecker cChecker = new CollisionChecker(this);//CREATE COLLISION CHECKER CLASS
+    private AssetSetter aSetter = new AssetSetter(this);// CREATE ASSET SETTER CLASS
+    private UI ui = new UI(this);//CREATE UI CLASS
+      
 //    CREATE PATHFINDER
-    public PathFinder pFinderToTotem = new PathFinder(this);
-    public PathFinder pFinderToPlayer = new PathFinder(this);
+    private PathFinder pFinderToTotem = new PathFinder(this);
+    private PathFinder pFinderToPlayer = new PathFinder(this);
 
-    public Map map = new Map(this); // CREATES THE MAP
-    Thread gameThread;//CALL ON THREAD CLASS, THAT ALLOWS FOR GAME LOGIC TO BE RUN AGAIN AND AGAIN
+//  MAP
+    private Map map = new Map(this); // CREATES THE MAP
+    private Thread gameThread;//CALL ON THREAD CLASS, THAT ALLOWS FOR GAME LOGIC TO BE RUN AGAIN AND AGAIN
 
-    // ENTITIES AND OBJECTS
-    public Player player = new Player(this, keyH);//CREATE PLAYER
-    public Entity[] obj = new Entity[10]; // CREATE 10 OBJECTS
-    public Entity[] npc = new Entity[50];// CREATE 50 NPCs
-    public Entity[] monster = new Entity[170];//CREATE 170
-    public ArrayList<Entity> projectileList = new ArrayList<>(); // CREATE ARRAY LIST TO STORE ALL THE PROJECTILES
-    public ArrayList<Entity> targetProjectileList = new ArrayList<>(); // CREATE LIST TO STORE TARGET PROJECTILES
-    public ArrayList<Entity> entityList = new ArrayList<>(); // CREATE ARRAY LIST TO STORE ALL ENTITIES
+   // ENTITIES AND OBJECTS
+    private Player player = new Player(this, keyH);//CREATE PLAYER
+    private Entity[] obj = new Entity[10]; // CREATE 10 OBJECTS
+    private Entity[] npc = new Entity[50];// CREATE 50 NPCs
+    private Entity[] monster = new Entity[170];//CREATE 170 MONSTERS
+    private ArrayList<Entity> projectileList = new ArrayList<>(); // CREATE ARRAY LIST TO STORE ALL THE PROJECTILES
+    private ArrayList<Entity> targetProjectileList = new ArrayList<>(); // CREATE LIST TO STORE TARGET PROJECTILES
+    private ArrayList<Entity> entityList = new ArrayList<>(); // CREATE ARRAY LIST TO STORE ALL ENTITIES
 
 //    SET DEFAULT VALUES FOR GAME PANEL
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));// SET SCREEN DIMENSIONS
         this.setBackground(Color.black);//BACKGROUND COLOURS SET TO BLACK
-
-//        ALL GRAPHICS ARE NOT BUFFERED, MEANING ON EACH FRAME THE SCREEN GETS RENDERED BEFORE IT GETS DISPLAYED ALL
+      
+     //        ALL GRAPHICS ARE NOT BUFFERED, MEANING ON EACH FRAME THE SCREEN GETS RENDERED BEFORE IT GETS DISPLAYED ALL
 //        AT ONCE TO IMPROVE RENDERING PERFORMANCE
         this.setDoubleBuffered(true);
-
+      
 //        ADD KEY LISTENER, MOUSE LISTENER, AND FOCUSES GAMEPANEL TO KEY INPUTS
         this.addKeyListener(keyH);
         this.addMouseListener(keyH);
         this.setFocusable(true);
     }
 
-//    SET UP GAME BEFORE PLAYER CAN MOVE
-    public void setupGame() {
-        ui.showLoadingMessage("Loading... Please Wait");// DISPLAYS LOADING MESSAGE EVERYTHING IS DONE LOADING
-        aSetter.setObject();//PLACE OBJECTS ONTO MAP
-        aSetter.setNPC();//PLACE NPCs ONTO MAP
-        aSetter.setMonster();//PLACE MONSTERS ONTO MAP
-        ui.loadingMessageOn = false; // MAKE LOADING MESSAGE DISAPPEAR
+    void setupGame() {
+        ui.showLoadingMessage("Loading... Please Wait");
+        aSetter.setObject();
+        aSetter.setNPC();
+        aSetter.setMonster();
+        ui.setLoadingMessageOn(false); // makes the loading message disappear after the monsters load
     }
 
-//    START CORE LOGIC WHEN THE PROGRAM STARTS
-    public void startGameThread() {//starts core logic when the program starts
-        gameThread = new Thread(this);//CREATE THE GAME THREAD THAT WILL RUN FOREVER
-        gameThread.start();//START EHT GAME LOGIC
+    void startGameThread() {//starts core logic when the program starts
+        gameThread = new Thread(this);//create the thread that will run
+        gameThread.start();
     }
 
     @Override
@@ -143,10 +140,10 @@ public class GamePanel extends JPanel implements Runnable {
 //        UPDATE PROJECTILES
         for (int i = 0; i < projectileList.size(); i++) {
             if (projectileList.get(i) != null) { // if the projectile exists
-                if (projectileList.get(i).alive) {
+                if (projectileList.get(i).isAlive()) {
                     projectileList.get(i).update();
                 }
-                if (projectileList.get(i).alive == false) {
+                if (projectileList.get(i).isAlive() == false) {
                     projectileList.remove(i); // removes the projectile if it is no longer alive
                 }
             }
@@ -154,14 +151,13 @@ public class GamePanel extends JPanel implements Runnable {
 
 //        UPDATE TARGET PROJECTILES
         for (int i = 0; i < targetProjectileList.size(); i++) {
-//            CHECK IF PROJECTILE EXISTS
-            if (targetProjectileList.get(i) != null) {
-                if (targetProjectileList.get(i).alive) {
+            if (targetProjectileList.get(i) != null) { // if the projectile exists
+                if (targetProjectileList.get(i).isAlive()) {
                     System.out.println(targetProjectileList.get(i).toString() + " " + i);
                     targetProjectileList.get(i).update();
                 }
-                if (targetProjectileList.get(i).alive == false) {
-                    targetProjectileList.remove(i); // REMOVES PROJECTILE IF IT IS NO LONGER ALIVE
+                if (targetProjectileList.get(i).isAlive() == false) {
+                    targetProjectileList.remove(i); // removes the projectile if it is no longer alive
                 }
             }
         }
@@ -178,7 +174,7 @@ public class GamePanel extends JPanel implements Runnable {
         //DEBUGGING STUFF
 //        PART OF DISPLAYING TIME TAKEN TO DRAW ALL COMPONENTS
         long drawStart = 0;
-        if (keyH.checkDrawTime == true) {
+        if (keyH.isCheckDrawTime() == true) {
             drawStart = System.nanoTime();
         }
 
@@ -230,8 +226,7 @@ public class GamePanel extends JPanel implements Runnable {
 
             @Override
             public int compare(Entity e1, Entity e2) {
-//                COMPARES THE TWO ENTITY'S WORLD Y VALUES
-                int result = Integer.compare(e1.worldY, e2.worldY);
+                int result = Integer.compare(e1.getWorldY(), e2.getWorldY()); // compares the two entity's world y values
                 return result;
             }
         });
@@ -251,14 +246,12 @@ public class GamePanel extends JPanel implements Runnable {
         // DRAWS UI
         ui.draw(g2);
 
-//        DRAW MAP SCREEN IF M KEY HAS BEEN PRESSED
-        if (keyH.displayMap) {
-            map.drawFullMapScreen(g2);
+        if (keyH.isDisplayMap()) {
+            map.drawFullMapScreen(g2); // draws the map screen
         }
 
-        //DEBUGGING STUFF
-//        DISPLAYS TIME TAKEN TO DRAW EVERYTHING BY PRESSING T ON KEYBOARD
-        if (keyH.checkDrawTime) {
+        //DEBUG STUFF
+        if (keyH.isCheckDrawTime()) {
             long drawEnd = System.nanoTime();
             long passed = drawEnd - drawStart;
             g2.setColor(Color.white);
@@ -269,5 +262,118 @@ public class GamePanel extends JPanel implements Runnable {
 
 //        DISPOSES OF G2 TO SAVE PROCESSING POWER
         g2.dispose();
+    }
+
+    // Get and set methods
+    public int getOriginalTileSize() {
+        return originalTileSize;
+    }
+
+    public int getScale() {
+        return scale;
+    }
+
+    public int getTileSize() {
+        return tileSize;
+    }
+
+    public int getMaxScreenCol() {
+        return maxScreenCol;
+    }
+
+    public int getMaxScreenRow() {
+        return maxScreenRow;
+    }
+
+    public int getScreenWidth() {
+        return screenWidth;
+    }
+
+    public int getScreenHeight() {
+        return screenHeight;
+    }
+
+    public int getMaxWorldCol() {
+        return maxWorldCol;
+    }
+
+    public int getMaxWorldRow() {
+        return maxWorldRow;
+    }
+
+    public int getFPS() {
+        return FPS;
+    }
+
+    public void setFPS(int FPS) {
+        this.FPS = FPS;
+    }
+
+    public TileManager getTileM() {
+        return tileM;
+    }
+
+    public KeyHandler getKeyH() {
+        return keyH;
+    }
+
+    public CollisionChecker getCChecker() {
+        return cChecker;
+    }
+
+    public AssetSetter getASetter() {
+        return aSetter;
+    }
+
+    public UI getUi() {
+        return ui;
+    }
+
+    public PathFinder getPFinderToTotem() {
+        return pFinderToTotem;
+    }
+
+    public PathFinder getPFinderToPlayer() {
+        return pFinderToPlayer;
+    }
+
+    public Map getMap() {
+        return map;
+    }
+
+    public Thread getGameThread() {
+        return gameThread;
+    }
+
+    public void setGameThread(Thread gameThread) {
+        this.gameThread = gameThread;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public Entity[] getObj() {
+        return obj;
+    }
+
+    public Entity[] getNpc() {
+        return npc;
+    }
+
+    public Entity[] getMonster() {
+        return monster;
+    }
+
+    public ArrayList<Entity> getProjectileList() {
+        return projectileList;
+    }
+
+    public ArrayList<Entity> getTargetProjectileList() {
+        return targetProjectileList;
+    }
+
+    public ArrayList<Entity> getEntityList() {
+        return entityList;
     }
 }

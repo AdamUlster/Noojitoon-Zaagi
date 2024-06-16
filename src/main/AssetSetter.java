@@ -11,17 +11,21 @@ import java.util.Random;
 
 //SET UP ALL ENTITIES, NPCs, MONSTERS, PLAYERS, OBJECTS, ETC.
 public class AssetSetter {
-    GamePanel gp;
+    private GamePanel gp;
 
     public AssetSetter(GamePanel gp) { // constructor
         this.gp = gp;
     }
-
+  
 //    OBJECT CREATION METHOD
-    public void setObject() {
-        gp.obj[0] = new OBJ_Totem(gp);
-        gp.obj[0].worldX = gp.tileSize * 36;
-        gp.obj[0].worldY = gp.tileSize * 95;
+    void setObject() {
+        gp.getObj()[0] = new OBJ_Totem(gp);
+        gp.getObj()[0].setWorldX(gp.getTileSize() * 36);
+        gp.getObj()[0].setWorldY(gp.getTileSize() * 95);
+
+        gp.getObj()[1] = new OBJ_Totem(gp);
+        gp.getObj()[1].setWorldX(gp.getTileSize() * 14);
+        gp.getObj()[1].setWorldY(gp.getTileSize() * 4);
 
 //        2D ARRAYS FOR COORDINATES OF TOTEMS AND WALLS
         int[][] totemCoords = {{2,55}, {14,4}, {36,95}, {76,33}};
@@ -40,38 +44,6 @@ public class AssetSetter {
             gp.obj[i].worldX = gp.tileSize * wallCoords[i - totemCoords.length][0];
             gp.obj[i].worldY = gp.tileSize * wallCoords[i - totemCoords.length][1];
         }
-
-        gp.obj[2] = new OBJ_Totem(gp); // spawns a totem
-        gp.obj[2].worldX = gp.tileSize * 2;
-        gp.obj[2].worldY = gp.tileSize * 55;
-
-        gp.obj[3] = new OBJ_Wall(gp); // spawns the wall
-        gp.obj[3].worldX = gp.tileSize * 17;
-        gp.obj[3].worldY = gp.tileSize * 76;
-
-        gp.obj[4] = new OBJ_Wall(gp); // spawns the wall
-        gp.obj[4].worldX = gp.tileSize * 18;
-        gp.obj[4].worldY = gp.tileSize * 76;
-
-        gp.obj[5] = new OBJ_Wall(gp); // spawns the wall
-        gp.obj[5].worldX = gp.tileSize * 19;
-        gp.obj[5].worldY = gp.tileSize * 76;
-
-        gp.obj[6] = new OBJ_Wall(gp); // spawns the wall
-        gp.obj[6].worldX = gp.tileSize * 20;
-        gp.obj[6].worldY = gp.tileSize * 76;
-
-        gp.obj[7] = new OBJ_Wall(gp); // spawns the wall
-        gp.obj[7].worldX = gp.tileSize * 18;
-        gp.obj[7].worldY = gp.tileSize * 77;
-
-        gp.obj[8] = new OBJ_Wall(gp); // spawns the wall
-        gp.obj[8].worldX = gp.tileSize * 19;
-        gp.obj[8].worldY = gp.tileSize * 77;
-
-        gp.obj[9] = new OBJ_Totem(gp);
-        gp.obj[9].worldX = gp.tileSize * 76;
-        gp.obj[9].worldY = gp.tileSize * 33;
     }
 
 //    NPC CREATIONG METHOD
@@ -80,12 +52,11 @@ public class AssetSetter {
         // THEY LOOK REALLY COOL
         Random random = new Random();
         // CREATE HOWEVER MANY NPCs ARE CREATED INSIDE GAME PANEL CLASS
-        for (int i = 0; i < gp.npc.length; i++) {
-            gp.npc[i] = new NPC(gp);
-            gp.npc[i].worldX = gp.tileSize * random.nextInt(99);
-            gp.npc[i].worldY = gp.tileSize * random.nextInt(99);
+        for (int i = 0; i < gp.getNpc().length; i++) {
+            gp.getNpc()[i] = new NPC(gp);
+            gp.getNpc()[i].setWorldX(gp.getTileSize() * random.nextInt(99));
+            gp.getNpc()[i].setWorldY(gp.getTileSize() * random.nextInt(99));
         }
-
     }
 
     public void setMonster() {
@@ -113,10 +84,16 @@ public class AssetSetter {
         System.out.println(miasmaCoords.length + windigoCoords.length + micipijiuCoords.length);
         //ITERATE THROUGH MONSTER COORDINATE ARRAYS AND CREATE THEM
         for (int i = 0; i < miasmaCoords.length; i++) {
-            gp.monster[i] = new MON_Miasma(gp);
-            gp.monster[i].worldX = gp.tileSize * miasmaCoords[i][0];
-            gp.monster[i].worldY = gp.tileSize * miasmaCoords[i][1];
+            gp.getMonster()[i] = new MON_Miasma(gp);
+            gp.getMonster()[i].setWorldX(gp.getTileSize() * miasmaCoords[i][0]);
+            gp.getMonster()[i].setWorldY(gp.getTileSize() * miasmaCoords[i][1]);
         }
+        for (int i = 0; i < windigoCoords.length; i++) {
+            gp.getMonster()[i] = new MON_Windigo(gp);
+            gp.getMonster()[i].setWorldX(gp.getTileSize() * windigoCoords[i][0]);
+            gp.getMonster()[i].setWorldY(gp.getTileSize() * windigoCoords[i][1]);
+        }
+
         for (int i = miasmaCoords.length; i < (miasmaCoords.length + windigoCoords.length); i++) {
             gp.monster[i] = new MON_Windigo(gp);
             gp.monster[i].worldX = gp.tileSize * windigoCoords[i - miasmaCoords.length][0];

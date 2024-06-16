@@ -6,86 +6,67 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Map extends TileManager{
-    GamePanel gp;// CALL ON GAME PANEL CLASS
-    BufferedImage worldMap;// CALL ON WORLD MAP CLASS
-
-//    DISPLAYS MINI MAP
-    public boolean miniMapOn = true; // the mini map should be displayed
-
-//    CONSTRUCTOR CLASS
+    private GamePanel gp;
+    private BufferedImage worldMap;
+    private boolean miniMapOn = true; // the mini map should be displayed
     public Map(GamePanel gp) {
         super(gp);
         this.gp = gp;
         createWorldMap();// CREATE WORLD MAP
     }
-    public void createWorldMap() {
+    private void createWorldMap() {
 
-//        GET MAP SIZE
-        int worldMapWidth = gp.tileSize * gp.maxWorldCol;
-        int worldMapHeight = gp.tileSize * gp.maxWorldRow;
+        // Gets the map size
+        int worldMapWidth = gp.getTileSize() * gp.getMaxWorldCol();
+        int worldMapHeight = gp.getTileSize() * gp.getMaxWorldRow();
 
-//        INSTANTIATES THE MAP AND USES A COLOURED BUFFERED IMAGE
-        worldMap = new BufferedImage(worldMapWidth, worldMapHeight, BufferedImage.TYPE_INT_ARGB);
-//        ATTACHES GRAPHICS TO THE MAP
-        Graphics2D g2 = (Graphics2D) worldMap.createGraphics();
+        worldMap = new BufferedImage(worldMapWidth, worldMapHeight, BufferedImage.TYPE_INT_ARGB); // Instantiates the map and uses a coloured buffered image
+        Graphics2D g2 = worldMap.createGraphics(); // attaches graphics to the map
 
         int col = 0;
         int row = 0;
 
-//        ITERATE THROUGH ALL TILES
-        while (col < gp.maxWorldCol && row < gp.maxWorldRow) {
-            int tileNum = mapTileNum[col][row]; // GET TILE VALUE FROM 2D ARRAY CONTAINING THE MAP
+        while (col < gp.getMaxWorldCol() && row < gp.getMaxWorldRow()) {
+            int tileNum = getMapTileNum()[col][row]; // gets the map tile
 
-//            GET COORDINATES OF THE TILE
-            int x = gp.tileSize * col;
-            int y = gp.tileSize * row;
-            g2.drawImage(tile[tileNum].image, x, y, null); // DRAW TILE
+            // gets the x and y coordinates of the tile
+            int x = gp.getTileSize() * col;
+            int y = gp.getTileSize() * row;
+            g2.drawImage(getTile()[tileNum].getImage(), x, y, null); // draws the tile
 
-            col ++;//INCREMENT TO DRAW THE NEXT ADJACENT TILE
-            if (col == gp.maxWorldCol) { //MOVES ONTO THE NEXT ROW IF ALL TILES IN THE ROW HAVE BEEN DRAWN
+            col ++;
+            if (col == gp.getMaxWorldCol()) { // moves on to the next row
                 col = 0;
                 row ++;
             }
         }
     }
 
-//    DRAW FULLSCREEN MAP WHEN M KEY HAS BEEN PRESSED
-    public void drawFullMapScreen(Graphics2D g2) {
-        g2.setColor(Color.black); // BACKGROUND COLOUR
-        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+    public void drawFullMapScreen(Graphics2D g2) { // draws the full map
+        g2.setColor(Color.black); // background colour
+        g2.fillRect(0, 0, gp.getScreenWidth(), gp.getScreenHeight());
 
 //        SIZE OF THE MAP ON THE SCREEN
         int width = 700;
         int height = 700;
-
-//        CENTERS THE MAP ON THE SCREEN
-        int x = gp.screenWidth / 2 - width / 2;
-        int y = gp.screenHeight / 2 - height / 2;
+        int x = gp.getScreenWidth() / 2 - width / 2; // centers the map
+        int y = gp.getScreenHeight() / 2 - height / 2; // centers the map
         g2.drawImage(worldMap, x, y, width, height,null);
 
-//        DRAW PLAYER ON THE MAP
-//        GETS SCALE AND SCALES POSITION OF PLAYER FOR DRAWING ON THE SCREEN
-        double scale = (double) gp.tileSize * gp.maxWorldCol / width;
+        // Draw the player on the map
+        double scale = (double) gp.getTileSize() * gp.getMaxWorldCol() / width; // gets the scale which represents the size and position to draw the player
+        int playerX = (int)(x + gp.getPlayer().getWorldX() / scale); // gets the player's scaled world X
+        int playerY = (int)(y + gp.getPlayer().getWorldY() / scale); // gets the player's scaled world Y
+        int playerSize = (gp.getTileSize() / 3);
+        g2.drawImage(gp.getPlayer().getDown1(), playerX - 6, playerY - 6, playerSize, playerSize, null); // draws the player with an offset due to the place Java Swing draws a sprite from
 
-//        GET PLAYER'S COORDINATED AND SCALES THEM
-        int playerX = (int)(x + gp.player.worldX / scale);
-        int playerY = (int)(y + gp.player.worldY / scale);
-        int playerSize = (gp.tileSize / 3);
-
-//        DRAWS THE PLAYER WITH AN OFFSET DUE TO THE PLACE JAVA SWING DRAWS A SPRITE FROM
-        g2.drawImage(gp.player.down1, playerX - 6, playerY - 6, playerSize, playerSize, null);
-
-//        DRAW THE TOTEMS ON THE MAP
-        for (int i = 0; i < gp.obj.length; i++) {
-            if (gp.obj[i] != null && gp.obj[i].name.equals("Totem")) {
-
-//                GET TOTEM'S COORDINATES AND SCALES THEM FOR THE MAP
-                int totemX = (int)(x + gp.obj[i].worldX / scale);
-                int totemY = (int)(y + gp.obj[i].worldY / scale);
-                int totemSize = (gp.tileSize / 3);
-
-//                DRAWS THE TOTEM WITH AN OFFSET DUE TO THE PLACE JAVA SWING DRAWS A SPRITE FROM
-                g2.drawImage(gp.obj[i].down1, totemX - 6, totemY - 8, totemSize, totemSize, null);
+        // Draw the totems on the map
+        for (int i = 0; i < gp.getObj().length; i++) {
+            if (gp.getObj()[i] != null && gp.getObj()[i].getName().equals("Totem")) {
+                int totemX = (int)(x + gp.getObj()[i].getWorldX() / scale); // gets the totem's scaled world X
+                int totemY = (int)(y + gp.getObj()[i].getWorldY() / scale); // gets the totem's scaled world Y
+                int totemSize = (gp.getTileSize() / 3);
+                g2.drawImage(gp.getObj()[i].getDown1(), totemX - 6, totemY - 8, totemSize, totemSize, null); // draws the totem with an offset due to the place Java Swing draws a sprite from
             }
         }
     }
@@ -97,9 +78,7 @@ public class Map extends TileManager{
             //MINI MAP DIMENSIONS ON THE SCREEN
             int width = 250;
             int height = 250;
-
-//            MINI MAP COORDINATES, DISPLAYS AT THE TOP RIGHT
-            int x = gp.screenWidth - width - 50;
+            int x = gp.getScreenWidth() - width - 50; // displays the map at the top right
             int y = 50;
 
 //            SETS OPACITY TO DRAW THE MAP
@@ -108,36 +87,40 @@ public class Map extends TileManager{
 //            DRAW MINI MAP
             g2.drawImage(worldMap, x, y, width, height, null); // draws the mini map
 
-//            DRAW PLAYER ON TEH MINI MAP
+            // Draw the player on the mini map
+            double scale = (double) gp.getTileSize() * gp.getMaxWorldCol() / width; // gets the scale which represents the size and position to draw the player
+            int playerX = (int) (x + gp.getPlayer().getWorldX() / scale); // gets the player's scaled world X
+            int playerY = (int) (y + gp.getPlayer().getWorldY() / scale); // gets the player's scaled world Y
+            int playerSize = gp.getTileSize() / 4;
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // Resets the opacity when drawing the player
+            g2.drawImage(gp.getPlayer().getDown1(), playerX - 6, playerY - 6, playerSize, playerSize, null); // draws the player with an offset due to the place Java Swing draws a sprite from
 
-//            GETS PLAYER COORDINATED, AND SCALES THEM FOR THE MINI MAP
-            double scale = (double) gp.tileSize * gp.maxWorldCol / width;
-            int playerX = (int) (x + gp.player.worldX / scale);
-            int playerY = (int) (y + gp.player.worldY / scale);
-            int playerSize = gp.tileSize / 4;
-
-//            RESET OPACITY WHEN DRAWING THE PLAYER, AND DRAWS THE PLAYER WITH AN OFFSET DUE TO THE WAY JAVA SWING
-//            DRAWS A SPRITE FROM
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-            g2.drawImage(gp.player.down1, playerX - 6, playerY - 6, playerSize, playerSize, null);
-
-//            DRAWS TOTEMS ON TEH MINI MAP
-
-//            ITERATE THROUGH ALL OBJECTS
-            for (int i = 0; i < gp.obj.length; i++) {
-
-//                CHECK IF THE OBJECT IS A TOTEM AND HAS NOT YET BEEN COLLECTED BY THE PLAYER
-                if (gp.obj[i] != null && gp.obj[i].name.equals("Totem")) {
-
-//                    GETS TOTEM COORDINATES, AND SCALES THEM FOR THE MINI MAP
-                    int totemX = (int)(x + gp.obj[i].worldX / scale);
-                    int totemY = (int)(y + gp.obj[i].worldY / scale);
-                    int totemSize = (gp.tileSize / 3);
-
-//                    DRAWS THE TOTEM WITH AN OFFSET DUE TO THE PLACE JAVA SWING DRAWS SPRITES FROM
-                    g2.drawImage(gp.obj[i].down1, totemX - 6, totemY - 6, totemSize, totemSize, null);
+            // Draw the totems on the mini map
+            for (int i = 0; i < gp.getObj().length; i++) {
+                if (gp.getObj()[i] != null && gp.getObj()[i].getName().equals("Totem")) {
+                    int totemX = (int)(x + gp.getObj()[i].getWorldX() / scale); // gets the totem's scaled world X
+                    int totemY = (int)(y + gp.getObj()[i].getWorldY() / scale); // gets the totem's scaled world Y
+                    int totemSize = (gp.getTileSize() / 3);
+                    g2.drawImage(gp.getObj()[i].getDown1(), totemX - 6, totemY - 6, totemSize, totemSize, null); // draws the totem with an offset due to the place Java Swing draws a sprite from
                 }
             }
         }
+    }
+
+    // Get and set methods
+    public boolean isMiniMapOn() {
+        return miniMapOn;
+    }
+
+    public void setMiniMapOn(boolean miniMapOn) {
+        this.miniMapOn = miniMapOn;
+    }
+
+    public BufferedImage getWorldMap() {
+        return worldMap;
+    }
+
+    public void setWorldMap(BufferedImage worldMap) {
+        this.worldMap = worldMap;
     }
 }

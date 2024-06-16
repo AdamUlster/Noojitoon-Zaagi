@@ -8,21 +8,16 @@ import java.awt.event.MouseListener;
 //HANDLE KEYBOARD INPUTS
 public class KeyHandler implements KeyListener, MouseListener {
 
-    public GamePanel gp;//IMPORT GAME PANEL
-
-//    BOOLEAN VALUES THAT DETERMINE WHICH KEYS ARE PRESSED AND WHICH ARE NOT
-    public boolean upPressed, downPressed, leftPressed, rightPressed;
-
-//    BOOLEAN VALUES THAT DETERMINE WHICH NUMBER KEYS HAVE BEEN PRESSED, USED FOR SPRITE SWITCHING
-    public boolean onePressed, twoPressed, threePressed;//boolean values that determine which number keys have been
-
-//    BOOLEAN VALUES THAT DETERMINE LEFT CLICK OR RIGHT CLICK
-    public boolean primaryPressed, secondaryPressed;
-
+    private GamePanel gp;
+    private boolean upPressed, downPressed, leftPressed, rightPressed, shotKeyPressed;//boolean values that determine which keys are
+    // pressed and which are not
+    private boolean onePressed, twoPressed, threePressed;//boolean values that determine which number keys have been
+    private boolean primaryPressed, secondaryPressed;
+    // pressed for sprite switching
     //DEBUG STUFF
-    public boolean checkDrawTime = false;
-    public boolean displayControls = false;
-    public boolean displayMap = false;
+    private boolean checkDrawTime = false;
+    private boolean displayControls = false;
+    private boolean displayMap = false;
 
     public KeyHandler(GamePanel gp) { // constructor
         this.gp = gp;
@@ -50,28 +45,32 @@ public class KeyHandler implements KeyListener, MouseListener {
         if (code == KeyEvent.VK_D) {//D KEY HAD BEEN PRESSED
             rightPressed = true;
         }
-//        RUNS IF THE PLAYER IS NOT DYING
-        if (!gp.player.isDying) {
-            if (code == KeyEvent.VK_1 && !gp.player.spirits[0].dead) {// IF 1 KEY HAS BEEN PRESSED AND BEAR IS NOT DEAD
+        if (!gp.getPlayer().isDying()) { // runs if the player is not dying
+            if (code == KeyEvent.VK_1 && !gp.getPlayer().getSpirits()[0].isDead()) {//if 1 key has been pressed and bear is not dead
                 onePressed = true;
-//                IF SPIRIT IS DEAD DISPLAY DEATH MESSAGE AND PREVENT PLAYER FROM SWITCHING BACK
-            } else if (code == KeyEvent.VK_1 && gp.player.spirits[0].dead && gp.player.displayDeathMessage) {
-                gp.ui.showMessage("You cannot switch to the bear since the bear is dead");
+            } else if (code == KeyEvent.VK_1 && gp.getPlayer().getSpirits()[0].isDead() && gp.getPlayer().isDisplayDeathMessage()) { // if the spirit is dead and the death message should be displayed
+                gp.getUi().showMessage("You cannot switch to the bear since the bear is dead");
             }
-
-//            SWITCH TO EAGLE
-            if (code == KeyEvent.VK_2 && !gp.player.spirits[1].dead) {
+            if (code == KeyEvent.VK_2 && !gp.getPlayer().getSpirits()[1].isDead()) {//if key 2 has been pressed and eagle is not dead
                 twoPressed = true;
-            } else if (code == KeyEvent.VK_2 && gp.player.spirits[1].dead && gp.player.displayDeathMessage) {
-                gp.ui.showMessage("You cannot switch to the eagle since the eagle is dead");
+            } else if (code == KeyEvent.VK_2 && gp.getPlayer().getSpirits()[1].isDead() && gp.getPlayer().isDisplayDeathMessage()) { // if the spirit is dead and the death message should be displayed
+                gp.getUi().showMessage("You cannot switch to the eagle since the eagle is dead");
             }
-
-//            SWITCH TO TURTLE
-            if (code == KeyEvent.VK_3 && !gp.player.spirits[2].dead) {
+            if (code == KeyEvent.VK_3 && !gp.getPlayer().getSpirits()[2].isDead()) {//if key 3 has been pressed and turtle is not dead
                 threePressed = true;
-            } else if (code == KeyEvent.VK_3 && gp.player.spirits[2].dead && gp.player.displayDeathMessage) {
-                gp.ui.showMessage("You cannot switch to the turtle since the turtle is dead");
+            } else if (code == KeyEvent.VK_3 && gp.getPlayer().getSpirits()[2].isDead() && gp.getPlayer().isDisplayDeathMessage()) { // if the spirit is dead and the death message should be displayed
+                gp.getUi().showMessage("You cannot switch to the turtle since the turtle is dead");
             }
+            if (code == KeyEvent.VK_K) {//K key has been pressed
+                primaryPressed = true;
+            }
+            if (code == KeyEvent.VK_L) {//L key has been pressed
+                secondaryPressed = true;
+            }
+            //continue this chain for when more moves are added
+        }
+        if (code == KeyEvent.VK_F && gp.getPlayer().getCurrentSpirit().getName().equals("Turtle")) { // only allow the projectile to be shot if the "F" key is pressed and the current spirit is a turtle
+            shotKeyPressed = true;
         }
 
         //DEBUGGING STUFF
@@ -90,13 +89,11 @@ public class KeyHandler implements KeyListener, MouseListener {
             displayMap = !displayMap;
         }
         if (code == KeyEvent.VK_Q) {
-//            TOGGLEABLE DISPLAY MINI MAP
-            gp.map.miniMapOn = !gp.map.miniMapOn;
+            gp.getMap().setMiniMapOn(!gp.getMap().isMiniMapOn()); // displays the mini map if it wasn't already displayed
         }
         if (code == KeyEvent.VK_H) {
-            //TOGGLEABLE DRAW PATH TO THE MAZE IF IT WASN'T ALREADY SHOWN
-            gp.player.onPath = !gp.player.onPath;
-            gp.tileM.drawPath = !gp.tileM.drawPath;
+            gp.getPlayer().setOnPath(!gp.getPlayer().isOnPath());
+            gp.getTileM().setDrawPath(!gp.getTileM().isDrawPath()); // draws the path to the maze if it wasn't already shown
         }
     }
 
@@ -157,5 +154,112 @@ public class KeyHandler implements KeyListener, MouseListener {
     @Override
     public void mouseEntered(MouseEvent e) {}
     @Override
-    public void mouseExited(MouseEvent e) {}
+    public void mouseExited(MouseEvent e) {
+
+    }
+
+    // Get and set methods
+    public boolean isUpPressed() {
+        return upPressed;
+    }
+
+    public void setUpPressed(boolean upPressed) {
+        this.upPressed = upPressed;
+    }
+
+    public boolean isDownPressed() {
+        return downPressed;
+    }
+
+    public void setDownPressed(boolean downPressed) {
+        this.downPressed = downPressed;
+    }
+
+    public boolean isLeftPressed() {
+        return leftPressed;
+    }
+
+    public void setLeftPressed(boolean leftPressed) {
+        this.leftPressed = leftPressed;
+    }
+
+    public boolean isRightPressed() {
+        return rightPressed;
+    }
+
+    public void setRightPressed(boolean rightPressed) {
+        this.rightPressed = rightPressed;
+    }
+
+    public boolean isShotKeyPressed() {
+        return shotKeyPressed;
+    }
+
+    public void setShotKeyPressed(boolean shotKeyPressed) {
+        this.shotKeyPressed = shotKeyPressed;
+    }
+
+    public boolean isOnePressed() {
+        return onePressed;
+    }
+
+    public void setOnePressed(boolean onePressed) {
+        this.onePressed = onePressed;
+    }
+
+    public boolean isTwoPressed() {
+        return twoPressed;
+    }
+
+    public void setTwoPressed(boolean twoPressed) {
+        this.twoPressed = twoPressed;
+    }
+
+    public boolean isThreePressed() {
+        return threePressed;
+    }
+
+    public void setThreePressed(boolean threePressed) {
+        this.threePressed = threePressed;
+    }
+
+    public boolean isPrimaryPressed() {
+        return primaryPressed;
+    }
+
+    public void setPrimaryPressed(boolean primaryPressed) {
+        this.primaryPressed = primaryPressed;
+    }
+
+    public boolean isSecondaryPressed() {
+        return secondaryPressed;
+    }
+
+    public void setSecondaryPressed(boolean secondaryPressed) {
+        this.secondaryPressed = secondaryPressed;
+    }
+
+    public boolean isCheckDrawTime() {
+        return checkDrawTime;
+    }
+
+    public void setCheckDrawTime(boolean checkDrawTime) {
+        this.checkDrawTime = checkDrawTime;
+    }
+
+    public boolean isDisplayControls() {
+        return displayControls;
+    }
+
+    public void setDisplayControls(boolean displayControls) {
+        this.displayControls = displayControls;
+    }
+
+    public boolean isDisplayMap() {
+        return displayMap;
+    }
+
+    public void setDisplayMap(boolean displayMap) {
+        this.displayMap = displayMap;
+    }
 }

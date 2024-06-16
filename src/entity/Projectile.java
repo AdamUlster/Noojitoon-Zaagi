@@ -3,11 +3,20 @@ package entity;
 import main.GamePanel;
 
 public class Projectile extends Entity {
-    Entity user;
+    private Entity user;
 
     public Projectile(GamePanel gp) {
         super(gp);
 
+        setType(3); // sets this entity's type to a projectile
+    }
+
+    void set(int worldX, int worldY, String direction, boolean alive, Entity user) { // passes the coordinates to create the fireball
+        this.setWorldX(worldX);
+        this.setWorldY(worldY);
+        this.setDirection(direction);
+        this.setAlive(alive);
+=======
         type = 3; // SET ENTITY TYPE TO PROJECTILE
     }
 
@@ -18,11 +27,18 @@ public class Projectile extends Entity {
         this.direction = direction;
         this.alive = alive;
         this.user = user;
-        this.health = this.maxHealth;
+        this.setHealth(this.getMaxHealth());
     }
 
 //    UPDATE METHOD TO MOVE THE WATER JET
     public void update() {
+        int monsterIndex = gp.getCChecker().checkEntity(this, gp.getMonster()); // gets the monster index that the projectile hits
+        if (monsterIndex != 999) { // if the projectile hits a monster
+            gp.getPlayer().damageMonster(monsterIndex, getAttack()); // passes the projectile's attack to a monster
+            setAlive(false); // the projectile disappears after hitting a monster
+        }
+
+        switch (getDirection()) { // allows for the projectile to be launched
 //        CHECK IF PROJECTILE HAS HIT A MONSTER, AND RETURN THE INDEX OF THE MONSTER IF IT DOES
         int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
 
@@ -35,18 +51,21 @@ public class Projectile extends Entity {
 //        MOVES PROJECTILE IN WHICH EVER DIRECTION THE PLAYER WAS FACING WHEN LAUNCHED
         switch (direction) {
             case "up":
-                worldY -= speed;
+                setWorldY(getWorldY() - getSpeed());
                 break;
             case "down":
-                worldY += speed;
+                setWorldY(getWorldY() + getSpeed());
                 break;
             case "left":
-                worldX -= speed;
+                setWorldX(getWorldX() - getSpeed());
                 break;
             case "right":
-                worldX += speed;
+                setWorldX(getWorldX() + getSpeed());
                 break;
         }
+        setHealth(getHealth() - 1);
+        if (getHealth() <= 0) {
+            setAlive(false); // the projectile disappears when it has no more health
         //DECREASED WATER JET EXISTENCE COUNTER
         health --;
 

@@ -11,61 +11,50 @@ import java.util.Scanner;
 
 //MANAGES TILES ON THE MAP
 public class TileManager {
-    GamePanel gp;// CALL ON THE GAME PANEL CLASS
-    public Tile[] tile;//CREATE ARRAY FOR THE TYPES OF TIES
-    public int mapTileNum[][];//CREATE A 2D ARRAY FOR EVERY TILE ON THE MAP
+    private GamePanel gp;
+    private Tile[] tile;
+    private int mapTileNum[][];//create a 2d array for each tile element in the map
 
-    public boolean drawPath = false;//DOES NOT DISPLAY THE PATHFINDING TILES
+    private boolean drawPath = false;
+    public TileManager(GamePanel gp) {//set default
 
 //    CONSTRUCTOR
     public TileManager(GamePanel gp) {
         this.gp = gp;//CALL ON GAME PANEL CLASS
 
-//        CREATE 8 TYPES OF TILES
-        tile = new Tile[8];
-
-//        CREATE THE MAP TILE TYPE 2D ARRAY BASED ON HOW BIG THE WORLD MAP SHOULD BE
-        mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
-        getTileImage();//USE METHOD TO EXTRACT TILE IMAGES
-
-        //CALL ON THE TEXT FILE CONTAINING THE TYPES OF FILES TO CREATE THE MAP
-        loadMap("/maps/map_1.txt");
+        tile = new Tile[10]; //kinds of tile types, for now there are 10 types of tiles, we can add more
+        mapTileNum = new int[gp.getMaxWorldCol()][gp.getMaxWorldRow()];
+        getTileImage();//call on method to extract the tile pngs
+        loadMap("/maps/map_1.txt");//load the formation of the tiles after inputing the file path of the map file
     }
 
-//    RETRIEVES THE TILE PNG FILES FROM THE RESOURCE FOLDER
-    public void getTileImage() {
+    private void getTileImage() {//retrieves the tile png's from the resource files
 
-
-//        SETS UP EVERY KIND OF TILE, AND WHETHER IT IS A SOLID TILE (IE WATER) OR THE PLAYER CAN TRAVEL ON IT (IE LAND)
-        setup(0, "tree", true);// TREE TILE
-        setup(1, "brick", false);//BRICK / STONE TILE
-        setup(2, "grass", false);// GRASS TILE
-        setup(3, "water", true);//WATER TILE
-        setup(4, "dirt", false);//DIRT TILE
-        setup(5, "snow", false);// SNOW TILE
-        setup(6, "lilypad", false);// LILY PAD TILE
-        setup(7, "snowy_tree", true);// SNOWY TREE TILE
+        //setup(index of tile, tile file name, collision on or off);
+        setup(0, "tree", true);//turn back to true
+        setup(1, "brick", false);
+        setup(2, "grass", false);
+        setup(3, "water", true);//turn back to true
+        setup(4, "dirt", false);
+        setup(5, "snow", false);
+        setup(6, "lilypad", false);
+        setup(7, "snowy_tree", true);
     }
 
-//    SET UP METHOD FOR RETRIEVING IMAGES OF TILES
-    public void setup(int index, String imageName, boolean collision) {
-        UtilityTool uTool = new UtilityTool();//CREATE A UTILITY TOOL FROM UTILITY TOOL CLASS
+    private void setup(int index, String imageName, boolean collision) {
+        UtilityTool uTool = new UtilityTool();
 
         try {
-            tile[index] = new Tile();//CREATE TILE IN TILE ARRAY
-
-//            RETRIEVE TILE FILE
-            tile[index].image = ImageIO.read(getClass().getResourceAsStream("/tiles/" + imageName + ".png"));
-            tile[index].image = uTool.scaleImage(tile[index].image, gp.tileSize, gp.tileSize);//SCALE TILE IMAGE
-            tile[index].collision = collision;// SET TILE COLLISION
-        } catch (IOException e) {//IN CASE FILE DOES NOT EXIST
+            tile[index] = new Tile();
+            tile[index].setImage(ImageIO.read(getClass().getResourceAsStream("/tiles/" + imageName + ".png")));
+            tile[index].setImage(uTool.scaleImage(tile[index].getImage(), gp.getTileSize(), gp.getTileSize()));
+            tile[index].setCollision(collision);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-//    LOADS THE MAP IN TERMS OF IMAGES, AND NOT TILE TYPES
-//    READS THROUGH THE MAP FILE AND ASSIGNS INTO THE TILE ARRAY
-    public void loadMap(String mapPath) {
+    private void loadMap(String mapPath) {//reads through the map file and assigns into the tile array
         try {
 //            EXTRACT MAP TEXT FILE FROM THE RESOURCE FOLDER
             InputStream is = getClass().getResourceAsStream(mapPath);
@@ -73,22 +62,16 @@ public class TileManager {
 //            DECLARE POSITION OF THE SCANNER
             int row = 0;
             int col = 0;
-
-//            CREATE A SCANNER THAT GOES THROUGH THE FILE
-            Scanner mr = new Scanner(is);
-//            ITERATE THROUGH EACH LINE IN THE FILE
-            while (mr.hasNextLine()) {
-                String fileLine = mr.nextLine();// READ LINE IN THE FILE
-                String[] elements = fileLine.split(" ");//SPLITS THE FILE LINE INTO ITS ELEMENTS
-
-//                ITERATE THROUGH EACH ELEMENT IN THE ELEMENT ARRAY
-                while (col < gp.maxWorldCol) {
-//                    COPY FILE ELEMENT INTO THE CORRESPONDING INDEX IN THE MAP TILE ARRAY
-                    mapTileNum[col][row] = Integer.parseInt(elements[col]);
-                    col++;//MOVE TO NEXT TILE POSITION
+            Scanner mr = new Scanner(is);//create a scanner that goes through the file
+            while (mr.hasNextLine()) {//iterate through each line in the file
+                String fileLine = mr.nextLine();//read line in file
+                String[] elements = fileLine.split(" ");//splits the file line into an array of strings
+                while (col < gp.getMaxWorldCol()) {//iterate through each element in the file
+                    mapTileNum[col][row] = Integer.parseInt(elements[col]);//copy the file element into the
+                    // corresponding index in the map tile array
+                    col++;
                 }
-//                RESET THE LOOP AFTER THE LAST TILE IN THE ROW HAS BEEN REACHED
-                if (col == gp.maxWorldCol) {
+                if (col == gp.getMaxWorldCol()) {//reset the loop for when the end of the column has been reached
                     col = 0;
                     row++;
                 }
@@ -105,30 +88,29 @@ public class TileManager {
         int worldCol = 0;
         int worldRow = 0;
 
-//        LOOPS THROUGH EACH POSSIBLE TILE POSITION VIA ROWS AND COLUMNS
-        while (worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
+        while (worldCol < gp.getMaxWorldCol() && worldRow < gp.getMaxWorldRow()) {//loops through each possible tile position
+            // within
+            // the screen
+            int tileNum = mapTileNum[worldCol][worldRow];//extract the tile type from map tile array using its given
+            // position
 
-//            EXTRACT TILE TYPE FROM MAP TILE ARRYA USING ITS GIVEN POSITION AS INDEXES
-            int tileNum = mapTileNum[worldCol][worldRow];
-
-//            TILE POSITION ON THE MAP
-            int worldX = worldCol * gp.tileSize;
-            int worldY = worldRow * gp.tileSize;
-
-//            CALCULATES THE ADJUSTMENT FACTOR FOR THE TILES WHEN THEY ARE DRAWN USING THE DATA OF WHERE THE PLAYER
-//            SHOULD BE, EG TILES SHOULD BE DRAWN 5 PIXELS TO THE RIGHT IF THE PLAYER IS 5 PIXELS TO THE LEFT OF A
-//            TILE TO ENSURE IT STAYS IN THE CENTER OF THE SCREEN
-            int screenX = worldX - gp.player.worldX + gp.player.screenX;
-            int screenY = worldY - gp.player.worldY + gp.player.screenY;
+            int worldX = worldCol * gp.getTileSize();//tile position on the map
+            int worldY = worldRow * gp.getTileSize();
+            //calculates the adjustment factor for the tiles  when they are drawn using the data of where the player
+            // should be
+            int screenX = worldX - gp.getPlayer().getWorldX() + gp.getPlayer().getScreenX();//tile position on the screen
+            int screenY = worldY - gp.getPlayer().getWorldY() + gp.getPlayer().getScreenY();
 
 //            CHECK IF THE TILE IS NEAR THE PLAYER IN EITHER OF THE FOUR DIRECTIONS
 
-//            RENDERING PERFORMANCE IS IMPROVED MASSIVELY IF ONLY THE SURROUNDING TILES ARE DRAWN INSTEAD OF ALL THE
-//            TILES IN THE MAP ARE DRAWN
-            if (worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
-                    worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
-                    worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
-                    worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
+            if (worldX + gp.getTileSize() > gp.getPlayer().getWorldX() - gp.getPlayer().getScreenX() &&
+                    worldX - gp.getTileSize() < gp.getPlayer().getWorldX() + gp.getPlayer().getScreenX() &&
+                    worldY + gp.getTileSize() > gp.getPlayer().getWorldY() - gp.getPlayer().getScreenY() &&
+                    worldY - gp.getTileSize() < gp.getPlayer().getWorldY() + gp.getPlayer().getScreenY()) {//improves rendering efficiency by
+                // checking if the tile being drawn are near the player in either of the four directions
+
+                g2.drawImage(tile[tileNum].getImage(), screenX, screenY, null);//draw tile at
+                // using its position relative to the screen
 
 //                DRAW TILE USING ITS POSITION RELATIVE TO THE SCREEN
                 g2.drawImage(tile[tileNum].image, screenX, screenY, null);
@@ -140,36 +122,52 @@ public class TileManager {
 //                RESET ROW TO START
                 worldCol = 0;
 
-//                MOVE ON TO THE NEXT ROW
+            if (worldCol == gp.getMaxWorldCol()) {//checks when draw method has reached the bottom of the column
+                worldCol = 0;//resets column and x position
                 worldRow++;//draw will now draw the column next to it
             }
         }
 
-
-//        WALKTHROUGH PATH
-
-//        CHECKS IF THE PATH SHOULD BE DRAWN
-        if (drawPath) {
-            g2.setColor(new Color(255, 0, 0 ,70)); //SET COLOUR TO RED WITH REDUCED OPACITY
-
-//            ITERATE THROUGH EACH COORDINATE IN THE PATH FINDING METHOD, SCALE IT TO WORLD SIZE, AND PRINTS IT
-            for (int i = 0; i < gp.pFinderToTotem.pathList.size(); i++) {
-//                GET WORLD COORDINATES OF PATH TILE
-                int worldX = gp.pFinderToTotem.pathList.get(i).col * gp.tileSize;
-                int worldY = gp.pFinderToTotem.pathList.get(i).row * gp.tileSize;
-
-//                GET COORDINATES OF PATH TILE RELATIVE TO SCREEN
-                int screenX = worldX - gp.player.worldX + gp.player.screenX;
-                int screenY = worldY - gp.player.worldY + gp.player.screenY;
-
-//                DRAW PATH TILE IF IT IS NEAR THE PLAYER, TO SAVE ON RENDERING PERFORMANCE
-                if (worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
-                        worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
-                        worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
-                        worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
-                    g2.fillRect(screenX, screenY, gp.tileSize, gp.tileSize);
-                }
+            for (int i = 0; i < gp.getPFinderToTotem().getPathList().size(); i++) {
+                int worldX = gp.getPFinderToTotem().getPathList().get(i).getCol() * gp.getTileSize();
+                int worldY = gp.getPFinderToTotem().getPathList().get(i).getRow() * gp.getTileSize();
+                int screenX = worldX - gp.getPlayer().getWorldX() + gp.getPlayer().getScreenX();//tile position on the screen
+                int screenY = worldY - gp.getPlayer().getWorldY() + gp.getPlayer().getScreenY();
+                g2.fillRect(screenX, screenY, gp.getTileSize(), gp.getTileSize());
             }
         }
+    }
+
+    // Get and set methods
+    public boolean isDrawPath() {
+        return drawPath;
+    }
+
+    public void setDrawPath(boolean drawPath) {
+        this.drawPath = drawPath;
+    }
+
+    public GamePanel getGp() {
+        return gp;
+    }
+
+    public void setGp(GamePanel gp) {
+        this.gp = gp;
+    }
+
+    public Tile[] getTile() {
+        return tile;
+    }
+
+    public void setTile(Tile[] tile) {
+        this.tile = tile;
+    }
+
+    public int[][] getMapTileNum() {
+        return mapTileNum;
+    }
+
+    public void setMapTileNum(int[][] mapTileNum) {
+        this.mapTileNum = mapTileNum;
     }
 }

@@ -2,12 +2,11 @@ package main;
 import javax.swing.JFrame;
 
 public class Main {
-    static JFrame window;//CREATE A J-FRAME TO DISPLAY EVERYTHING IN
     public static void main(String[] args) {
-        window = new JFrame();//CREATE NEW J-FRAME
+        JFrame window = new JFrame();//CREATE NEW J-FRAME
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // EXITS PROGRAM WHEN USER HITS X
-        window.setResizable(false); // USER CANNOT RESIZE THE WINDOW
-        window.setTitle("Noojitoon Zaagi'"); // GAME TITLE
+        window.setResizable(false);  // USER CANNOT RESIZE THE WINDOW
+        window.setTitle("my 2D adventure");  // GAME TITLE
 
         GamePanel gamePanel = new GamePanel(); // CREATE PANEL
         window.add(gamePanel);//ADD GAME PANEL TO THE WINDOW

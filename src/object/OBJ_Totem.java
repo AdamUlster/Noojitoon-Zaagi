@@ -5,26 +5,21 @@ import main.GamePanel;
 
 // TOTEMS THAT ARE COLLECTED BY THE PLAYER
 public class OBJ_Totem extends Entity {
-//    SCALING FACTOR FOR HIT BOX
-    public double hitboxScale = 0.80;
+    private double hitboxScale = 0.80;//scaling factor for hitbox
+    public OBJ_Totem(GamePanel gp) { // constructor
+        super(gp); // calls the entity class
 
-//    CONSTRUCTOR
-    public OBJ_Totem(GamePanel gp) {
-        super(gp); // CALL ENTITY CLASS
+        setName("Totem");
+        setDown1(setup("objects/totem", 1, 1));
+        setCollision(true);
 
-        name = "Totem";
-//        SINCE DEFAULT DIRECTION IS DOWN
-        down1 = setup("objects/totem", 1,1);
-        collision = true;// MAKE TOTEM AN COLLIDEABLE OBKECT
+        //create hitbox in the center
+        getSolidArea().width = (int)(gp.getTileSize() * hitboxScale);
+        getSolidArea().height = (int)(gp.getTileSize() * hitboxScale);
+        getSolidArea().x = (gp.getTileSize() - getSolidArea().width) / 2;
+        getSolidArea().y = (gp.getTileSize() - getSolidArea().height) / 2;
 
-//        SET HIT BOX TO THE CENTER
-        solidArea.width = (int)(gp.tileSize * hitboxScale);
-        solidArea.height = (int)(gp.tileSize * hitboxScale);
-        solidArea.x = (gp.tileSize - solidArea.width) / 2;
-        solidArea.y = (gp.tileSize - solidArea.height) / 2;
-
-//        SET UP COLLISION BOX COORDINATES
-        solidAreaDefaultX = solidArea.x;
-        solidAreaDefaultY = solidArea.y;
+        setSolidAreaDefaultX(getSolidArea().x);
+        setSolidAreaDefaultY(getSolidArea().y);
     }
 }

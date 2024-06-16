@@ -9,17 +9,17 @@ public class OBJ_Wall extends Entity {
     public OBJ_Wall(GamePanel gp) {
         super(gp);//CALL ON ENTITY CLASS
 
-        name = "Wall";
-        down1 = setup("objects/wall", 1,1);
-        collision = true;
+        setName("Wall");
+        setDown1(setup("objects/wall", 1, 1));
+        setCollision(true);
 
         //create hitbox in the center
-        solidArea.width = gp.tileSize;
-        solidArea.height = gp.tileSize;
-        solidArea.x = (gp.tileSize - solidArea.width) / 2;
-        solidArea.y = (gp.tileSize - solidArea.height) / 2;
+        getSolidArea().width = gp.getTileSize();
+        getSolidArea().height = gp.getTileSize();
+        getSolidArea().x = (gp.getTileSize() - getSolidArea().width) / 2;
+        getSolidArea().y = (gp.getTileSize() - getSolidArea().height) / 2;
 
-        solidAreaDefaultX = solidArea.x;
-        solidAreaDefaultY = solidArea.y;
+        setSolidAreaDefaultX(getSolidArea().x);
+        setSolidAreaDefaultY(getSolidArea().y);
     }
 }
