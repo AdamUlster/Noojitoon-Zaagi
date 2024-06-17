@@ -3,11 +3,9 @@ package object;
 import entity.Entity;
 import main.GamePanel;
 
-//WALL OBJECT BLOCKING ENTRANCE TO THE MAZE
 public class OBJ_Wall extends Entity {
-//    CONSTRUCTOR METHOD
     public OBJ_Wall(GamePanel gp) {
-        super(gp);//CALL ON ENTITY CLASS
+        super(gp);
 
         setName("Wall");
         setDown1(setup("objects/wall", 1, 1));

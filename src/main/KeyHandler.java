@@ -4,8 +4,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.security.Key;
 
-//HANDLE KEYBOARD INPUTS
+//handle keyboard inputs
 public class KeyHandler implements KeyListener, MouseListener {
 
     private GamePanel gp;
@@ -30,19 +31,18 @@ public class KeyHandler implements KeyListener, MouseListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-//        RETURNS THE KEYCODE OF THE KEY THAT HAS BEEN PRESSED
-        int code = e.getKeyCode();
+        int code = e.getKeyCode();//returns the keycode of a key that has been pressed
 
-        if (code == KeyEvent.VK_W) {//W KEY HAS BEEN PRESSED
+        if (code == KeyEvent.VK_W) {//if w key has been pressed
             upPressed = true;
         }
-        if (code == KeyEvent.VK_S) {// S KEY HAS BEEN PRESSED
+        if (code == KeyEvent.VK_S) {//if s key has been pressed
             downPressed = true;
         }
-        if (code == KeyEvent.VK_A) {// A KEY HAS BEEN PRESSED
+        if (code == KeyEvent.VK_A) {//if A key has been pressed
             leftPressed = true;
         }
-        if (code == KeyEvent.VK_D) {//D KEY HAD BEEN PRESSED
+        if (code == KeyEvent.VK_D) {//if D key has been pressed
             rightPressed = true;
         }
         if (!gp.getPlayer().isDying()) { // runs if the player is not dying
@@ -73,24 +73,23 @@ public class KeyHandler implements KeyListener, MouseListener {
             shotKeyPressed = true;
         }
 
-        //DEBUGGING STUFF
-//        PRINTS DRAW TIME IF T KEY HAS BEEN PRESSED
+        //DEBUG STUFF
         if (code == KeyEvent.VK_T) {
-            checkDrawTime = !checkDrawTime;
+            checkDrawTime = !checkDrawTime; // sets checkDrawTime to its other state
         }
-//        DISPLAY CONTROLS IF THEY WERE NOT DISPLAYED PREVIOUSLY
-//       DISPLAYS THE CONTROLS IF THEY WERE NOT DISPLAYED PREVIOUSLY
+
         if (code == KeyEvent.VK_C) {
-//            DISPLAY CONTROLS ARE NOW TOGGLEABLE
-            displayControls = !displayControls;
+            displayControls = !displayControls; // displays the controls if they were not displayed previously
         }
+
         if (code == KeyEvent.VK_M) {
-//            DISPLAYS THE MAP IF IT WASN'T ALREADY, TOGGLEABLE
-            displayMap = !displayMap;
+            displayMap = !displayMap; // displays the map if it wasn't already
         }
+
         if (code == KeyEvent.VK_Q) {
             gp.getMap().setMiniMapOn(!gp.getMap().isMiniMapOn()); // displays the mini map if it wasn't already displayed
         }
+
         if (code == KeyEvent.VK_H) {
             gp.getPlayer().setOnPath(!gp.getPlayer().isOnPath());
             gp.getTileM().setDrawPath(!gp.getTileM().isDrawPath()); // draws the path to the maze if it wasn't already shown
@@ -100,59 +99,68 @@ public class KeyHandler implements KeyListener, MouseListener {
     @Override
     public void keyReleased (KeyEvent e){
 
-//        RETURNS THE KEYCODE OF A KEY THAT HAS BEN RELEASED
-        int code = e.getKeyCode();
+        int code = e.getKeyCode();//returns the keycode of a key that has been released
 
-//        RESETS THE KEYPRESSED BOOLEANS WHEN THE KEYS ARE RELEASED
-        if (code == KeyEvent.VK_W) {// W KEY
+        //now resets the keypressed booleans when the key is released
+        if (code == KeyEvent.VK_W) {//if w key has been released
             upPressed = false;
-        }if (code == KeyEvent.VK_S) {// S KEY
+        }
+        if (code == KeyEvent.VK_S) {//if s key has been released
             downPressed = false;
-        }if (code == KeyEvent.VK_A) {// A KEY
+        }
+        if (code == KeyEvent.VK_A) {//if A key has been released
             leftPressed = false;
-        }if (code == KeyEvent.VK_D) {//D KEY
+        }
+        if (code == KeyEvent.VK_D) {//if D key has been released
             rightPressed = false;
-        }if (code == KeyEvent.VK_1) {// 1 KEY
+        }
+        if (code == KeyEvent.VK_1) {//if key 1 has been released
             onePressed = false;
-        }if (code == KeyEvent.VK_2) {// 2 KEY
+        }
+        if (code == KeyEvent.VK_2) {
             twoPressed = false;
-        }if (code == KeyEvent.VK_3) {// 3 KET
+        }
+        if (code == KeyEvent.VK_3) {
             threePressed = false;
         }
-    }
+        if (code == KeyEvent.VK_F) {
+            shotKeyPressed = false;
+        }
+    } // implements a class that listens to keyboard inputs
 
-//    NECESSARY CLASS INSIDE MOUSE LISTENER IMPORT
     @Override
     public void mouseClicked(MouseEvent e) {
+
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        int button = e.getButton();//GET KEYCODE OF THE WHICH MOUSE BUTTON HAS BEEN PRESSED
-        if (button == MouseEvent.BUTTON1) {// LEFT CLICK
+        int button = e.getButton();
+        if (button == MouseEvent.BUTTON1) {
             primaryPressed = true;
-            secondaryPressed = false; // ENSURES ONLY ONE ACTION AT A TIME
-        } else if (button == MouseEvent.BUTTON3) {// RIGHT CLICK
+            secondaryPressed = false; // ensures only one action at a time
+        } else if (button == MouseEvent.BUTTON3) {
             secondaryPressed = true;
-            primaryPressed = false; // ENSURES ONLY ONE ACTION AT A TIME
+            primaryPressed = false; // ensures only one action at a time
         }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-//        GETS THE KEYCODE OF THE MOUSE BUTTON THAT WAS RELEASED
-        int button = e.getButton();
-        if (button == MouseEvent.BUTTON1) { // LEFT CLICK
+        int button = e.getButton(); // gets the mouse button that was clicked
+        if (button == MouseEvent.BUTTON1) { // left click
             primaryPressed = false;
         }
-        else if (button == MouseEvent.BUTTON3) { // RIGHT CLICK
+        else if (button == MouseEvent.BUTTON3) { // right click
             secondaryPressed = false;
         }
     }
 
-//    NECESSARY CLASSES THAT ARE PART OF MOUSE LISTENER CLASS
     @Override
-    public void mouseEntered(MouseEvent e) {}
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
     @Override
     public void mouseExited(MouseEvent e) {
 

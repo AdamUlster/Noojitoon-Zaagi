@@ -3,7 +3,6 @@ package object;
 import entity.Entity;
 import main.GamePanel;
 
-// TOTEMS THAT ARE COLLECTED BY THE PLAYER
 public class OBJ_Totem extends Entity {
     private double hitboxScale = 0.80;//scaling factor for hitbox
     public OBJ_Totem(GamePanel gp) { // constructor
