@@ -4,7 +4,10 @@ import main.GamePanel;
 
 import java.awt.*;
 
+//SPIRIT SUBCLASS WITHIN ENTITY
 public class Spirit extends Entity {
+
+//    DEFAULT VALUES (CONSTRUCTOR)
     public Spirit(GamePanel gp, String name, int maxHealth, int health, int x, int y, int width, int height, int width2, int height2, int attack, int defense) {
         super(gp);
         this.setName(name); // sets the spirit's name to the value passed to it
@@ -13,7 +16,7 @@ public class Spirit extends Entity {
         this.setAttack(attack);
         this.setDefense(defense);
 
-        // gives each spirit its own image
+        // GIVES EACH SPRITE ITS OWN IMAGE
         if (name.equals("Bear")) {
             setUp1(setup("bear/bear_up", 1, 1));
             setUp2(setup("bear/bear_up_2", 1, 1));
@@ -45,11 +48,11 @@ public class Spirit extends Entity {
             setRight2(setup("turtle/turtle_right_2", 1.8, 1.8));
         }
 
-        // Collision box
-        this.setSolidArea(new Rectangle(x, y, width, height));
+        //COLLISION BOX
+        this.solidArea = new Rectangle(x, y, width, height);
 
-        // Attack area
-        this.setAttackArea(new Rectangle(x, y, width2, height2));
+        // ATTACK AREA DEFAULTS
+        this.attackArea = new Rectangle(x, y, width2, height2);
     }
 
     public void setHitBox (int width, int height) {
@@ -60,4 +63,18 @@ public class Spirit extends Entity {
         System.out.println("hitbox established");
     }
 
+//    RETURNS MAX HEALTH OF THE SPIRIT
+    public int getMaxHealth() { // gets the spirit's max health
+        return maxHealth;
+    }
+
+//    RETURNS CURRENT HEALTH
+    public int getHealth() { // gets the spirit's current health
+        return health;
+    }
+
+//    SETS HEALTH TO WHATEVER VALUE HAS BEEN INPUTTED
+    public void setHealth(int health) { // sets the spirit's current health
+        this.health = health;
+    }
 }

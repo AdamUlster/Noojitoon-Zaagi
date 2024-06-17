@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
 
+//MANAGES TILES ON THE MAP
 public class TileManager {
     private GamePanel gp;
     private Tile[] tile;
@@ -17,7 +18,9 @@ public class TileManager {
     private boolean drawPath = false;
     public TileManager(GamePanel gp) {//set default
 
-        this.gp = gp;
+//    CONSTRUCTOR
+    public TileManager(GamePanel gp) {
+        this.gp = gp;//CALL ON GAME PANEL CLASS
 
         tile = new Tile[10]; //kinds of tile types, for now there are 10 types of tiles, we can add more
         mapTileNum = new int[gp.getMaxWorldCol()][gp.getMaxWorldRow()];
@@ -53,8 +56,10 @@ public class TileManager {
 
     private void loadMap(String mapPath) {//reads through the map file and assigns into the tile array
         try {
-            InputStream is = getClass().getResourceAsStream(mapPath);//extracts map file from resource folder
+//            EXTRACT MAP TEXT FILE FROM THE RESOURCE FOLDER
+            InputStream is = getClass().getResourceAsStream(mapPath);
 
+//            DECLARE POSITION OF THE SCANNER
             int row = 0;
             int col = 0;
             Scanner mr = new Scanner(is);//create a scanner that goes through the file
@@ -71,12 +76,13 @@ public class TileManager {
                     row++;
                 }
             }
-            mr.close();
-        } catch (Exception e) {
+            mr.close();//CLOSE SCANNER
+        } catch (Exception e) {//IN CASE TILE FILE DOES NOT EXIST
             e.printStackTrace();
         }
     }
 
+//    DRAWS THE TILES VIA FILE
     public void draw(Graphics2D g2) {//uses a file and loops to draw the tiles more efficiently
 
         int worldCol = 0;
@@ -95,6 +101,7 @@ public class TileManager {
             int screenX = worldX - gp.getPlayer().getWorldX() + gp.getPlayer().getScreenX();//tile position on the screen
             int screenY = worldY - gp.getPlayer().getWorldY() + gp.getPlayer().getScreenY();
 
+//            CHECK IF THE TILE IS NEAR THE PLAYER IN EITHER OF THE FOUR DIRECTIONS
 
             if (worldX + gp.getTileSize() > gp.getPlayer().getWorldX() - gp.getPlayer().getScreenX() &&
                     worldX - gp.getTileSize() < gp.getPlayer().getWorldX() + gp.getPlayer().getScreenX() &&
@@ -105,18 +112,21 @@ public class TileManager {
                 g2.drawImage(tile[tileNum].getImage(), screenX, screenY, null);//draw tile at
                 // using its position relative to the screen
 
+//                DRAW TILE USING ITS POSITION RELATIVE TO THE SCREEN
+                g2.drawImage(tile[tileNum].image, screenX, screenY, null);
             }
+            worldCol++;// MOVE ON TO THE NEXT TILE
 
-            worldCol++;
+//            CHECKS WHEN THE DRAW METHOD HAS REACHED THE END OF THE ROW
+            if (worldCol == gp.maxWorldCol) {
+//                RESET ROW TO START
+                worldCol = 0;
 
             if (worldCol == gp.getMaxWorldCol()) {//checks when draw method has reached the bottom of the column
                 worldCol = 0;//resets column and x position
                 worldRow++;//draw will now draw the column next to it
             }
         }
-
-        if (drawPath) { // if the path should be drawn
-            g2.setColor(new Color(255, 0, 0 ,70)); // red with a reduces opacity
 
             for (int i = 0; i < gp.getPFinderToTotem().getPathList().size(); i++) {
                 int worldX = gp.getPFinderToTotem().getPathList().get(i).getCol() * gp.getTileSize();

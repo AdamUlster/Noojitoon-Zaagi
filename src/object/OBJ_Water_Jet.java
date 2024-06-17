@@ -3,16 +3,18 @@ package object;
 import entity.Projectile;
 import main.GamePanel;
 
+//PROJECTILE OF THE TURTLE SPIRIT PRIMARY ATTACK
 public class OBJ_Water_Jet extends Projectile {
     private GamePanel gp;
 
     public OBJ_Water_Jet(GamePanel gp) {
+//        CALL ON PROJECTILE CLASS
         super(gp);
         this.gp = gp;
 
         setName("Water Jet");
-        setSpeed(10);
-        setMaxHealth(80);
+        setSpeed(10); // MOVES AT 10 PIXELS PER FRAME
+        setMaxHealth(80); // DETERMINES HOW LONG WATER JET STAYS ON SCREEN FOR
         setHealth(getMaxHealth());
         setAttack(2);
         setUseCost(1);
@@ -20,6 +22,7 @@ public class OBJ_Water_Jet extends Projectile {
         getImage();
     }
 
+//    IMAGE RETRIEVAL METHOD
     public void getImage() {
         setUp1(setup("objects/water_jet_up", 1, 1));
         setUp2(setup("objects/water_jet_up", 1, 1));

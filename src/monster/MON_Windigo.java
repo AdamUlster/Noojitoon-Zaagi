@@ -29,9 +29,8 @@ public class MON_Windigo extends Entity {
         setSolidAreaDefaultX(getSolidArea().x);
         setSolidAreaDefaultY(getSolidArea().y);
 
-        getImage();
+        getImage();//RETRIEVES ALL THE SPIRTE IMAGE FILES
     }
-
     private void getImage() {
         setUp1(setup("monsters/windigo", 1, 1));
         setUp2(setup("monsters/windigo", 1, 1));
@@ -43,17 +42,22 @@ public class MON_Windigo extends Entity {
         setRight2(setup("monsters/windigo", 1, 1));
     }
 
-    public void update() { // overwrites the parent class's update method
-        super.update(); // calls on the parent's class update method
+//    OVERWRITES THE PARENT CLASS'S UPDATE METHOD
+    public void update() {
+//        CALL ON PARENT CLASS UPDATE METHOD
+        super.update();
 
         int xDistance = Math.abs(getWorldX() - gp.getPlayer().getWorldX());
         int yDistance = Math.abs(getWorldY() - gp.getPlayer().getWorldY());
-        int tileDistance = (xDistance + yDistance) / gp.getTileSize();
+        int tileDistance = (int)Math.sqrt(Math.pow(xDistance, 2.0) + Math.pow(yDistance, 2)) / gp.tileSize;
 
-        if (!isOnPath() && tileDistance < 5) { // if the monster is within 5 tiles of the player
+
+        if (!isOnPath() && tileDistance < 4) { // if the monster is within 5 tiles of the player
             int i = new Random().nextInt(100) + 1; // picks a random number from 1 to 100
             if (i > 50) {
                 setOnPath(true); // half the time, it doesn't follow the player
+            }else {
+                onPath = false;
             }
         }
         if (isOnPath() && tileDistance > 15) { // makes the monsters disappear once the player is a certain distance away
@@ -75,8 +79,9 @@ public class MON_Windigo extends Entity {
             if (getActionLockCounter() == 120) {
 
                 Random random = new Random();
-                int i = random.nextInt(100) + 1;//pick a random number from 1 to 100
+                int i = random.nextInt(100) + 1;// PICK A RANDOM NUMBER FROM 1 TO 100
 
+//                PICKS A RANDOM DIRECTION BASED ON THE RANDOM NUMBER
                 if (i <= 25) {
                     setDirection("up");
                 }
@@ -94,6 +99,7 @@ public class MON_Windigo extends Entity {
         }
     }
 
+//    TURNS ON AGGRO IF THE PLAYER HAS JUST BEEN DAMAGED BY THE PLAYER
     public void damageReaction() {
         setActionLockCounter(0);
         setOnPath(true);
