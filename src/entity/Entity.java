@@ -10,6 +10,8 @@ import java.io.IOException;
 
 public class Entity {
     protected GamePanel gp;
+  
+  //    DECLARE IMAGE BOOLEANS: BOOLEANS THAT DETERMINE WHICH IMAGE TO DRAW
     private BufferedImage image1, image2, image3;
     private BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
     private BufferedImage attackUp1, attackUp2, attackUp3, attackDown1, attackDown2,
@@ -23,6 +25,7 @@ public class Entity {
             specialLeft7;//special moves for left direction
     private BufferedImage specialRight1, specialRight2, specialRight3, specialRight4, specialRight5, specialRight6,
             specialRight7;//special moves for right direction
+
     private int x = 0;
     private int y = 0;
     private int width = 48;
@@ -65,10 +68,14 @@ public class Entity {
     private int speed;
     private int attack;
     private int defense;
-    private int useCost;
+   
     private Projectile projectile;
     private TargetingProjectile targetProjectile;
+  
+    // ITEM ATTRIBUTES
+    private int useCost;
 
+    //create eentity
     public Entity(GamePanel gp) {
         this.gp = gp;
     }
@@ -97,140 +104,212 @@ public class Entity {
         }
     }
 
+//    UPDATE METHOD THAT RUNS ON EACH FRAME
     public void update() {
         setAction();
-        checkCollision();
+        checkCollision();//call on check collision method
 
-        // entity can only move if collision is false
-        if (!collisionOn) {
-            switch (direction) {
-                case "up":
+//        USE SPEED VALUE TO MOVE ENTITY ACROSS WORLD COORDINATES
+        if (!collisionOn) {// entity can only move if collision is false
+            switch (direction) {//run thorugh entity direction to determine which direction it moves in
+                case "up":// MOVE PLAYER UP IF FACING UP
                     worldY -= speed;
                     break;
-                case "down":
+                case "down":// MOVE PLAYER DOWN IF FACING DOWN
                     worldY += speed;
                     break;
-                case "left":
+                case "left"://MOVE PLAYER LEFT IF FACING LEFT
                     worldX -= speed;
                     break;
-                case "right":
+                case "right":// MOVE PLAYER RIGHT IF FACING RIGHT
                     worldX += speed;
                     break;
             }
         }
 
-        spriteCounter++;
-        if (spriteCounter > 12) {//player image changes once every 12 frames, can adjust by increasing or decreasing
-            if (spriteNum == 1) {//changes the player to first walking sprite to second sprite
+//        MOVEMENT ANIMATION
+//        CREATE THE ILLUSION OF THE ENTITY 'MOVING' BY RAPIDLY SWITCHING BETWEEN TWO IMAGES
+        spriteCounter++;//UPDATE THE SPRITE COUNTER UNTIL IT REACHES 12
+        if (spriteCounter > 12) {// PLAYER IMAGE CHANGES ONCE EVERY 12 FRAMES, INCREASING THIS NUMBER MEANS ENTITY'
+            // WALKS SLOW, DECREASING THIS NUMBER MAKES THE ENTITY 'WALK' FASTER
+            if (spriteNum == 1) {// CHANGES THE PLAYER FROM THE FIRST WALKING SPRITE TO THE SECOND SPRITE
                 spriteNum = 2;
-            } else if (spriteNum == 2) {//changes the player sprite from second to first
+            } else if (spriteNum == 2) {// CHANGES THE PLAYER FROM THE SECOND WALKING SPRITE TO THE FIRST SPRITE
                 spriteNum = 1;
             }
-            spriteCounter = 0;//resets the sprite counter
+            spriteCounter = 0;// RESET THE SPRITE COUNTER SO THE ANIMATION GOES BACK AND FORTH
         }
     }
 
+//    DRAW METHOD
     public void draw(Graphics2D g2) {
 
-        BufferedImage image = null;
+        BufferedImage image = null; // CALL ON BUFFERED IMAGE CLASS
+      
+      //        DETERMINE POSITION ON THE SCREEN
         int screenX = worldX - gp.getPlayer().getWorldX() + gp.getPlayer().getScreenX();
         int screenY = worldY - gp.getPlayer().getWorldY() + gp.getPlayer().getScreenY();
 
-        if (!attacking && !specialAttacking) {
+        if (!attacking && !specialAttacking) {// IF THE ENTITY IS NOT ATTACKING, OR SPECIAL ATTACKING, IT IS MOVING
             if (worldX + gp.getTileSize() > gp.getPlayer().getWorldX() - gp.getPlayer().getScreenX() && // only draws an object if it is in the user's field of view
                     worldX - gp.getTileSize() < gp.getPlayer().getWorldX() + gp.getPlayer().getScreenX() &&
                     worldY + gp.getTileSize() > gp.getPlayer().getWorldY() - gp.getPlayer().getScreenY() &&
-                    worldY - gp.getTileSize() < gp.getPlayer().getWorldY() + gp.getPlayer().getScreenY()) {
+                    worldY - gp.getTileSize() < gp.getPlayer().getWorldY() + gp.getPlayer().getScreenY()) {// ONLY DRAWS AN OBJECT IT IS IN USER FOV
+
                 switch (direction) {//check the direction, based on the direction it picks a different image
-                    case "up":
+                    case "up":// DRAW UP SPRITES IF FACING UP
                         if (spriteNum == 1) {image = up1;}
                         if (spriteNum == 2) {image = up2;}
                         break;
-                    case "down":
+                    case "down"://DRAW DOWN SPRITES IF FACING DOWN
                         if (spriteNum == 1) {image = down1;}
                         if (spriteNum == 2) {image = down2;}
                         break;
-                    case "left":
+                    case "left":// DRAW LEFT SPRITES IF FACING LEFT
                         if (spriteNum == 1) {image = left1;}
                         if (spriteNum == 2) {image = left2;}
                         break;
-                    case "right":
+                    case "right":// DRAW RIGHT SPRITES IF FACING RIGHT
                         if (spriteNum == 1) {image = right1;}
                         if (spriteNum == 2) {image = right2;}
                         break;
                 }
 
-                // Monster health bar
-                if (type == 2) { // if the entity is a monster and the health bar should be displayed
-                    double oneHealthLength = gp.getTileSize() / maxHealth; // size of one of a monster's lives
-                    double healthBarValue = oneHealthLength * health;
+                // MONSTER HEALTH BAR
+                if (type == 2) {  // IF THE ENTITY IS A MONSTER THEN DISPLAY ITS HEALTH BAR
+                    double oneHealthLength = gp.getTileSize() / maxHealth; // SIZE OF THE BAR REPRESENTING MONSTER'S HEALTH
+                    double healthBarValue = oneHealthLength * health; // CALCULATE HOW MUCH HEALTH MONSTER HAS
 
-                    g2.setColor(new Color(35, 35, 35));
+                    g2.setColor(new Color(35, 35, 35));//SET COLOUR TO BLACK
+                  //DISPLAY HOW MUCH HEALTH IS MISSING
                     g2.fillRect(screenX - 1, screenY - 16, gp.getTileSize() + 2, 12); // displays the outline above the health bar
 
-                    g2.setColor(new Color(255, 0, 0));
-                    g2.fillRect(screenX, screenY - 15, (int) healthBarValue, 10); // subtracts from screenY to display above monster and draws the rectangle the same size as the monster's health
+                    g2.setColor(new Color(255, 0, 0));//SET COLOUR TO RED
+//                    SUBTRACS FROM SCREENY TO DISPLAY ABOVE MONSTER AND DRAW RECTANGLE THE SAME SIZE AS MONSTER HEALTH
+                    g2.fillRect(screenX, screenY - 15, (int) healthBarValue, 10);
 
-                    healthBarCounter ++;
+                    healthBarCounter++;// HEALTH BAR DRAWING COUNTER
 
-                    if (healthBarCounter > 600) { // after 10 seconds after its appearance, the monster's health bar disappears
+                    // AFTER 10 SECONDS AFTER APPEARING MONSTER HEALTH BAR DISAPPEARS
+                    if (healthBarCounter > 600) {
                         healthBarCounter = 0;
                         healthBarOn = false;
                     }
                 }
+              
+//                DRAW ATTACKING ANIMATION SPRITE BASED ON IMAGE TO BE PRINTED, POSITION ON THE SCREEN, AND SIZE OF
+//                THE IMAGE
                 g2.drawImage(image, screenX, screenY, gp.getTileSize(), gp.getTileSize(), null); // draws the attacking animation
             }
 
-            // For debugging
-            //g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
+            // DEBUGGING; DRAW ENTITY COLLISION BOX
+//           g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
         }
     }
 
-    protected BufferedImage setup(String imagePath, double widthScale, double heightScale) {
-        UtilityTool uTool = new UtilityTool();
-        BufferedImage image = null;
+  //    IMAGE SET UP METHOD
+    protected BufferedImage setup(String imagePath, double widthScale, double heightScale) { // ACCEPTS IMAGE FILE PATH
+        // AND SCALING FACTOR ON BOTH WIDTH AND HEIGHT
+        UtilityTool uTool = new UtilityTool(); //CLALL ON UTILITY TOOL CLASS
+        BufferedImage image = null; //CREATE NEW BUFFERED IMAGE TO BE RETURNED
 
         try {
-            image = ImageIO.read(getClass().getResourceAsStream("/" + imagePath + ".png"));
+            //READ FILE PATH FROM RESOURCE FOLDER FROM INPUTS
             image = uTool.scaleImage(image, (int) (gp.getTileSize() * widthScale), (int) (gp.getTileSize() * heightScale));
-        } catch (IOException e) {
+        } catch (IOException e) { // TRY CATCH IN CASE FILE PATH DOES NOT WORK
             e.printStackTrace();
         }
         return image;
     }
 
-    void searchPathToTotem(int goalCol, int goalRow) {
+//    PATH FINDING METHOD
+    void searchPathToTotem(int goalCol, int goalRow) { //ACCEPTS COORDINATE INPUTS OF THE END GOAL POSITION
 
-        // gets the entity's current tile
+        //        GET ENTITY'S CURRENT TILE
         int startCol = (worldX + solidArea.x) / gp.getTileSize();
         int startRow = (worldY + solidArea.y) / gp.getTileSize();
 
+//      CREATE NODES USING STARTING AND ENDING POINTS BY CALLING ON P-FINDER CLASS
         gp.getPFinderToTotem().setNodes(startCol, startRow, goalCol, goalRow);
 
-        if (gp.getPFinderToTotem().search()) { // a path has been found
+        if (gp.getPFinderToTotem().search()) { // A PATH HAS BEEN FOUND
+          
+//            GET THE ENTITY'S NEXT COORDINATES USING THE PATH TO FOLLOW
+            int nextX = gp.pFinderToTotem.pathList.get(0).col * gp.tileSize;
+            int nextY = gp.pFinderToTotem.pathList.get(0).row * gp.tileSize;
+
+//            GET ENTITY'S SOLID AREA
+            int entLeftX = worldX + solidArea.x;
+            int entRightX = worldX + solidArea.x + solidArea.width;
+            int entTopY = worldY + solidArea.y;
+            int entBottomY = worldY + solidArea.y + solidArea.height;
+
+//            IMPLEMENTING THE PATHFINDING ALGORITHM
+            if (entTopY > nextY && entLeftX >= nextX && entRightX < nextX + gp.tileSize) {
+                direction = "up";
+            }
+            else if (entTopY < nextY && entLeftX >= nextX && entRightX < nextX + gp.tileSize) {
+                direction = "down";
+            }
+            else if (entTopY >= nextY && entBottomY < nextY + gp.tileSize) { // THE ENTITY CAN GO EITHER LEFT OR RIGHT
+                if (entLeftX > nextX) {
+                    direction = "left";
+                }
+                if (entLeftX < nextX) {
+                    direction = "right";
+                }
+            }
+            else if (entTopY > nextY && entLeftX > nextX) { // ENTITY CAN GO EITHER UP OR LEFT
+                direction = "up";
+                checkCollision();
+                if (collisionOn) {
+                    direction = "left";
+                }
+            }
+            else if (entTopY > nextY && entLeftX < nextX) { // THE ENTITY CAN GO EITHER UP OR RIGHT
+                direction = "up";
+                checkCollision();
+                if (collisionOn) {
+                    direction = "right";
+                }
+            }
+            else if (entTopY < nextY && entLeftX > nextX) { // ENTITY CAN EITHER GO UP OR DOWN
+                direction = "down";
+                checkCollision();
+                if (collisionOn) {
+                    direction = "left";
+                }
+            }
+            else if (entTopY < nextY && entLeftX < nextX) { // ENTITY CAN GO EITHER DOWN OR RIGHT
+                direction = "down";
+                checkCollision();
+                if (collisionOn) {
+                    direction = "right";
+                }
+            }
 
             int nextCol = gp.getPFinderToTotem().getPathList().get(0).getCol();
             int nexRow = gp.getPFinderToTotem().getPathList().get(0).getRow();
             if (nextCol == goalCol && nexRow == goalRow) {
-                onPath = false; // stops the entity when it reaches its destination
+                onPath = false; // STOP ENTITY WHEN IT REACHING THE DESTINATION
             }
         }
     }
 
     protected void searchPathToPlayer(int goalCol, int goalRow) {
-        // gets the entity's current tile
+        // GET ENTITY CURRENT TILE
         int startCol = (worldX + solidArea.x) / gp.getTileSize();
         int startRow = (worldY + solidArea.y) / gp.getTileSize();
 
         gp.getPFinderToPlayer().setNodes(startCol, startRow, goalCol, goalRow);
 
-        if (gp.getPFinderToPlayer().search()) { // a path has been found
+        if (gp.getPFinderToPlayer().search()) { // PATH HAS BEEN FOUND
 
-            // Get the entity's next coordinates using the path to follow
+            GET ENTITY'S NEXT COORDINATES USING THE PATH TO FOLLOW
             int nextX = gp.getPFinderToPlayer().getPathList().get(0).getCol() * gp.getTileSize();
             int nextY = gp.getPFinderToPlayer().getPathList().get(0).getRow() * gp.getTileSize();
 
-            // Get the entity's solid area
+//            GET ENTITY'S SOLID AREA
             int entLeftX = worldX + solidArea.x;
             int entRightX = worldX + solidArea.x + solidArea.width;
             int entTopY = worldY + solidArea.y;
@@ -242,7 +321,7 @@ public class Entity {
             else if (entTopY < nextY && entLeftX >= nextX && entRightX < nextX + gp.getTileSize()) {
                 direction = "down";
             }
-            else if (entTopY >= nextY && entBottomY < nextY + gp.getTileSize()) { // the entity can go either left or right
+            else if (entTopY >= nextY && entBottomY < nextY + gp.getTileSize()) { //ENTITY CAN GO EITHER LEFT OR RIGHT
                 if (entLeftX > nextX) {
                     direction = "left";
                 }
@@ -250,28 +329,28 @@ public class Entity {
                     direction = "right";
                 }
             }
-            else if (entTopY > nextY && entLeftX > nextX) { // the entity can go either up or left
+            else if (entTopY > nextY && entLeftX > nextX) { // ENTITY CAN GO EITHER UP OR LEFT
                 direction = "up";
                 checkCollision();
                 if (collisionOn) {
                     direction = "left";
                 }
             }
-            else if (entTopY > nextY && entLeftX < nextX) { // the entity can go either up or right
+            else if (entTopY > nextY && entLeftX < nextX) { // ENTITY CAN GO EITHER UP OR RIGHT
                 direction = "up";
                 checkCollision();
                 if (collisionOn) {
                     direction = "right";
                 }
             }
-            else if (entTopY < nextY && entLeftX > nextX) { // the entity can go either down or left
+            else if (entTopY < nextY && entLeftX > nextX) { // ENTITY CAN GO EITHER DOWN OR LEFT
                 direction = "down";
                 checkCollision();
                 if (collisionOn) {
                     direction = "left";
                 }
             }
-            else if (entTopY < nextY && entLeftX < nextX) { // the entity can go either down or right
+            else if (entTopY < nextY && entLeftX < nextX) { // ENTITY CAN GO EITHER DOWN OR RIGHT
                 direction = "down";
                 checkCollision();
                 if (collisionOn) {
@@ -282,7 +361,7 @@ public class Entity {
             int nextCol = gp.getPFinderToPlayer().getPathList().get(0).getCol();
             int nexRow = gp.getPFinderToPlayer().getPathList().get(0).getRow();
             if (nextCol == goalCol && nexRow == goalRow) {
-                onPath = false; // stops the entity when it reaches its destination
+                onPath = false; // STOP ENTITY WHEN IT REACHES ITS DESTINATION
             }
         }
     }

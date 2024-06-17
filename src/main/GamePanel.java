@@ -37,37 +37,45 @@ public class GamePanel extends JPanel implements Runnable {
     private final int maxWorldRow = 100;//sets the border of the world in terms of tiles
 
     //FPS
-    private int FPS = 60;
+    private int FPS = 60;//GAME RUNS AT 60 FRAMES PER SECOND, OTHERWISE, THE GAME WOULD RUN TOO FAST
 
-    // System
-    private TileManager tileM = new TileManager(this); // passes the game panel
-    private KeyHandler keyH = new KeyHandler(this);//call on the keyhandle class to create the keylistener
-    private CollisionChecker cChecker = new CollisionChecker(this);
-    private AssetSetter aSetter = new AssetSetter(this); // passes the game panel as a parameter
-    private UI ui = new UI(this);
+    // SYSTEM
+    private TileManager tileM = new TileManager(this); // CREATE TILE MANGEGER CLASS
+    private KeyHandler keyH = new KeyHandler(this);//CALL KEY HANDLER CLASS TO CREATE KEY AND MOUSE LISTENER
+    private CollisionChecker cChecker = new CollisionChecker(this);//CREATE COLLISION CHECKER CLASS
+    private AssetSetter aSetter = new AssetSetter(this);// CREATE ASSET SETTER CLASS
+    private UI ui = new UI(this);//CREATE UI CLASS
+      
+//    CREATE PATHFINDER
     private PathFinder pFinderToTotem = new PathFinder(this);
     private PathFinder pFinderToPlayer = new PathFinder(this);
 
-    private Map map = new Map(this); // instantiates the map
-    private Thread gameThread;//repeats a process again and again
+//  MAP
+    private Map map = new Map(this); // CREATES THE MAP
+    private Thread gameThread;//CALL ON THREAD CLASS, THAT ALLOWS FOR GAME LOGIC TO BE RUN AGAIN AND AGAIN
 
-    // Entities and objects
-    private Player player = new Player(this, keyH);
-    private Entity[] obj = new Entity[10]; // to display up to 10 objects at the same time
-    private Entity[] npc = new Entity[50];//create 50 npcs
-    private Entity[] monster = new Entity[200];//create 200 monsters
-    private ArrayList<Entity> projectileList = new ArrayList<>(); // holds the projectiles
-    private ArrayList<Entity> targetProjectileList = new ArrayList<>(); // holds the target projectiles
-    private ArrayList<Entity> entityList = new ArrayList<>(); // creates an array list to store all the entities
+   // ENTITIES AND OBJECTS
+    private Player player = new Player(this, keyH);//CREATE PLAYER
+    private Entity[] obj = new Entity[10]; // CREATE 10 OBJECTS
+    private Entity[] npc = new Entity[50];// CREATE 50 NPCs
+    private Entity[] monster = new Entity[170];//CREATE 170 MONSTERS
+    private ArrayList<Entity> projectileList = new ArrayList<>(); // CREATE ARRAY LIST TO STORE ALL THE PROJECTILES
+    private ArrayList<Entity> targetProjectileList = new ArrayList<>(); // CREATE LIST TO STORE TARGET PROJECTILES
+    private ArrayList<Entity> entityList = new ArrayList<>(); // CREATE ARRAY LIST TO STORE ALL ENTITIES
 
-    public GamePanel() {//set default values for the gamepanel
-        this.setPreferredSize(new Dimension(screenWidth, screenHeight));//set screen dimensions
-        this.setBackground(Color.black);//changeable colour via rgb values
-        this.setDoubleBuffered(true);//all graphics are now done buffered, ie the screen gets rendered before being displayed
-        //improves rendering performance
-        this.addKeyListener(keyH); // adds the key listener to the gamepanel
-        this.addMouseListener(keyH); // adds the mouse listener to the gamepanel
-        this.setFocusable(true);//changes the focus of the gamepanel to the key inputs
+//    SET DEFAULT VALUES FOR GAME PANEL
+    public GamePanel() {
+        this.setPreferredSize(new Dimension(screenWidth, screenHeight));// SET SCREEN DIMENSIONS
+        this.setBackground(Color.black);//BACKGROUND COLOURS SET TO BLACK
+      
+     //        ALL GRAPHICS ARE NOT BUFFERED, MEANING ON EACH FRAME THE SCREEN GETS RENDERED BEFORE IT GETS DISPLAYED ALL
+//        AT ONCE TO IMPROVE RENDERING PERFORMANCE
+        this.setDoubleBuffered(true);
+      
+//        ADD KEY LISTENER, MOUSE LISTENER, AND FOCUSES GAMEPANEL TO KEY INPUTS
+        this.addKeyListener(keyH);
+        this.addMouseListener(keyH);
+        this.setFocusable(true);
     }
 
     void setupGame() {
@@ -84,50 +92,52 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     @Override
-    public void run() {//core game loop, all the actions done, better than running a forever loop for game logic
+//    CORE GAME LOOP, ALL THE ACTIONS DONE IN THE GAME ARE RUN HERE, IT IS MORE EFFICIENT THAN RUNNING A FOREVER LOOP
+    public void run() {
 
-        double drawInterval = 1000000000 / FPS;//1/60th of a second, intervals are now at 60 fps
+        double drawInterval = 1000000000 / FPS;// 1/60TH OF A SECOND, GAME NOW RUNS AT 60 FPS
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
 
-        while (gameThread != null) {//will repeat the game logic forever
+        while (gameThread != null) {//WILL REPEAT AS LONG AS GAME THREAD IS ACTIVE
 
-            //ensures game operates at 60 fps
-            currentTime = System.nanoTime();//get current time in nanosecondd
+//            ENSURES GAME OPERATES AT 60 FPS
+            currentTime = System.nanoTime();//GET CURRENT TIME IN NANOSECONDS
 
-            delta += (currentTime - lastTime) / drawInterval;//delta counts upwards in a linear pattern, waiting up
-            // the remaining time
+//            DELTA COUNTS UPWARDS IN A LINEAR PATTERN WAITING UP THE REMAINING TIME
+            delta += (currentTime - lastTime) / drawInterval;
             lastTime = currentTime;
 
-            if (delta >= 1) {//when delta has passed 1, repaint everything and reset delta
-                update();
-                repaint();
-                delta--;
+//            WHEN DELTA HAS PASSED 1, REPAINT EVERYTHING AND RESET DELTA
+            if (delta >= 1) {
+                update();//UPDATE ALL INFORMATION TO BE PRINTED
+                repaint();//PRINT GAME PANEL AGAIN
+                delta--;//RESET DELTA
             }
         }
     }
 
-    // update information
+//    UPDATE INFORMATION
     public void update() {
         //UPDATE PLAYER
         player.update();
 
-        // update NPC
+        // UPDATE ALL NPCs
         for (int i = 0; i < npc.length; i++) {
             if (npc[i] != null) {
                 npc[i].update();
             }
         }
 
-       // update monster
+//        UPDATE MONSTERS
         for (int i = 0; i < monster.length; i++) {
             if (monster[i] != null) {
                 monster[i].update();
             }
         }
 
-        // update projectile
+//        UPDATE PROJECTILES
         for (int i = 0; i < projectileList.size(); i++) {
             if (projectileList.get(i) != null) { // if the projectile exists
                 if (projectileList.get(i).isAlive()) {
@@ -139,7 +149,7 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
 
-        // update target projectile
+//        UPDATE TARGET PROJECTILES
         for (int i = 0; i < targetProjectileList.size(); i++) {
             if (targetProjectileList.get(i) != null) { // if the projectile exists
                 if (targetProjectileList.get(i).isAlive()) {
@@ -153,54 +163,65 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    //draw screen with updated information
+//    DRAW SCREEN WITH UPDATED INFORMATION
     public void paintComponent(Graphics g) {
 
         super.paintComponent(g);
 
-        Graphics2D g2 = (Graphics2D) g;//better graphics class that makes things easier
+//        USE 2D GRAPHICS CLASS TO MAKE THINGS EASIER
+        Graphics2D g2 = (Graphics2D) g;
 
-        //DEBUG STUFF
+        //DEBUGGING STUFF
+//        PART OF DISPLAYING TIME TAKEN TO DRAW ALL COMPONENTS
         long drawStart = 0;
         if (keyH.isCheckDrawTime() == true) {
             drawStart = System.nanoTime();
         }
 
-        tileM.draw(g2); // tiles are drawn before the player so to prevent layering issues
+//        DRAWING ORDER, THE ORDER IN WHICH TO DRAW THINGS HAS BEEN PREDETERMINED IN ORDER TO PREVENT OVERLAPPING
 
-        entityList.add(player); // adds the player to the entity list
+//        DRAW TILES FIRST TO PREVENT OVERLAPPING
+        tileM.draw(g2);
 
-        for (int i = 0; i < npc.length; i++) { // adds every npc to the entity list
+//        ADD PLAYER TO ENTITY LIST
+        entityList.add(player);
+
+//        ADD EVERY NPC TO ENTITY LIST
+        for (int i = 0; i < npc.length; i++) {
             if (npc[i] != null) {
                 entityList.add(npc[i]);
             }
         }
 
-        for (int i = 0; i < obj.length; i++) { // adds every object to the entity list
+//        ADD EVERY OBJECT TO ENTITY LIST
+        for (int i = 0; i < obj.length; i++) {
             if (obj[i] != null) {
                 entityList.add(obj[i]);
             }
         }
 
-        for (int i = 0; i < monster.length; i++) { // adds every monster to the entity list
+//        ADD EVERY MONSTER TO ENTITY LIST
+        for (int i = 0; i < monster.length; i++) {
             if (monster[i] != null) {
                 entityList.add(monster[i]);
             }
         }
 
-        for (int i = 0; i < projectileList.size(); i++) { // adds every projectile to the entity list
+//        ADD EVERY PROJECTILE TO THE ENTITY LIST
+        for (int i = 0; i < projectileList.size(); i++) {
             if (projectileList.get(i) != null) {
                 entityList.add(projectileList.get(i));
             }
         }
 
+//        ADD EVERY TARGET PROJECTILE TO THE ENTITY LIST
         for (int i = 0; i < targetProjectileList.size(); i++) { // adds every target projectile to the entity list
             if (targetProjectileList.get(i) != null) {
                 entityList.add(targetProjectileList.get(i));
             }
         }
 
-        // Sorts the entities by their world y values
+//        SORT ENTITIES BY THEIR WORLD Y VALUES
         Collections.sort(entityList, new Comparator<Entity>() {
 
             @Override
@@ -210,15 +231,19 @@ public class GamePanel extends JPanel implements Runnable {
             }
         });
 
-        // draws the entities based on their world y values (the ones further up are drawn first to avoid clipping the other entities)
+//        DRAW ENTITIES BASED ON WORLD Y VALUES (ONES HIGHER UP ON THE SCREEN ARE DRAWN FIRST TO AVOID CLIPPING THE
+//        OTHER ENTITIES
         for (int i = 0; i < entityList.size(); i++) {
             entityList.get(i).draw(g2);
         }
-        entityList.clear(); // resets the entity list so that it doesn't keep adding the same entities to the list every time the paintComponent method is called
+//        RESETS THE ENTITY LIST SO THAT IT DOESN'T KEEP ADDING THE SAME ENTITIES TO THE LIST EVERY TIME THE PAINT
+//        COMPONENT METHOD IS CALLED
+        entityList.clear();
 
-        map.drawMiniMap(g2); // draws the mini map before the UI so the UI text is not hidden
+//        DRAWS MINI MAP BEFORE UI SO UI TEXT IS NOT HIDDEN
+        map.drawMiniMap(g2);
 
-        // Draws the UI
+        // DRAWS UI
         ui.draw(g2);
 
         if (keyH.isDisplayMap()) {
@@ -230,12 +255,13 @@ public class GamePanel extends JPanel implements Runnable {
             long drawEnd = System.nanoTime();
             long passed = drawEnd - drawStart;
             g2.setColor(Color.white);
-            g2.setFont(g2.getFont().deriveFont(30F)); // changes the font size
+            g2.setFont(g2.getFont().deriveFont(30F));
             g2.drawString("Draw Time: " + passed, 10, 400);
             System.out.println("Draw Time: " + passed);
         }
 
-        g2.dispose();//saves processing power
+//        DISPOSES OF G2 TO SAVE PROCESSING POWER
+        g2.dispose();
     }
 
     // Get and set methods
