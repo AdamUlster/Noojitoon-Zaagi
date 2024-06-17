@@ -859,7 +859,9 @@ public class Player extends Entity {
                         gp.getObj()[index] = null; // destroys the wall
                     }
                     else {
-                        gp.getUi().showMessage("You need to collect " + (3 - numTotems) + " more totems to get past the wall");
+//                        gp.getUi().showMessage("You need to collect " + (3 - numTotems) + " more totems to get past the wall");
+                        gp.getUi().showMessage("“Perhaps a monster could let you in, and you may complete your " +
+                                "journey");
                     }
                     break;
             }
