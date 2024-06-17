@@ -364,6 +364,27 @@ public class Player extends Entity {
         secondaryICD++;
         primaryICD++;//increase primary internal cooldown for every frame, after 30 frames, will be able to attack again
 
+//        INCREASE COUNTER FOR BERSERKER MODE
+        if (berserkerMode) {
+            berserkerCounter++;
+        }
+
+//        HEAL BEAR HALF A HEART FOR 4 SECONDS
+        if (berserkerMode && berserkerCounter%30 == 0) {//perform every half a second
+            if (spirits[0].getHealth() < spirits[0].getMaxHealth()) {
+                spirits[0].setHealth(getHealth() + 1);//heal for one heart
+            }
+        }
+
+//        TURN OFF BERSERKER MODE AFTER 5 SECONDS
+        if (berserkerCounter > 300) {
+            spirits[0].setAttack(1);//RESET ATTACK VALUE
+            if (spirits[0].getHealth() > 18) {//RESET HEALTH IF OVER MAX HEALTH
+                spirits[0].setHealth(18);
+            }
+            spirits[0].setMaxHealth(18);//RESET MAX HEALTH
+            berserkerMode = false;//TURN OFF BERSERKER MODE
+        }
         if (isAttacking() && !isSpecialAttacking()) {//check if the player is attacking
             attacking();
         }
