@@ -115,15 +115,26 @@ public class TileManager {
             }
         }
 
-        if (drawPath) { // if the path should be drawn
-            g2.setColor(new Color(255, 0, 0 ,70)); // red with a reduces opacity
+        if (drawPath) {
+            g2.setColor(new Color(255, 0, 0 ,70)); //SET COLOUR TO RED WITH REDUCED OPACITY
 
+//            ITERATE THROUGH EACH COORDINATE IN THE PATH FINDING METHOD, SCALE IT TO WORLD SIZE, AND PRINTS IT
             for (int i = 0; i < gp.getPFinderToTotem().getPathList().size(); i++) {
+//                GET WORLD COORDINATES OF PATH TILE
                 int worldX = gp.getPFinderToTotem().getPathList().get(i).getCol() * gp.getTileSize();
                 int worldY = gp.getPFinderToTotem().getPathList().get(i).getRow() * gp.getTileSize();
-                int screenX = worldX - gp.getPlayer().getWorldX() + gp.getPlayer().getScreenX();//tile position on the screen
+
+//                GET COORDINATES OF PATH TILE RELATIVE TO SCREEN
+                int screenX = worldX - gp.getPlayer().getWorldX() + gp.getPlayer().getScreenX();
                 int screenY = worldY - gp.getPlayer().getWorldY() + gp.getPlayer().getScreenY();
-                g2.fillRect(screenX, screenY, gp.getTileSize(), gp.getTileSize());
+
+//                DRAW PATH TILE IF IT IS NEAR THE PLAYER, TO SAVE ON RENDERING PERFORMANCE
+                if (worldX + gp.getTileSize() > gp.getPlayer().getWorldX() - gp.getPlayer().getScreenX() &&
+                        worldX - gp.getTileSize() < gp.getPlayer().getWorldX() + gp.getPlayer().getScreenX() &&
+                        worldY + gp.getTileSize() > gp.getPlayer().getWorldY() - gp.getPlayer().getScreenY() &&
+                        worldY - gp.getTileSize() < gp.getPlayer().getWorldY() + gp.getPlayer().getScreenY()) {
+                    g2.fillRect(screenX, screenY, gp.getTileSize(), gp.getTileSize());
+                }
             }
         }
     }

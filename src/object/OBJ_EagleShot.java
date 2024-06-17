@@ -15,7 +15,7 @@ public class OBJ_EagleShot extends TargetingProjectile {
         setSpeed(20);
         setMaxHealth(80);
         setHealth(getMaxHealth());
-        setAttack(10);
+        setAttack(30);
         setUseCost(1);
         setAlive(false);
         getImage();

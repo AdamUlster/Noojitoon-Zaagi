@@ -48,12 +48,14 @@ public class MON_Windigo extends Entity {
 
         int xDistance = Math.abs(getWorldX() - gp.getPlayer().getWorldX());
         int yDistance = Math.abs(getWorldY() - gp.getPlayer().getWorldY());
-        int tileDistance = (xDistance + yDistance) / gp.getTileSize();
+        int tileDistance = (int)Math.sqrt(Math.pow(xDistance, 2.0) + Math.pow(yDistance, 2)) / gp.getTileSize();
 
-        if (!isOnPath() && tileDistance < 5) { // if the monster is within 5 tiles of the player
+        if (!isOnPath() && tileDistance < 4) { // if the monster is within 4 tiles of the player
             int i = new Random().nextInt(100) + 1; // picks a random number from 1 to 100
             if (i > 50) {
                 setOnPath(true); // half the time, it doesn't follow the player
+            } else {
+                setOnPath(false);
             }
         }
         if (isOnPath() && tileDistance > 15) { // makes the monsters disappear once the player is a certain distance away

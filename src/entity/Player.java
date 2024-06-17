@@ -36,10 +36,14 @@ public class Player extends Entity {
     private boolean eagleSpecialUnlocked = false;
     private boolean turtleSpecialUnlocked = false;
 
+    //    SPIRIT STATES
+    private boolean berserkerMode = false;// BEAR SPIRIT IN BERSERK MODE
+
     //COUNTERS
     private int invincibilityCounter = 0;
     private int primaryICD = 0;//internal cooldown for attacks
     private int secondaryICD = 0;//internal cooldown for special/secondary moves
+    public int berserkerCounter = 0;//BEAR SPIRIT BERSERKER MODE DURATION
 
     public Player(GamePanel gp, KeyHandler keyH) { //create default attributes (constructor)
 
@@ -70,7 +74,7 @@ public class Player extends Entity {
         setTargetProjectile(new OBJ_EagleShot(gp));
 
         // Initializes the spirits and their health values
-        spirits[0] = new Spirit(gp, "Bear", 9, 9,
+        spirits[0] = new Spirit(gp, "Bear", 18, 18,
                 (int) (gp.getTileSize() * (1.0 - bearHitboxScale)) / 2,
                 (int) (gp.getTileSize() * (1.0 - bearHitboxScale)) / 2,
                 (int) (gp.getTileSize() * bearHitboxScale),
@@ -78,7 +82,7 @@ public class Player extends Entity {
                 (int) (gp.getTileSize() * bearAttackBoxScaleSize),
                 (int) (gp.getTileSize() * bearAttackBoxScaleSize),
                 1, 4);
-        spirits[1] = new Spirit(gp, "Eagle", 5, 5,
+        spirits[1] = new Spirit(gp, "Eagle", 14, 14,
                 (int) (gp.getTileSize() * eagleHitboxScale) / 2,
                 (int) (gp.getTileSize() * eagleHitboxScale) / 2,
                 (int) (gp.getTileSize() * eagleHitboxScale),
@@ -86,7 +90,7 @@ public class Player extends Entity {
                 (int) (gp.getTileSize() * eagleAttackBoxScaleSize),
                 (int) (gp.getTileSize() * eagleAttackBoxScaleSize),
                 1, 4);
-        spirits[2] = new Spirit(gp, "Turtle", 8, 8,
+        spirits[2] = new Spirit(gp, "Turtle", 20, 20,
                 (int) (gp.getTileSize() * (1.0 - turtleHitboxScale)) / 2,
                 (int) (gp.getTileSize() * (1.0 - turtleHitboxScale)) / 2,
                 (int) (gp.getTileSize() * turtleHitboxScale),
@@ -698,70 +702,84 @@ public class Player extends Entity {
                 damageMonster(monsterIndex, getAttack());
             }
 
-            if (getCurrentSpirit().getName().equals("Bear")) {//berserker mode for bear
-                if (bearSpecialUnlocked) { // if the bear special ability is unlocked
-                    System.out.println(spirits[0].getHealth());
-                    if (spirits[0].getHealth() < 8) {
-                        spirits[0].setHealth(spirits[0].getHealth() + 3);
-                    } else {
-                        spirits[0].setHealth(spirits[0].getMaxHealth());
+            //            BERSERKER MODE FOR BEAR
+            if (getCurrentSpirit().getName().equals("Bear")) {
+//                CHECK IF THE BEAR TOTEM HAS BEEN UNLOCKED IN ORDER TO DEAL DAMAGE, OTHERWISE JUST PLAYS THE ANIMATION
+                if (bearSpecialUnlocked) {
+//                    ACTIVATE BERSERKER MODE
+                    berserkerMode = true;
+
+//                    GRANT BONUS HEALTH
+                    spirits[0].setMaxHealth(26);
+
+//                    INSTANTLY HEAL SOME DAMAGE IF BELOW THREE HEARTS
+                    if (spirits[0].getHealth() < 6 ) {//
+                        spirits[0].setHealth(spirits[0].getHealth() + 10);
                     }
+                    berserkerCounter = 0;//RESET COUNTER
+                    spirits[0].setAttack(10);//any attack done by bear should now be one shot
                 }
-                //TODO
-                // find a way to increase attack for 10 seconds or smth idk
             }
-            if (getCurrentSpirit().getName().equals("Turtle")) { // if the turtle special ability is unlocked
+//            TURTLE HEALING WAVE
+            if (getCurrentSpirit().getName().equals("Turtle")) {
+//                CHECK IF THE TURTLE TOTEM HAS BEEN UNLOCKED IN ORDER TO HEAL, OTHERWISE JUST PLAYS THE ANIMATION
                 if (turtleSpecialUnlocked) {
-                    for (int i = 0; i < spirits.length; i++) { // sets every spirit's health to the maximum
-                        if (spirits[i].getHealth() < spirits[i].getMaxHealth()) {
-                            spirits[i].setHealth(spirits[i].getMaxHealth());
-                            spirits[i].setDead(false);
+//                    ITERATE THROUGH EACH SPIRIT, HEAL THEM TO MAX HEALTH
+                    for (Spirit spirit : spirits) {
+                        if (spirit.getHealth() < spirit.getMaxHealth()) {
+                            spirit.setHealth(spirit.getMaxHealth());
+                            spirit.setDead(false);
                         }
                     }
                 }
-                //TODO
-                // once sprite health has been decided, we can hard code some healing numbers instead of restoring all health
             }
+//            EAGLE EYE SHOT
             if (getCurrentSpirit().getName().equals("Eagle")) {
-                if (eagleSpecialUnlocked) { // if the eagle special ability is unlocked
+//                CHECK IF THE EAGLE TOTEM HAS BEEN UNLOCKED IN ORDER TO HEAL, OTHERWISE JUST PLAYS THE ANIMATION
+                if (eagleSpecialUnlocked) {
+
+//                    FIND INDEX OF THE CLOSEST MONSTER TO EAGLE
                     int targetSmallestDistance = 999;
                     int targetIndex = -1;
-                    for (int i = 0; i < gp.getMonster().length ; i++) {
-                        if (gp.getMonster()[i] != null) { // if the monster exists
-                            if (getDistance(i) < targetSmallestDistance) { // checks if the smaller distance is smaller than the last smallest
+                    for (int i = 0; i < gp.getMonster().length; i++) {
+                        if (gp.getMonster()[i] != null) { // MAKE SURE MONSTER EXISTS
+                            if (getDistance(i) < targetSmallestDistance) { // CHECKS IF THE DISTANCE IS SMALLET THAN
+                                // THE SMALLEST DISTANCE
                                 targetIndex = i;
                                 targetSmallestDistance = getDistance(i);
                             }
                         }
                     }
-                    if (targetIndex == -1) { // if no monsters remain
-                        gp.getUi().showMessage("There are no monsters for the eagle eye to lock onto");
-                    }
-                    else {
-                        switch (getDirection()) {//spawn projectile based on what direction eagle is facing
+                    //IF THERE ARE NO MONSTERS NEARBY
+                    if (targetIndex == -1) {
+                        gp.getUi().showMessage("There are no monsters nearby for the eagle eye to lock onto");
+                    } else {
+//                        SPAWN EAGLE EYE PROJECTILES BASED ON WHAT DIRECTION EAGLE IS FACING
+                        switch (getDirection()) {
                             case "up":
-                                getTargetProjectile().set((int) (getWorldX() + getAttackArea().width - (gp.getTileSize() * 1.35)),
-                                        (int) (getWorldY() - getAttackArea().height + (gp.getTileSize() * 0.3)), true, targetIndex);
+                                getTargetProjectile().set((int) (getWorldX() + getAttackArea().width - (gp.getTileSize() * 1.6)),
+                                        (int) (getWorldY() + getAttackArea().height - (gp.getTileSize() * 2.6)), true, targetIndex);
                                 break;
                             case "down":
-                                getTargetProjectile().set((int) (getWorldX() + getAttackArea().width - (gp.getTileSize() * 1.35)), (int)
-                                        (getWorldY() + getAttackArea().height + (gp.getTileSize() * -0.5)), true, targetIndex);
+                                getTargetProjectile().set((int) (getWorldX() + getAttackArea().width - (gp.getTileSize() * 1.6)), (int)
+                                        (getWorldY() + getAttackArea().height - (gp.getTileSize() * 0.8)), true, targetIndex);
                                 break;
                             case "left":
-                                getTargetProjectile().set((int) (getWorldX() - getAttackArea().width + (gp.getTileSize() * 0.2)), (int)
-                                        (getWorldY() + getAttackArea().height - (gp.getTileSize() * 1.2)), true, targetIndex);
+                                getTargetProjectile().set((int) (getWorldX() - getAttackArea().width - (gp.getTileSize() * 2.5)), (int)
+                                        (getWorldY() + getAttackArea().height - (gp.getTileSize() * 1.6)), true, targetIndex);
                                 break;
                             case "right":
-                                getTargetProjectile().set((int) (getWorldX() + getAttackArea().width - (gp.getTileSize() * 0.4)), (int)
-                                        (getWorldY() - getAttackArea().height + (gp.getTileSize() * 1.3)), true, targetIndex);
+                                getTargetProjectile().set((int) (getWorldX() + getAttackArea().width - (gp.getTileSize() * 0.6)), (int)
+                                        (getWorldY() + getAttackArea().height - (gp.getTileSize() * 1.7)), true, targetIndex);
                                 break;
                         }
-                        // add the projectile to the list of projectiles
+//                        ADD PROJECTILE TO THE LIST OF PROJECTILES
                         gp.getTargetProjectileList().add(getTargetProjectile());
-                        setShotAvailableCounter(0);//resets the shot counter
+                        setShotAvailableCounter(0);//RESET SHOT COUNTER
                     }
                 }
             }
+            //RESET ANIMATION BACK TO WALKING SPRITES, TURN OFF SPECIAL ATTACKING
             setSpriteNum(1);
             setSpriteCounter(0);
             setSpecialAttacking(false);
@@ -1309,6 +1327,14 @@ public class Player extends Entity {
         this.turtleSpecialUnlocked = turtleSpecialUnlocked;
     }
 
+    public boolean isBerserkerMode() {
+        return berserkerMode;
+    }
+
+    public void setBerserkerMode(boolean berserkerMode) {
+        this.berserkerMode = berserkerMode;
+    }
+
     public int getInvincibilityCounter() {
         return invincibilityCounter;
     }
@@ -1331,5 +1357,13 @@ public class Player extends Entity {
 
     public void setSecondaryICD(int secondaryICD) {
         this.secondaryICD = secondaryICD;
+    }
+
+    public int getBerserkerCounter() {
+        return berserkerCounter;
+    }
+
+    public void setBerserkerCounter(int berserkerCounter) {
+        this.berserkerCounter = berserkerCounter;
     }
 }

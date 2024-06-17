@@ -233,7 +233,7 @@ public class UI {
 
             for (int j = 0; j < gp.getPlayer().getSpirits()[i].getMaxHealth() / 2; j++) { // since 2 lives means 1 heart
                 g2.drawImage(heart_blank, x, y, scaledWidth, scaledHeight, null);
-                x += gp.getTileSize() * 0.9; // moves over to the right to draw the next heart
+                x += gp.getTileSize() * 0.5; // moves over to the right to draw the next heart
             }
 
             // resets the coordinates
@@ -245,7 +245,7 @@ public class UI {
                 if (j < gp.getPlayer().getSpirits()[i].getHealth()) { // if the player's health still is not full, make the heart full
                     g2.drawImage(heart_full, x, y, scaledWidth, scaledHeight, null); // draws the full heart
                 }
-                x += gp.getTileSize() * 0.9; // moves over to the right to draw the next heart
+                x += gp.getTileSize() * 0.5; // moves over to the right to draw the next heart
             }
             if (gp.getPlayer().getSpirits()[i] == gp.getPlayer().getCurrentSpirit()) {
                 y += 170;
