@@ -338,6 +338,7 @@ public class Player extends Entity {
             int goalRow = 0;
 
             // sets the destination tile to the next totem the player needs to collect
+
             for (int i = 0; i < gp.getObj().length; i++) {
                 if (gp.getObj()[i] == null) {
                     if (i >= 3 && i <= 8) { // if the user just destroyed the brick, find the end of the maze

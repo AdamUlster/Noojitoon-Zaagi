@@ -18,7 +18,7 @@ public class AssetSetter {
 
     void setObject() {
 //        2D ARRAYS FOR COORDINATES OF TOTEMS AND WALLS
-        int[][] totemCoords = {{36,95}, {14,4}, {2,55}, {76,33}};
+        int[][] totemCoords = {{76,33}, {14,4}, {2,55}, {36,95}};
         int[][] wallCoords = { {17,76}, {18,76}, {19,76}, {20,76}, {18,77}, {19,77}};
 
         // LOOP THROUGH EVERY COORDINATE IN BOTH ARRAYS, ADD TO OBJECT LIST IN GAME PANEL
