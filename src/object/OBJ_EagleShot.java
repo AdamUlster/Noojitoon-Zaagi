@@ -5,29 +5,29 @@ import entity.TargetingProjectile;
 import main.GamePanel;
 
 public class OBJ_EagleShot extends TargetingProjectile {
-    GamePanel gp;
+    private GamePanel gp;
 
     public OBJ_EagleShot(GamePanel gp) {
         super(gp);
         this.gp = gp;
 
-        name = "Eagle Shot";
-        speed = 20;
-        maxHealth = 80;
-        health = maxHealth;
-        attack = 10;
-        useCost = 1;
-        projectileAlive = false;
+        setName("Eagle Shot");
+        setSpeed(20);
+        setMaxHealth(80);
+        setHealth(getMaxHealth());
+        setAttack(30);
+        setUseCost(1);
+        setAlive(false);
         getImage();
     }
-    public void getImage() {
-        up1 = setup("objects/eagle_shot", 1, 1);
-        up2 = setup("objects/eagle_shot", 1, 1);
-        down1 = setup("objects/eagle_shot", 1, 1);
-        down2 = setup("objects/eagle_shot", 1, 1);
-        left1 = setup("objects/eagle_shot", 1, 1);
-        left2 = setup("objects/eagle_shot", 1, 1);
-        right1 = setup("objects/eagle_shot", 1, 1);
-        right2 = setup("objects/eagle_shot", 1, 1);
+    private void getImage() {
+        setUp1(setup("objects/eagle_shot", 1, 1));
+        setUp2(setup("objects/eagle_shot", 1, 1));
+        setDown1(setup("objects/eagle_shot", 1, 1));
+        setDown2(setup("objects/eagle_shot", 1, 1));
+        setLeft1(setup("objects/eagle_shot", 1, 1));
+        setLeft2(setup("objects/eagle_shot", 1, 1));
+        setRight1(setup("objects/eagle_shot", 1, 1));
+        setRight2(setup("objects/eagle_shot", 1, 1));
     }
 }

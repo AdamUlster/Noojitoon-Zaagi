@@ -3,48 +3,47 @@ package entity;
 import main.GamePanel;
 
 public class Projectile extends Entity {
-    Entity user;
+    private Entity user;
 
     public Projectile(GamePanel gp) {
         super(gp);
 
-        type = 3; // sets this entity's type to a projectile
+        setType(3); // sets this entity's type to a projectile
     }
 
-    public void set(int worldX, int worldY, String direction, boolean alive, Entity user) { // passes the coordinates to create the fireball
-        this.worldX = worldX;
-        this.worldY = worldY;
-        this.direction = direction;
-        this.projectileAlive = alive;
+    void set(int worldX, int worldY, String direction, boolean alive, Entity user) { // passes the coordinates to create the fireball
+        this.setWorldX(worldX);
+        this.setWorldY(worldY);
+        this.setDirection(direction);
+        this.setAlive(alive);
         this.user = user;
-        this.health = this.maxHealth;
+        this.setHealth(this.getMaxHealth());
     }
 
     public void update() {
-        int monsterIndex = gp.cChecker.checkEntity(this, gp.monster); // gets the monster index that the projectile hits
+        int monsterIndex = gp.getCChecker().checkEntity(this, gp.getMonster()); // gets the monster index that the projectile hits
         if (monsterIndex != 999) { // if the projectile hits a monster
-            gp.player.damageMonster(monsterIndex, attack); // passes the projectile's attack to a monster
-            projectileAlive = false; // the projectile disappears after hitting a monster
+            gp.getPlayer().damageMonster(monsterIndex, getAttack()); // passes the projectile's attack to a monster
+            setAlive(false); // the projectile disappears after hitting a monster
         }
 
-        switch (direction) { // allows for the projectile to be launched
+        switch (getDirection()) { // allows for the projectile to be launched
             case "up":
-                worldY -= speed;
+                setWorldY(getWorldY() - getSpeed());
                 break;
             case "down":
-                worldY += speed;
+                setWorldY(getWorldY() + getSpeed());
                 break;
             case "left":
-                worldX -= speed;
+                setWorldX(getWorldX() - getSpeed());
                 break;
             case "right":
-                worldX += speed;
+                setWorldX(getWorldX() + getSpeed());
                 break;
         }
-        health --;
-        if (health <= 0) {
-            projectileAlive = false; // the projectile disappears when it has no more health
+        setHealth(getHealth() - 1);
+        if (getHealth() <= 0) {
+            setAlive(false); // the projectile disappears when it has no more health
         }
-
     }
 }
