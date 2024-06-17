@@ -1219,11 +1219,11 @@ public class Player extends Entity {
                 }
                 break;
         }
-        g2.drawRect(tempScreenX, tempScreenY, getAttackArea().width, getAttackArea().height);
+//        g2.drawRect(tempScreenX, tempScreenY, getAttackArea().width, getAttackArea().height);
 
         // For debugging
-        g2.setColor(new Color(255, 0, 0));
-        g2.fillRect(screenX + getSolidArea().x, screenY + getSolidArea().y, getSolidArea().width, getSolidArea().height);
+//        g2.setColor(new Color(255, 0, 0));
+//        g2.fillRect(screenX + getSolidArea().x, screenY + getSolidArea().y, getSolidArea().width, getSolidArea().height);
 
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // resets the opacity for future images
     }
