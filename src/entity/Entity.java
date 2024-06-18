@@ -186,6 +186,7 @@ public class Entity {
         }
     }
 
+//    setup images and scale them
     protected BufferedImage setup(String imagePath, double widthScale, double heightScale) {
         UtilityTool uTool = new UtilityTool();
         BufferedImage image = null;
@@ -199,6 +200,7 @@ public class Entity {
         return image;
     }
 
+//    use pathfinding algorithm to get a path for the player to the totem
     void searchPathToTotem(int goalCol, int goalRow) {
 
         // gets the entity's current tile
@@ -217,6 +219,7 @@ public class Entity {
         }
     }
 
+//    use pathfinding algorithm to get a path to the player
     protected void searchPathToPlayer(int goalCol, int goalRow) {
         // gets the entity's current tile
         int startCol = (worldX + solidArea.x) / gp.getTileSize();

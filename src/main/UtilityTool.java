@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 
 public class UtilityTool {
 
+//    return a scaled image
     public BufferedImage scaleImage(BufferedImage original, int width, int height) {
         BufferedImage scaledImage = new BufferedImage(width, height, original.getType());
         Graphics2D g2 = scaledImage.createGraphics();

@@ -66,8 +66,8 @@ public class Player extends Entity {
     private void setDefaultValues() {//create default values to spawn the player
 
         //53 50
-        setWorldX(gp.getTileSize() * 53); // sets the default position x-coordinate
-        setWorldY(gp.getTileSize() * 50); //sets the default position y-coordinate
+        setWorldX(gp.getTileSize() * 2); // sets the default position x-coordinate
+        setWorldY(gp.getTileSize() * 56); //sets the default position y-coordinate
         setSpeed(8);//sets speed to 4
         setDirection("right");//can input any direction
         setProjectile(new OBJ_Water_Jet(gp));
@@ -101,6 +101,7 @@ public class Player extends Entity {
         switchSpirit(0); // the player is the bear spirit to start
     }
 
+//    reset the game after all spirits die
     private void restoreSettings() {
         Arrays.fill(gp.getNpc(), null);
         Arrays.fill(gp.getMonster(), null);
@@ -126,6 +127,7 @@ public class Player extends Entity {
         setDefaultValues(); // sets the default player values
     }
 
+//    retrieve walking images
     private void getPlayerImage() {
         Spirit currentSpirit = getCurrentSpirit(); // gets the current spirit
 
@@ -218,6 +220,7 @@ public class Player extends Entity {
 
     }
 
+//    retrieve special attacking images
     private void getPlayerSpecialAttackImage() {//get sprites for secondary attack
         if (getCurrentSpirit().getName().equals("Bear")) {
             //up specials
@@ -331,7 +334,7 @@ public class Player extends Entity {
         }
     }
 
-
+// run game logic for player every frame
     public void update() {
         if (isOnPath()) {
             int goalCol = 0;
@@ -362,29 +365,23 @@ public class Player extends Entity {
             searchPathToTotem(goalCol, goalRow);
         }
 
-        secondaryICD++;
+        secondaryICD++;//increase secondary internal cooldown for every frame, after 30 frames, will be able to attack
+        // again
         primaryICD++;//increase primary internal cooldown for every frame, after 30 frames, will be able to attack again
 
-//        INCREASE COUNTER FOR BERSERKER MODE
+        // Update the berserker timer and disable berserker mode after 5 seconds (300 ticks)
         if (berserkerMode) {
             berserkerCounter++;
-        }
-
-//        HEAL BEAR HALF A HEART FOR 4 SECONDS
-        if (berserkerMode && berserkerCounter%30 == 0) {//perform every half a second
-            if (spirits[0].getHealth() < spirits[0].getMaxHealth()) {
-                spirits[0].setHealth(getHealth() + 1);//heal for one heart
+            if (berserkerCounter % 30 == 0) {
+                if (spirits[0].getHealth() != spirits[0].getMaxHealth()) {
+                    spirits[0].setHealth(spirits[0].getHealth() + 1);
+                }
             }
-        }
-
-//        TURN OFF BERSERKER MODE AFTER 5 SECONDS
-        if (berserkerCounter > 300) {
-            spirits[0].setAttack(1);//RESET ATTACK VALUE
-            if (spirits[0].getHealth() > 18) {//RESET HEALTH IF OVER MAX HEALTH
-                spirits[0].setHealth(18);
+            if (berserkerCounter > 300) {
+                berserkerMode = false;
+                spirits[0].setAttack(1); // Reset to the bear's original attack value
+                gp.getPlayer().setAttack(spirits[0].getAttack());
             }
-            spirits[0].setMaxHealth(18);//RESET MAX HEALTH
-            berserkerMode = false;//TURN OFF BERSERKER MODE
         }
         if (isAttacking() && !isSpecialAttacking()) {//check if the player is attacking
             attacking();
@@ -527,6 +524,7 @@ public class Player extends Entity {
         }
     }
 
+//    switch spirit depending on which button is pressed
     private void switchSpirit(int spiritIndex) {
         currentSpiritIndex = spiritIndex; // sets the current spirit index to the spirit index
         getPlayerImage(); // reset the image pulls via getPlayerImage method
@@ -550,6 +548,7 @@ public class Player extends Entity {
         this.setDefense(getCurrentSpirit().getDefense());
     }
 
+//    retrieve the next alive spirit
     private int nextAliveSpirit() {
         for (int i = currentSpiritIndex + 1; i < currentSpiritIndex + gp.getPlayer().spirits.length; i++) {
             int loopIndex = i % gp.getPlayer().spirits.length; // Calculates the loop index
@@ -560,6 +559,7 @@ public class Player extends Entity {
         return -1; // returns -1 if every spirit is dead
     }
 
+//    attacking logic
     private void attacking() {
         setSpriteCounter(getSpriteCounter() + 1);
         if (getSpriteCounter() <= 10) {
@@ -693,6 +693,7 @@ public class Player extends Entity {
         }
     }
 
+//    special attacking logic
     private void specialAttacking() {
         setSpriteCounter(getSpriteCounter() + 1);
 
@@ -725,21 +726,25 @@ public class Player extends Entity {
             }
 
             //            BERSERKER MODE FOR BEAR
+            // BERSERKER MODE FOR BEAR
             if (getCurrentSpirit().getName().equals("Bear")) {
-//                CHECK IF THE BEAR TOTEM HAS BEEN UNLOCKED IN ORDER TO DEAL DAMAGE, OTHERWISE JUST PLAYS THE ANIMATION
+                // CHECK IF THE BEAR TOTEM HAS BEEN UNLOCKED IN ORDER TO DEAL DAMAGE, OTHERWISE JUST PLAYS THE ANIMATION
                 if (bearSpecialUnlocked) {
-//                    ACTIVATE BERSERKER MODE
+                    // ACTIVATE BERSERKER MODE
                     berserkerMode = true;
+                    berserkerCounter = 0; // Reset the timer when activating berserker mode
 
-//                    GRANT BONUS HEALTH
+                    // GRANT BONUS HEALTH
                     spirits[0].setMaxHealth(26);
 
-//                    INSTANTLY HEAL SOME DAMAGE IF BELOW THREE HEARTS
-                    if (spirits[0].getHealth() < 6 ) {//
+                    // INSTANTLY HEAL SOME DAMAGE IF BELOW THREE HEARTS
+                    if (spirits[0].getHealth() < 6) {
                         spirits[0].setHealth(spirits[0].getHealth() + 10);
                     }
-                    berserkerCounter = 0;//RESET COUNTER
-                    spirits[0].setAttack(10);//any attack done by bear should now be one shot
+
+                    berserkerCounter = 0; // RESET COUNTER
+                    spirits[0].setAttack(10); // any attack done by bear should now be one shot
+                    gp.getPlayer().setAttack(spirits[0].getAttack());
                 }
             }
 //            TURTLE HEALING WAVE
@@ -787,7 +792,7 @@ public class Player extends Entity {
                                         (getWorldY() + getAttackArea().height - (gp.getTileSize() * 0.8)), true, targetIndex);
                                 break;
                             case "left":
-                                getTargetProjectile().set((int) (getWorldX() - getAttackArea().width - (gp.getTileSize() * 2.5)), (int)
+                                getTargetProjectile().set((int) (getWorldX() + getAttackArea().width - (gp.getTileSize() * 2.5)), (int)
                                         (getWorldY() + getAttackArea().height - (gp.getTileSize() * 1.6)), true, targetIndex);
                                 break;
                             case "right":
@@ -827,6 +832,7 @@ public class Player extends Entity {
         return currentDistance;
     }
 
+//    pick up object method
     private void pickUpObject(int index) {
         if (index != 999) { // if index is 999, no object was touched
             String objectName = gp.getObj()[index].getName();
@@ -859,21 +865,21 @@ public class Player extends Entity {
                         gp.getObj()[index] = null; // destroys the wall
                     }
                     else {
-//                        gp.getUi().showMessage("You need to collect " + (3 - numTotems) + " more totems to get past the wall");
-                        gp.getUi().showMessage("“Perhaps a monster could let you in, and you may complete your " +
-                                "journey");
+                        gp.getUi().showMessage("You need to collect " + (3 - numTotems) + " more totems to get past the wall");
                     }
                     break;
             }
         }
     }
 
+//    interact with npc
     private void interactNPC(int i) {
         if (i != 999) {
             System.out.println("you are hitting an npc");
         }
     }
 
+//    damage plaer if in ontact with monster
     private void contactMonster(int index) { // modifies the player's invincibility if they make contact with a monster
         Spirit currentSpirit = gp.getPlayer().getCurrentSpirit(); // gets the current spirit
 
@@ -889,6 +895,7 @@ public class Player extends Entity {
         }
     }
 
+//    damage player if attacking
     void damageMonster(int index, int attack) { // deals damage to the monster
 
         if (index != 999) { // if index is 999, no monster was touched
@@ -906,6 +913,7 @@ public class Player extends Entity {
         }
     }
 
+//    draw player animations
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
 
@@ -1161,6 +1169,7 @@ public class Player extends Entity {
 
         // Debugging
         // Draws the attack area of the player
+        /*
         tempScreenX = screenX + getSolidArea().x;
         tempScreenY = screenY + getSolidArea().y;
         switch (getDirection()) {
@@ -1221,6 +1230,8 @@ public class Player extends Entity {
                 }
                 break;
         }
+
+         */
 //        g2.drawRect(tempScreenX, tempScreenY, getAttackArea().width, getAttackArea().height);
 
         // For debugging

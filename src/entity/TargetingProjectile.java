@@ -19,14 +19,6 @@ public class TargetingProjectile extends Entity {
         this.setHealth(this.getMaxHealth());
         this.target = target;
 
-        // To adjust the hit box of the targeting projectile
-       // solidArea.width = 1000;
-        //solidArea.height = 1000;
-        //solidArea.x = 1000;
-        //solidArea.y = 1000;
-
-        //solidAreaDefaultX = solidArea.x;
-        //solidAreaDefaultY = solidArea.y;
     }
 
     public void update() {
