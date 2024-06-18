@@ -43,7 +43,7 @@ public class Player extends Entity {
     private int invincibilityCounter = 0;
     private int primaryICD = 0;//internal cooldown for attacks
     private int secondaryICD = 0;//internal cooldown for special/secondary moves
-    public int berserkerCounter = 0;//BEAR SPIRIT BERSERKER MODE DURATION
+    private int berserkerCounter = 0;//BEAR SPIRIT BERSERKER MODE DURATION
 
     public Player(GamePanel gp, KeyHandler keyH) { //create default attributes (constructor)
 
@@ -66,8 +66,8 @@ public class Player extends Entity {
     private void setDefaultValues() {//create default values to spawn the player
 
         //53 50
-        setWorldX(gp.getTileSize() * 2); // sets the default position x-coordinate
-        setWorldY(gp.getTileSize() * 56); //sets the default position y-coordinate
+        setWorldX(gp.getTileSize() * 53); // sets the default position x-coordinate
+        setWorldY(gp.getTileSize() * 50); //sets the default position y-coordinate
         setSpeed(8);//sets speed to 4
         setDirection("right");//can input any direction
         setProjectile(new OBJ_Water_Jet(gp));
